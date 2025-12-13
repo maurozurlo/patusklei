@@ -33,12 +33,21 @@
     --ega-purple: #8800FF;
 }
 
+@font-face {
+    font-family: 'DropCaps';
+    src: url('/assets/AnnStone.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
     background: var(--ega-darkcyan);
     font-family: 'Courier New', monospace;
     color: var(--ega-white);
     overflow-x: hidden;
 }
+
+
 
 .lang-toggle {
     position: fixed;
@@ -254,7 +263,7 @@ h1 {
 }
 
 .story-container {
-    max-width: 800px;
+    max-width: 1000px;
     margin: 0 auto;
 }
 
@@ -274,6 +283,13 @@ h1 {
     padding: 5px 15px;
     color: var(--ega-orange);
     border: 2px solid var(--ega-teal);
+}
+
+.story-text:first-letter {
+    padding: .5rem;
+    font-family: 'DropCaps', serif;
+    font-weight: 100;
+    initial-letter: 3 2;
 }
 
 .story-text {
@@ -354,7 +370,8 @@ h1 {
 }
 
 .music-player {
-    max-width: 600px;
+    max-width: 1000px;
+    width: 100%;
     margin: 0 auto;
     background: var(--ega-black);
     border: 4px solid var(--ega-pink);
