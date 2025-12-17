@@ -28,13 +28,8 @@ class ObstacleManager {
     }
 
     spawnObstacle(obstacleSpeed) {
-        if (this.scene.level === 1) {
-            if (this.scene.obstaclesSpawned >= this.scene.maxObstacles) {
-                this.scene.obstacleTimer.remove();
-                return;
-            }
-            this.scene.obstaclesSpawned++;
-        }
+        // Track spawned obstacles for finish line trigger
+        this.scene.obstaclesSpawned++;
 
         const buoy = this.obstacles.create(320, this.groundY, 'buoy_idle');
         buoy.setOrigin(0.5, 1);

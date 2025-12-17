@@ -16,12 +16,21 @@ class LevelManager {
             this.obstacleSpeed = 350;
         }
 
+        // Initialize obstacle counter for finish line trigger
+        this.scene.obstaclesSpawned = 0;
+
         // Clean up existing timers
         if (this.scene.obstacleTimer) {
             this.scene.obstacleTimer.destroy();
         }
+        if (this.scene.coinTimer) {
+            this.scene.coinTimer.destroy();
+        }
         if (this.scene.dynamiteTimer) {
             this.scene.dynamiteTimer.destroy();
+        }
+        if (this.scene.bossProjectileTimer) {
+            this.scene.bossProjectileTimer.destroy();
         }
 
         // Level-specific setup
@@ -35,9 +44,6 @@ class LevelManager {
     }
 
     setupLevel1() {
-        this.scene.maxObstacles = 15;
-        this.scene.obstaclesSpawned = 0;
-
         this.scene.obstacleTimer = this.scene.time.addEvent({
             delay: 3000,
             callback: () => this.scene.obstacleManager.spawnObstacle(this.obstacleSpeed),
@@ -73,7 +79,7 @@ class LevelManager {
 
     setupLevel3() {
         // Boss projectiles
-        this.scene.time.addEvent({
+        this.scene.bossProjectileTimer = this.scene.time.addEvent({
             delay: 1000,
             callback: () => this.scene.obstacleManager.spawnBossProjectile(this.obstacleSpeed),
             callbackScope: this.scene,

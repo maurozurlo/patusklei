@@ -18,7 +18,7 @@ const config = {
 
     },
     scene: [
-        //MenuScene,  // Always load the main menu first
+        MenuScene,  // Always load the main menu first
         GameScene
         // Later, you could break GameScene into Level1Scene, Level2Scene, BossScene
     ]

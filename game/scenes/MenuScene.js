@@ -1,22 +1,20 @@
 class MenuScene extends Phaser.Scene {
+
     constructor() {
         super('MenuScene');
     }
 
-    preload() {
-        // Load any 16-bit style background or title assets here
-        // this.load.image('title', 'assets/images/title_screen.png');
-        //this.load.audio('bg_music', 'assets/audio/game_theme.mp3');
+    init(data) {
+        // Store the data passed from GameScene
+        this.showGameOverScreen = data.showGameOver || false;
     }
 
     create() {
-        // Start the background music on the menu
-        /*this.music = this.sound.add('bg_music', { loop: true, volume: 0.5 });
-        if (isMusicPlaying) {
-            this.music.play();
-        }*/
-
-        this.showMainMenu();
+        if (this.showGameOverScreen) {
+            this.showGameOver();
+        } else {
+            this.showMainMenu();
+        }
     }
 
     showMainMenu() {
@@ -102,8 +100,8 @@ class MenuScene extends Phaser.Scene {
     getLoreText(key) {
         const lore = {
             LEVEL_1_LORE: {
-                title: 'The Training Grounds',
-                text: "The internet has slowed to a crawl. The dreaded Server Overlord has activated the 'Slow-Net Protocol.' You, the last-standing 16-bit runner, must bypass the initial slow-firewall. Your training begins now: practice your leaps to overcome the basic system packets. The journey is long and pixelated."
+                title: 'Los Inicios',
+                text: "Apreciado amigo Patus Klei, nacido en agosto de 1907. A los 16 años escuchó el llamado de la tierra de Cle. Construyó su bidet y zarpó. Traga el atún y los morrones. Evita las boyas."
             },
             LEVEL_2_LORE: {
                 title: 'The Data Highway',
@@ -126,20 +124,20 @@ class MenuScene extends Phaser.Scene {
         this.children.removeAll();
         //   this.cameras.main.setBackgroundColor('#800000'); // Reddish tint for Game Over
 
-        this.add.text(160, 150, 'G A M E   O V E R', {
-            fontSize: '50px',
+        this.add.text(160, 65, 'G A M E   O V E R', {
+            fontSize: '30px',
             fill: '#ffffff',
             stroke: '#000000',
             strokeThickness: 6
         }).setOrigin(0.5);
 
-        const restartButton = this.add.text(160, 300, 'RESTART GAME', {
-            fontSize: '30px',
+        const restartButton = this.add.text(160, 160, 'RESTART GAME', {
+            fontSize: '28px',
             fill: '#ff0000'
         }).setOrigin(0.5).setInteractive();
 
         restartButton.on('pointerdown', () => {
-            this.scene.start('MenuScene'); // Go back to the main menu
+            this.scene.start('MenuScene', { showGameOver: false }); // Go back to the main menu
         });
     }
 }

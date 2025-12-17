@@ -7,6 +7,7 @@ class GameScene extends Phaser.Scene {
         this.level = 1;
         this.isGameOver = false;
         this.bossHealth = 5;
+        this.maxObstacles = 10;
     }
 
     init(data) {
@@ -42,19 +43,25 @@ class GameScene extends Phaser.Scene {
             this.coinManager = new CoinManager(this, 180);
         }
         this.coinManager.preload();
+
+        // Preload finish line
+        if (!this.finishLineManager) {
+            this.finishLineManager = new FinishLineManager(this, 180);
+        }
+        this.finishLineManager.preload();
     }
 
     create() {
         const GROUND_Y = 180;
 
         this.obstaclesSpawned = 0;
-        this.maxObstacles = 0;
 
         // Initialize managers
         this.backgroundManager = new BackgroundManager(this);
         this.playerManager = new PlayerManager(this, GROUND_Y);
         this.obstacleManager = new ObstacleManager(this, GROUND_Y);
         this.coinManager = new CoinManager(this, GROUND_Y);
+        this.finishLineManager = new FinishLineManager(this, GROUND_Y);
         this.uiManager = new UIManager(this);
         this.levelManager = new LevelManager(this);
 
@@ -64,6 +71,7 @@ class GameScene extends Phaser.Scene {
         this.playerManager.setup();
         this.obstacleManager.setup();
         this.coinManager.setup();
+        this.finishLineManager.setup();
         this.setupCollisions();
         this.uiManager.setup(this.level);
 
@@ -119,6 +127,19 @@ class GameScene extends Phaser.Scene {
         );
     }
 
+    setupFinishLineCollision() {
+        // Setup collision after finish line is spawned
+        if (this.finishLineManager.finishLine) {
+            this.physics.add.overlap(
+                this.playerManager.player,
+                this.finishLineManager.finishLine,
+                (player, finishLine) => this.finishLineManager.reachFinishLine(player, finishLine),
+                null,
+                this
+            );
+        }
+    }
+
     update() {
         if (this.isGameOver) return;
 
@@ -126,7 +147,17 @@ class GameScene extends Phaser.Scene {
         this.backgroundManager.update(this.levelManager.obstacleSpeed);
         this.obstacleManager.cleanupOffScreen();
         this.coinManager.cleanupOffScreen();
+        this.finishLineManager.cleanupOffScreen();
 
+        // Check if we should spawn the finish line
+        if (this.obstaclesSpawned >= this.maxObstacles && !this.finishLineManager.isSpawned) {
+            this.finishLineManager.spawnFinishLine(this.levelManager.obstacleSpeed);
+            this.setupFinishLineCollision();
+        }
+
+        // Increment score
+        //this.score += this.level;
+        //this.uiManager.updateScore(this.score);
     }
 
     collectCoin(player, coin) {
@@ -141,8 +172,11 @@ class GameScene extends Phaser.Scene {
         this.physics.pause();
         player.setTint(0xff0000);
 
-        this.scene.stop();
-        this.scene.get('MenuScene').showGameOver();
+        // Add a slight delay so the player sees the "red" tint before switching
+        this.time.delayedCall(1000, () => {
+            // Start MenuScene and pass a data object
+            this.scene.start('MenuScene', { showGameOver: true });
+        });
     }
 
     triggerDynamite(player, dynamite) {
