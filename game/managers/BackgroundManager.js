@@ -8,9 +8,9 @@ class BackgroundManager {
     }
 
     preload() {
-        this.scene.load.spritesheet('water_anim', 'assets/images/water_anim.png', {
-            frameWidth: 32,
-            frameHeight: 32
+        this.scene.load.spritesheet('water_anim', 'assets/images/water_low.png', {
+            frameWidth: 16,
+            frameHeight: 16
         });
     }
 
@@ -54,29 +54,31 @@ class BackgroundManager {
             repeat: -1
         });
 
+
+
         const screenWidth = this.scene.sys.game.config.width;
-        const waterHeight = 64; // 2 rows of 32px sprites
+        const waterHeight = 48; // 2 rows of 16px sprites
         const waterY = this.scene.sys.game.config.height - waterHeight;
 
         // Calculate how many sprites we need to fill the width
-        const numSpritesX = Math.ceil(screenWidth / 32) + 1;
-        const numSpritesY = 2; // 64px height = 2 rows
+        const numSpritesX = Math.ceil(screenWidth / 16) + 1;
+        const numSpritesY = 4; // 32px height = 2 rows
 
         // Create a grid of water sprites
         for (let row = 0; row < numSpritesY; row++) {
             for (let col = 0; col < numSpritesX; col++) {
                 const water = this.scene.add.sprite(
-                    col * 32,
-                    waterY + (row * 32),
+                    col * 16,
+                    waterY + (row * 16),
                     'water_anim'
                 );
                 water.setOrigin(0, 0);
                 water.setDepth(5); // Above beach, below obstacles
                 water.play('water_flow');
-
+                water.setDepth(-10); // Behind everything
                 // Offset animation start for variation
                 water.anims.msPerFrame = 125;
-                water.anims.currentFrame.index = Phaser.Math.Between(0, 3);
+                water.anims.currentFrame.index = Phaser.Math.Between(0, 2);
 
                 this.waterSprites.push(water);
             }

@@ -31,6 +31,12 @@ class GameScene extends Phaser.Scene {
             frameHeight: 66
         });
 
+        // Preload background elements
+        if (!this.backgroundManager) {
+            this.backgroundManager = new BackgroundManager(this);
+        }
+        this.backgroundManager.preload();
+
         // Preload coins
         if (!this.coinManager) {
             this.coinManager = new CoinManager(this, 180);
@@ -121,14 +127,11 @@ class GameScene extends Phaser.Scene {
         this.obstacleManager.cleanupOffScreen();
         this.coinManager.cleanupOffScreen();
 
-        // Increment score
-        //this.score += this.level;
-        this.uiManager.updateScore(this.score);
     }
 
     collectCoin(player, coin) {
         const coinValue = this.coinManager.collectCoin(player, coin);
-        this.uiManager.updateScore(this.score + coinValue);
+        this.uiManager.updateScore(coinValue + this.score);
     }
 
     hitObstacle(player, obstacle) {
