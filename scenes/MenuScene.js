@@ -29,7 +29,7 @@ class MenuScene extends Phaser.Scene {
         }).setOrigin(0.5);
 
         // ** Start Button **
-        const startButton = this.add.text(160, 160, 'START GAME', {
+        const startButton = this.add.text(160, 160, 'INICIAR JUEGO', {
             fontSize: '24px',
             fill: '#00ff00'
         }).setOrigin(0.5).setInteractive();
@@ -70,7 +70,7 @@ class MenuScene extends Phaser.Scene {
         this.add.text(10, 50, loreData.title, { fontSize: '18px', fill: '#ffcc00' });
         this.add.text(10, 70, loreData.text, { fontSize: '12px', fill: '#ffffff', wordWrap: { width: 310 } });
 
-        const continueButton = this.add.text(160, 190, 'CONTINUE', {
+        const continueButton = this.add.text(160, 190, 'CONTINUAR', {
             fontSize: '12px',
             fill: '#00ff00'
         }).setOrigin(0.5).setInteractive();
@@ -131,7 +131,7 @@ class MenuScene extends Phaser.Scene {
             strokeThickness: 6
         }).setOrigin(0.5);
 
-        const restartButton = this.add.text(160, 160, 'RESTART GAME', {
+        const restartButton = this.add.text(160, 160, 'REINICIAR', {
             fontSize: '28px',
             fill: '#ff0000'
         }).setOrigin(0.5).setInteractive();
