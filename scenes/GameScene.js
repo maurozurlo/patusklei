@@ -32,6 +32,11 @@ class GameScene extends Phaser.Scene {
             frameHeight: 66
         });
 
+        this.load.spritesheet('bidet_foam', 'assets/images/bidet_foam.png', {
+            frameWidth: 40,
+            frameHeight: 16
+        });
+
         // Preload background elements
         if (!this.backgroundManager) {
             this.backgroundManager = new BackgroundManager(this);

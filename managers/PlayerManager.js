@@ -3,6 +3,7 @@ class PlayerManager {
         this.scene = scene;
         this.groundY = groundY;
         this.player = null;
+        this.foam = null;
     }
 
     setup() {
@@ -17,6 +18,13 @@ class PlayerManager {
             frameRate: 6,
             repeat: -1
         });
+
+        this.scene.anims.create({
+            key: 'bidet_foam',
+            frames: this.scene.anims.generateFrameNumbers('bidet_foam', { start: 0, end: 3 }),
+            frameRate: 10,
+            repeat: -1
+        });
     }
 
     createPlayer() {
@@ -26,6 +34,16 @@ class PlayerManager {
         this.player.body.setAllowGravity(true);
         this.player.body.setSize(18, 40, true);
         this.player.play('patus_bidet_idle');
+
+        // FOAM
+        this.foam = this.scene.add.sprite(
+            this.player.x,
+            this.player.y + 20,
+            'bidet_foam'
+        );
+
+        this.foam.setOrigin(0.5, 1);
+        this.foam.play('bidet_foam');
     }
 
     handleInput(cursors, level) {
@@ -44,5 +62,7 @@ class PlayerManager {
                 this.player.body.setSize(this.player.width, this.player.height, true);
             }
         }
+
+        this.foam.setVisible(onGround);
     }
 }
