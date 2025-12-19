@@ -32,9 +32,19 @@ class GameScene extends Phaser.Scene {
             frameHeight: 66
         });
 
+        this.load.spritesheet('patus_walk', 'assets/images/patus_walk.png', {
+            frameWidth: 55,
+            frameHeight: 76
+        });
+
         this.load.spritesheet('bidet_foam', 'assets/images/bidet_foam.png', {
             frameWidth: 40,
             frameHeight: 16
+        });
+
+        this.load.spritesheet('bidet_splash', 'assets/images/bidet_splash.png', {
+            frameWidth: 64,
+            frameHeight: 80
         });
 
         // Preload background elements
@@ -57,7 +67,7 @@ class GameScene extends Phaser.Scene {
     }
 
     create() {
-        const GROUND_Y = 180;
+        const GROUND_Y = 165;
 
         this.obstaclesSpawned = 0;
 

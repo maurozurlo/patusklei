@@ -31,13 +31,13 @@ class ObstacleManager {
         // Track spawned obstacles for finish line trigger
         this.scene.obstaclesSpawned++;
 
-        const buoy = this.obstacles.create(320, this.groundY, 'buoy_idle');
+        const buoy = this.obstacles.create(320, this.groundY + 15, 'buoy_idle');
         buoy.setOrigin(0.5, 1);
         buoy.play('buoy_idle');
         buoy.body.velocity.x = -obstacleSpeed;
         buoy.body.setAllowGravity(false);
         buoy.setImmovable(true);
-        buoy.setDepth(10);
+        buoy.setDepth(9);
         buoy.body.setSize(18, 40, true);
     }
 
