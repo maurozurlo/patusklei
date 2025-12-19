@@ -5,47 +5,99 @@ class MenuScene extends Phaser.Scene {
     }
 
     init(data) {
-        // Store the data passed from GameScene
-        this.showGameOverScreen = data.showGameOver || false;
+        this.menuKey = data.menuKey || 'MAIN_MENU';
     }
 
     create() {
-        if (this.showGameOverScreen) {
-            this.showGameOver();
-        } else {
-            this.showMainMenu();
+        const loreScreens = [
+            'LEVEL_1_LORE',
+            'LEVEL_2_LORE',
+            'BOSS_LORE',
+            'GAME_COMPLETED'
+        ];
+
+        if (loreScreens.includes(this.menuKey)) {
+            this.showLoreScreen(this.menuKey);
+            return;
         }
+
+        if (this.menuKey === 'GAME_OVER') {
+            this.showGameOver();
+            return;
+        }
+
+        this.showMainMenu();
     }
 
-    showMainMenu() {
-        // Clear previous UI elements if any
+    // --------------------------------------------------
+    // Shared helpers
+    // --------------------------------------------------
+
+    clearUI() {
         this.children.removeAll();
+        this.cameras.main.setBackgroundColor('#000000');
+    }
 
-        // ** Title Text **
-        this.add.text(160, 100, 'PATUS KLEI', {
-            fontSize: '32px',
-            fill: '#ffffff',
-            fontFamily: 'PixelFont', // Use a custom pixel font if possible
-        }).setOrigin(0.5);
+    getStyles() {
+        return {
+            title: {
+                fontFamily: 'PixelFont',
+                fontSize: '32px',
+                fill: '#ffffff'
+            },
+            subtitle: {
+                fontSize: '18px',
+                fill: '#ffcc00'
+            },
+            body: {
+                fontSize: '12px',
+                fill: '#ffffff',
+                wordWrap: { width: 310 }
+            },
+            buttonPrimary: {
+                fontSize: '24px',
+                fill: '#00ff00'
+            },
+            buttonSecondary: {
+                fontSize: '18px',
+                fill: '#ffffff'
+            },
+            danger: {
+                fontSize: '28px',
+                fill: '#ff0000'
+            }
+        };
+    }
 
-        // ** Start Button **
-        const startButton = this.add.text(160, 160, 'INICIAR JUEGO', {
-            fontSize: '24px',
-            fill: '#00ff00'
-        }).setOrigin(0.5).setInteractive();
+    // --------------------------------------------------
+    // Main menu
+    // --------------------------------------------------
+
+    showMainMenu() {
+        this.clearUI();
+        const styles = this.getStyles();
+
+        this.add.text(160, 90, 'PATUS KLEI', styles.title)
+            .setOrigin(0.5);
+
+        const startButton = this.add.text(160, 145, 'INICIAR JUEGO', styles.buttonPrimary)
+            .setOrigin(0.5)
+            .setInteractive();
 
         startButton.on('pointerdown', () => {
-            // Transition to the initial lore screen
             this.showLoreScreen('LEVEL_1_LORE');
         });
 
-        // ** Music Toggle Button **
-        this.musicButton = this.add.text(160, 190, `MUSIC: ${isMusicPlaying ? 'ON' : 'OFF'}`, {
-            fontSize: '18px',
-            fill: '#ffffff'
-        }).setOrigin(0.5).setInteractive();
+        this.musicButton = this.add.text(
+            160,
+            175,
+            `MUSIC: ${isMusicPlaying ? 'ON' : 'OFF'}`,
+            styles.buttonSecondary
+        )
+            .setOrigin(0.5)
+            .setInteractive();
 
-        //this.musicButton.on('pointerdown', this.toggleMusic, this);
+        // this.musicButton.on('pointerdown', this.toggleMusic, this);
     }
 
     toggleMusic() {
@@ -59,44 +111,46 @@ class MenuScene extends Phaser.Scene {
         }
     }
 
-    // A universal function to show the lore screens
+    // --------------------------------------------------
+    // Lore screens
+    // --------------------------------------------------
+
     showLoreScreen(key) {
-        this.children.removeAll();
-        const loreData = this.getLoreText(key);
+        this.clearUI();
+        const styles = this.getStyles();
+        const lore = this.getLoreText(key);
 
-        // Black background, white text for lore
-        this.cameras.main.setBackgroundColor('#000000');
+        this.add.text(160, 40, lore.title, styles.subtitle)
+            .setOrigin(0.5);
 
-        this.add.text(10, 50, loreData.title, { fontSize: '18px', fill: '#ffcc00' });
-        this.add.text(10, 70, loreData.text, { fontSize: '12px', fill: '#ffffff', wordWrap: { width: 310 } });
+        this.add.text(10, 65, lore.text, styles.body);
 
-        const continueButton = this.add.text(160, 190, 'CONTINUAR', {
-            fontSize: '12px',
-            fill: '#00ff00'
-        }).setOrigin(0.5).setInteractive();
+        const continueButton = this.add.text(160, 190, 'CONTINUAR', styles.buttonPrimary)
+            .setOrigin(0.5)
+            .setInteractive();
 
         continueButton.on('pointerdown', () => {
-            // Determine the next action based on the lore key
             switch (key) {
                 case 'LEVEL_1_LORE':
-                    // Stop music for now, maybe restart it in GameScene or keep it playing
-                    // this.music.stop(); 
                     this.scene.start('GameScene', { level: 1 });
                     break;
                 case 'LEVEL_2_LORE':
                     this.scene.start('GameScene', { level: 2 });
                     break;
                 case 'BOSS_LORE':
-                    this.scene.start('GameScene', { level: 3 }); // Boss Fight
+                    this.scene.start('GameScene', { level: 3 });
                     break;
                 case 'GAME_COMPLETED':
-                    this.scene.start('MenuScene'); // Go back to main menu
+                    this.scene.start('MenuScene');
                     break;
             }
         });
     }
 
-    // Dummy function to hold the lore text
+    // --------------------------------------------------
+    // Lore content
+    // --------------------------------------------------
+
     getLoreText(key) {
         const lore = {
             LEVEL_1_LORE: {
@@ -105,24 +159,27 @@ class MenuScene extends Phaser.Scene {
             },
             LEVEL_2_LORE: {
                 title: 'The Data Highway',
-                text: "The Overlord is now aware of your progress and has increased the bandwidth! Data streams are flying by at high speed, requiring both precision jumping and quick duck maneuvers to avoid the corrupted packets. Prepare for a surge of difficulty; only the fastest runners survive the highway."
+                text: "The Overlord is now aware of your progress and has increased the bandwidth! Data streams are flying by at high speed, requiring both precision jumping and quick duck maneuvers to avoid the corrupted packets."
             },
             BOSS_LORE: {
                 title: 'The Server Core: Final Stand',
-                text: "You've reached the central server core, home of the Overlord! He’s firing high-density denial-of-service projectiles. Your only hope is to activate the emergency dynamite controls, which will periodically spawn nearby. Dodge the attacks, activate the charges, and restore the internet to full speed!"
+                text: "You've reached the central server core, home of the Overlord! He’s firing high-density denial-of-service projectiles. Activate the emergency dynamite controls and bring the system down."
             },
             GAME_COMPLETED: {
                 title: 'Victory: The Net is Free!',
-                text: "The Server Overlord's core has been shattered by your dynamite charges! The Slow-Net Protocol is disabled. Bandwidth is restored, and the internet is once again a place of high-speed wonder. You are the hero of the pixelverse. Congratulations, runner!"
+                text: "The Server Overlord's core has been shattered. Bandwidth is restored, the internet is free, and you are now a pixel legend."
             }
         };
+
         return lore[key] || { title: 'Error', text: 'Lore not found.' };
     }
 
-    // Function to be called from GameScene when the player loses
+    // --------------------------------------------------
+    // Game over
+    // --------------------------------------------------
+
     showGameOver() {
-        this.children.removeAll();
-        //   this.cameras.main.setBackgroundColor('#800000'); // Reddish tint for Game Over
+        this.clearUI();
 
         this.add.text(160, 65, 'G A M E   O V E R', {
             fontSize: '30px',
@@ -131,13 +188,12 @@ class MenuScene extends Phaser.Scene {
             strokeThickness: 6
         }).setOrigin(0.5);
 
-        const restartButton = this.add.text(160, 160, 'REINICIAR', {
-            fontSize: '28px',
-            fill: '#ff0000'
-        }).setOrigin(0.5).setInteractive();
+        const restartButton = this.add.text(160, 160, 'REINICIAR', this.getStyles().danger)
+            .setOrigin(0.5)
+            .setInteractive();
 
         restartButton.on('pointerdown', () => {
-            this.scene.start('MenuScene', { showGameOver: false }); // Go back to the main menu
+            this.scene.start('MenuScene', { menuKey: 'MAIN_MENU' });
         });
     }
 }

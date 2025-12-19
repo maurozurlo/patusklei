@@ -138,7 +138,7 @@ class GameScene extends Phaser.Scene {
             this.physics.add.overlap(
                 this.playerManager.player,
                 this.finishLineManager.finishLine,
-                (player, finishLine) => this.finishLineManager.reachFinishLine(player, finishLine),
+                (player, finishLine) => this.finishLineManager.reachFinishLine(player),
                 null,
                 this
             );
@@ -180,7 +180,7 @@ class GameScene extends Phaser.Scene {
         // Add a slight delay so the player sees the "red" tint before switching
         this.time.delayedCall(1000, () => {
             // Start MenuScene and pass a data object
-            this.scene.start('MenuScene', { showGameOver: true });
+            this.scene.start('MenuScene', { menuKey: 'GAME_OVER' });
         });
     }
 
@@ -199,6 +199,6 @@ class GameScene extends Phaser.Scene {
     winGame() {
         this.physics.pause();
         this.scene.stop();
-        this.scene.get('MenuScene').showLoreScreen('GAME_COMPLETED');
+        this.scene.start('MenuScene', { menuKey: 'GAME_COMPLETED' });
     }
 }

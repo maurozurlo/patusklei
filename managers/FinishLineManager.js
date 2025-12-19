@@ -59,7 +59,7 @@ class FinishLineManager {
         }
     }
 
-    reachFinishLine(player, finishLine) {
+    reachFinishLine(player) {
         if (this.scene.isGameOver) return;
 
         console.log('Level Complete!');
@@ -71,19 +71,16 @@ class FinishLineManager {
         // Visual feedback
         player.setTint(0x00ff00); // Green tint for success
 
-        // Progress to next level or show completion
         this.scene.time.delayedCall(1000, () => {
-            this.scene.scene.stop();
-
             if (this.scene.level < 3) {
                 const nextLevel = this.scene.level + 1;
-                let loreKey = nextLevel === 2 ? 'LEVEL_2_LORE' : 'BOSS_LORE';
-                this.scene.scene.get('MenuScene').showLoreScreen(loreKey);
+                const menuKey = nextLevel === 2 ? 'LEVEL_2_LORE' : 'BOSS_LORE';
+                this.scene.scene.start('MenuScene', { menuKey });
             } else {
-                // Beat the final level
-                this.scene.scene.get('MenuScene').showLoreScreen('GAME_COMPLETED');
+                this.scene.scene.start('MenuScene', { menuKey: 'GAME_COMPLETED' });
             }
         });
+
     }
 
     cleanupOffScreen() {
