@@ -1,48 +1,81 @@
 class BackgroundManager {
-    constructor(scene) {
+    constructor(scene, level = 1) {
         this.scene = scene;
+        this.level = level;
         this.bgBuilds = null;
-        this.bgBeach = null;
+        this.bgGround = null; // Renamed for clarity
         this.clouds = [];
         this.waterSprites = [];
+
+        // Level-specific configuration
+        this.config = this.getLevelConfig(level);
+    }
+
+    getLevelConfig(level) {
+        const configs = {
+            1: {
+                skyColor: '#00ffff',
+                groundTexture: 'bg_beach',
+                hasWater: true,
+                buildingsY: 60,
+                groundY: 40
+            },
+            2: {
+                skyColor: '#87ceeb',
+                groundTexture: 'bg_city',
+                hasWater: false,
+                buildingsY: 30,
+                groundY: 0
+            }
+        };
+
+        return configs[level] || configs[1];
     }
 
     preload() {
-        this.scene.load.spritesheet('water_anim', 'assets/images/water_low.png', {
-            frameWidth: 16,
-            frameHeight: 16
-        });
+        // Only load water sprite if needed
+        if (this.config.hasWater) {
+            this.scene.load.spritesheet('water_anim', 'assets/images/water_low.png', {
+                frameWidth: 16,
+                frameHeight: 16
+            });
+        }
     }
 
     setup() {
-        this.scene.cameras.main.setBackgroundColor('#00ffff');
+        this.scene.cameras.main.setBackgroundColor(this.config.skyColor);
 
         // Setup clouds (behind everything)
         this.setupClouds();
 
+        // Setup buildings layer
         this.bgBuilds = this.scene.add.tileSprite(
             0,
-            60,
+            this.config.buildingsY,
             this.scene.scale.width,
             67,
             'bg_builds'
         );
         this.bgBuilds.setOrigin(0, 0);
         this.bgBuilds.setScrollFactor(0);
-        this.bgBuilds.tilePositionY = 0;
+        this.bgBuilds.setDepth(-10);
 
-        this.bgBeach = this.scene.add.tileSprite(
+        // Setup ground layer (beach or city)
+        this.bgGround = this.scene.add.tileSprite(
             0,
-            40,
+            this.config.groundY,
             this.scene.scale.width,
             this.scene.scale.height,
-            'bg_beach'
+            this.config.groundTexture
         );
-        this.bgBeach.setOrigin(0, 0);
-        this.bgBeach.setScrollFactor(0);
+        this.bgGround.setOrigin(0, 0);
+        this.bgGround.setScrollFactor(0);
+        this.bgGround.setDepth(-8);
 
-        // Setup water animation
-        this.setupWater();
+        // Setup water animation only for beach level
+        if (this.config.hasWater) {
+            this.setupWater();
+        }
     }
 
     setupWater() {
@@ -114,7 +147,7 @@ class BackgroundManager {
 
     update(obstacleSpeed) {
         this.bgBuilds.tilePositionX += obstacleSpeed * 0.002;
-        this.bgBeach.tilePositionX += obstacleSpeed * 0.001;
+        this.bgGround.tilePositionX += obstacleSpeed * 0.001;
 
         const screenWidth = this.scene.sys.game.config.width;
 

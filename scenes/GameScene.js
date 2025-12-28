@@ -1,4 +1,4 @@
-const DEBUG_COLLISIONS = false;
+const DEBUG_COLLISIONS = true;
 
 class GameScene extends Phaser.Scene {
     constructor() {
@@ -16,15 +16,20 @@ class GameScene extends Phaser.Scene {
         this.score = 0;
         this.bossHealth = 5;
     }
-
     preload() {
         this.load.image('bg_builds', 'assets/images/bg_builds.png');
         this.load.image('cloud', 'assets/images/cloud.png');
         this.load.image('bg_beach', 'assets/images/bg_beach.png');
+        this.load.image('bg_city', 'assets/images/bg_city.png');
 
+        // OBSTACLES
         this.load.spritesheet('buoy_idle', 'assets/images/buoy_idle.png', {
             frameWidth: 34,
             frameHeight: 62
+        });
+        this.load.spritesheet('taxi_moving', 'assets/images/taxi_moving.png', {
+            frameWidth: 140,
+            frameHeight: 64
         });
 
         this.load.spritesheet('patus_bidet_idle', 'assets/images/patus_bidet_idle.png', {
@@ -47,9 +52,9 @@ class GameScene extends Phaser.Scene {
             frameHeight: 80
         });
 
-        // Preload background elements
+        // Preload background elements with level parameter
         if (!this.backgroundManager) {
-            this.backgroundManager = new BackgroundManager(this);
+            this.backgroundManager = new BackgroundManager(this, this.level);
         }
         this.backgroundManager.preload();
 
@@ -72,9 +77,9 @@ class GameScene extends Phaser.Scene {
         this.obstaclesSpawned = 0;
 
         // Initialize managers
-        this.backgroundManager = new BackgroundManager(this);
+        this.backgroundManager = new BackgroundManager(this, this.level);
         this.playerManager = new PlayerManager(this, GROUND_Y);
-        this.obstacleManager = new ObstacleManager(this, GROUND_Y);
+        this.obstacleManager = new ObstacleManager(this, GROUND_Y, this.level);
         this.coinManager = new CoinManager(this, GROUND_Y);
         this.finishLineManager = new FinishLineManager(this, GROUND_Y);
         this.uiManager = new UIManager(this);
@@ -158,7 +163,7 @@ class GameScene extends Phaser.Scene {
     update() {
         if (this.isGameOver) return;
 
-        this.playerManager.handleInput(this.cursors, this.level);
+        this.playerManager.handleInput(this.cursors);
         this.backgroundManager.update(this.levelManager.obstacleSpeed);
         this.obstacleManager.cleanupOffScreen();
         this.coinManager.cleanupOffScreen();
@@ -169,10 +174,6 @@ class GameScene extends Phaser.Scene {
             this.finishLineManager.spawnFinishLine(this.levelManager.obstacleSpeed);
             this.setupFinishLineCollision();
         }
-
-        // Increment score
-        //this.score += this.level;
-        //this.uiManager.updateScore(this.score);
     }
 
     collectCoin(player, coin) {

@@ -11,7 +11,7 @@ const config = {
         arcade: {
             gravity: { y: 1500 }, // Standard gravity for platformers
 
-            debug: DEBUG_COLLISIONS,
+            debug: true,
             debugShowBody: DEBUG_COLLISIONS,
             debugShowStaticBody: DEBUG_COLLISIONS
         }
