@@ -1,4 +1,4 @@
-const DEBUG_COLLISIONS = true;
+const DEBUG_COLLISIONS = false;
 
 class GameScene extends Phaser.Scene {
     constructor() {
@@ -17,6 +17,18 @@ class GameScene extends Phaser.Scene {
         this.bossHealth = 5;
     }
     preload() {
+
+        // SOUND
+        this.load.audio('sfx_crash', 'assets/audio/sfx_crash.wav');
+        this.load.audio('sfx_end', 'assets/audio/sfx_end.wav');
+        this.load.audio('sfx_gameover', 'assets/audio/sfx_gameover.wav');
+        this.load.audio('sfx_jump', 'assets/audio/sfx_jump.wav');
+        this.load.audio('sfx_pepper', 'assets/audio/sfx_pepper.wav');
+        this.load.audio('sfx_tuna', 'assets/audio/sfx_tuna.wav');
+
+        this.load.audio('bgm_lvl1', 'assets/audio/bgm_lvl1.wav');
+
+        // IMAGES
         this.load.image('bg_builds', 'assets/images/bg_builds.png');
         this.load.image('cloud', 'assets/images/cloud.png');
         this.load.image('bg_beach', 'assets/images/bg_beach.png');
@@ -73,6 +85,17 @@ class GameScene extends Phaser.Scene {
 
     create() {
         const GROUND_Y = 165;
+        // SOUNDS
+        this.sfx = {
+            crash: this.sound.add('sfx_crash'),
+            end: this.sound.add('sfx_end'),
+            gameover: this.sound.add('sfx_gameover'),
+            jump: this.sound.add('sfx_jump'),
+            pepper: this.sound.add('sfx_pepper'),
+            tuna: this.sound.add('sfx_tuna'),
+            lvl1: this.sound.add('bgm_lvl1', { loop: true }),
+        };
+
 
         this.obstaclesSpawned = 0;
 
@@ -187,6 +210,8 @@ class GameScene extends Phaser.Scene {
         this.isGameOver = true;
         this.physics.pause();
         player.setTint(0xff0000);
+
+        this.sfx.crash.play();
 
         // Add a slight delay so the player sees the "red" tint before switching
         this.time.delayedCall(1000, () => {

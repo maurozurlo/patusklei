@@ -22,6 +22,9 @@ class LevelManager {
 
         // Level-specific setup
         this.setupLevelTimers(level);
+
+
+        levelConfig.music.play();
     }
 
     getLevelConfig(level) {
@@ -31,14 +34,16 @@ class LevelManager {
                 speed: 200,
                 maxObstacles: 10,
                 obstacleDelay: 3000,
-                coinDelay: 2500
+                coinDelay: 2500,
+                music: this.scene.sfx.lvl1 // Background music for level 1
             },
             2: {
                 name: 'City Sprint',
                 speed: 300,
                 maxObstacles: 15,
                 obstacleDelay: 2000,
-                coinDelay: 2000
+                coinDelay: 2000,
+                music: this.scene.sfx.lvl1
             },
             3: {
                 name: 'Boss Battle',
@@ -46,7 +51,8 @@ class LevelManager {
                 maxObstacles: 999, // Boss fight doesn't use finish line
                 projectileDelay: 1000,
                 dynamiteDelay: 5000,
-                coinDelay: 3000
+                coinDelay: 3000,
+                music: this.scene.sfx.lvl1
             }
         };
 

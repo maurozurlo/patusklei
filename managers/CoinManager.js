@@ -141,9 +141,13 @@ class CoinManager {
         if (coin.coinType === 'tunacan_coin') {
             this.tunaCansCollected++;
             this.tunaCansConsecutive++;
+            this.scene.sfx.tuna.play()
         } else if (coin.coinType === 'bellpepper_coin') {
             this.bellPeppersCollected++;
+            this.scene.sfx.pepper.play()
         }
+
+
 
         // Visual feedback (optional: add particle effect or animation here)
         coin.destroy();

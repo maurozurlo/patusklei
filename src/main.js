@@ -10,20 +10,37 @@ const config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 1500 }, // Standard gravity for platformers
-
-            debug: true,
+            debug: DEBUG_COLLISIONS,
             debugShowBody: DEBUG_COLLISIONS,
             debugShowStaticBody: DEBUG_COLLISIONS
         }
 
     },
+    antialias: false,
     scene: [
         MenuScene,  // Always load the main menu first
         GameScene
         // Later, you could break GameScene into Level1Scene, Level2Scene, BossScene
-    ]
+    ],
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
+    render: {
+        roundPixels: true
+    }
 };
 
+// FONT
+function loadFont(name, url) {
+    var newFont = new FontFace(name, `url(${url})`);
+    newFont.load().then(function (loaded) {
+        document.fonts.add(loaded);
+    }).catch(function (error) {
+        return error;
+    });
+}
+loadFont('Press Start 2P', 'assets/PressStart2P-Regular.ttf');
 // Initialize the Phaser Game
 const game = new Phaser.Game(config);
 

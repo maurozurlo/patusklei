@@ -333,6 +333,10 @@ h1 {
     transition: transform 0.3s;
 }
 
+.game-card iframe {
+    padding: 24px;
+}
+
 .game-card:hover {
     transform: translateY(-5px);
     border-color: var(--ega-pink);

@@ -151,6 +151,7 @@ class PlayerManager {
         // Jump
         if (cursors.space.isDown && onGround) {
             this.player.setVelocityY(this.config.jumpVelocity);
+            this.scene.sfx.jump.play();
 
             // Trigger splash effect if available
             if (this.splash && this.config.hasSplash) {
