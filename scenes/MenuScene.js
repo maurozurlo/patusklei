@@ -96,23 +96,23 @@ class MenuScene extends Phaser.Scene {
         this.musicButton = this.add.text(
             160,
             175,
-            `MUSIC: ${isMusicPlaying ? 'ON' : 'OFF'}`,
+            `SONIDO: ${isMusicPlaying ? 'SI' : 'NO'}`,
             styles.buttonSecondary
         )
             .setOrigin(0.5)
             .setInteractive();
 
-        // this.musicButton.on('pointerdown', this.toggleMusic, this);
+        this.musicButton.on('pointerdown', this.toggleMusic, this);
     }
 
     toggleMusic() {
         isMusicPlaying = !isMusicPlaying;
-        this.musicButton.setText(`MUSIC: ${isMusicPlaying ? 'ON' : 'OFF'}`);
+        this.musicButton.setText(`SONIDO: ${isMusicPlaying ? 'NO' : 'SI'}`);
 
         if (isMusicPlaying) {
-            this.music.play();
+            this.sound.mute = false;
         } else {
-            this.music.pause();
+            this.sound.mute = true;
         }
     }
 
@@ -163,11 +163,11 @@ class MenuScene extends Phaser.Scene {
                 text: "Apreciado amigo Patus Klei, nacido en agosto de 1907. A los 16 años escuchó el llamado de la tierra de Cle. Construyó su bidet y zarpó. Traga el atún y los morrones. Evita las boyas."
             },
             LEVEL_2_LORE: {
-                title: 'La Mitica Ciudad de Cle',
+                title: 'Ciudad de Cle',
                 text: "Patus Klei ha llegado a la mitica ciudad de Cle. Debe enfrentarse al terrible planeamiento urbano y recorrer sus turbulentas calles."
             },
             BOSS_LORE: {
-                title: 'La Batalla de la Triple Panera',
+                title: 'la Triple Panera',
                 text: "Patus finalmente ha llegado a la guarida del perito ventrilocuista Lars Wampiola. Esquiva los proyectiles, usa la mandarina."
             },
             GAME_COMPLETED: {

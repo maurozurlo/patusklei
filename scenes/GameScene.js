@@ -1,5 +1,3 @@
-const DEBUG_COLLISIONS = false;
-
 class GameScene extends Phaser.Scene {
     constructor() {
         super('GameScene');
@@ -20,7 +18,7 @@ class GameScene extends Phaser.Scene {
 
         // SOUND
         this.load.audio('sfx_crash', 'assets/audio/sfx_crash.wav');
-        this.load.audio('sfx_end', 'assets/audio/sfx_end.wav');
+        this.load.audio('sfx_endlvl1', 'assets/audio/sfx_endlvl1.wav');
         this.load.audio('sfx_gameover', 'assets/audio/sfx_gameover.wav');
         this.load.audio('sfx_jump', 'assets/audio/sfx_jump.wav');
         this.load.audio('sfx_pepper', 'assets/audio/sfx_pepper.wav');
@@ -88,7 +86,7 @@ class GameScene extends Phaser.Scene {
         // SOUNDS
         this.sfx = {
             crash: this.sound.add('sfx_crash'),
-            end: this.sound.add('sfx_end'),
+            endlvl1: this.sound.add('sfx_endlvl1'),
             gameover: this.sound.add('sfx_gameover'),
             jump: this.sound.add('sfx_jump'),
             pepper: this.sound.add('sfx_pepper'),

@@ -18,6 +18,7 @@ class FinishLineManager {
         if (this.isSpawned) return;
 
         this.isSpawned = true;
+        this.scene.sound.play('sfx_endlvl1');
 
         // Stop all spawning timers
         this.stopAllSpawning();

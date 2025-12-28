@@ -1,3 +1,4 @@
+const DEV_MODE = false;
 // Game Configuration
 const config = {
     type: Phaser.AUTO,
@@ -10,9 +11,9 @@ const config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 1500 }, // Standard gravity for platformers
-            debug: DEBUG_COLLISIONS,
-            debugShowBody: DEBUG_COLLISIONS,
-            debugShowStaticBody: DEBUG_COLLISIONS
+            debug: DEV_MODE,
+            debugShowBody: DEV_MODE,
+            debugShowStaticBody: DEV_MODE
         }
 
     },

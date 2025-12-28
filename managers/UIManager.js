@@ -19,6 +19,8 @@ class UIManager {
         // light black shadow, offset by 1px
         this.scoreText.setShadow(2, 2, '#000000', 0, false, false);
 
+        this.scoreText.setDepth(10);
+
         if (level === 3) {
             this.bossHealthText = this.scene.add.text(650, 16, `Boss HP: ${this.scene.bossHealth}`, {
                 fontSize: '20px',
