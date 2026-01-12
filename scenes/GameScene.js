@@ -42,12 +42,16 @@ class GameScene extends Phaser.Scene {
             frameHeight: 64
         });
 
-        this.load.spritesheet('patus_bidet_idle', 'assets/images/patus_bidet_idle.png', {
+        this.load.spritesheet('patus_bidet', 'assets/images/patus_bidet.png', {
             frameWidth: 54,
             frameHeight: 66
         });
 
         this.load.spritesheet('patus_walk', 'assets/images/patus_walk.png', {
+            frameWidth: 55,
+            frameHeight: 76
+        });
+        this.load.spritesheet('patus_crouch', 'assets/images/patus_crouch.png', {
             frameWidth: 55,
             frameHeight: 76
         });
@@ -181,10 +185,12 @@ class GameScene extends Phaser.Scene {
         }
     }
 
+
     update() {
         if (this.isGameOver) return;
 
         this.playerManager.handleInput(this.cursors);
+
         this.backgroundManager.update(this.levelManager.obstacleSpeed);
         this.obstacleManager.cleanupOffScreen();
         this.coinManager.cleanupOffScreen();

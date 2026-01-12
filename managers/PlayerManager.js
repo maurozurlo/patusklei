@@ -14,8 +14,8 @@ class PlayerManager {
     getPlayerConfig(level) {
         const configs = {
             1: {
-                sprite: 'patus_bidet_idle',
-                animation: 'patus_bidet_idle',
+                sprite: 'patus_bidet',
+                animation: 'patus_bidet',
                 hasFoam: true,
                 hasSplash: true,
                 canDuck: false,
@@ -57,14 +57,20 @@ class PlayerManager {
     createAnimations() {
         const animations = [
             {
-                key: 'patus_bidet_idle',
-                spritesheet: 'patus_bidet_idle',
+                key: 'patus_bidet',
+                spritesheet: 'patus_bidet',
                 frames: { start: 0, end: 2 },
                 frameRate: 6
             },
             {
                 key: 'patus_walk',
                 spritesheet: 'patus_walk',
+                frames: { start: 0, end: 7 },
+                frameRate: 8
+            },
+            {
+                key: 'patus_crouch',
+                spritesheet: 'patus_crouch',
                 frames: { start: 0, end: 7 },
                 frameRate: 8
             },
@@ -95,6 +101,14 @@ class PlayerManager {
         });
     }
 
+    updateBodySize(height) {
+        const width = this.config.hitboxWidth;
+        this.player.body.setSize(width, height, false);
+
+        const spriteHeight = this.player.height;
+        this.player.body.setOffset(0, spriteHeight - height);
+    }
+
     createPlayer() {
         this.player = this.scene.physics.add.sprite(
             50,
@@ -112,6 +126,13 @@ class PlayerManager {
         );
         this.player.play(this.config.animation);
         this.player.setDepth(10);
+
+        this.player.isCrouching = false;
+
+        this.player.standHeight = this.config.hitboxHeight;
+        this.player.crouchHeight = this.config.hitboxHeight / 2;
+        this.updateBodySize(this.player.standHeight);
+
     }
 
     createEffects() {
@@ -162,22 +183,34 @@ class PlayerManager {
 
         // Duck (Level 2+)
         if (this.config.canDuck) {
-            if (cursors.down.isDown && onGround) {
-                // Reduce hitbox height when ducking
-                this.player.body.setSize(
-                    this.config.hitboxWidth,
-                    this.config.hitboxHeight / 2,
-                    true
-                );
+
+            if (cursors.down.isDown) {
+
+                if (!this.player.isCrouching && onGround) {
+                    this.player.isCrouching = true;
+
+                    if (this.player.anims.currentAnim?.key !== 'patus_crouch') {
+                        this.player.play('patus_crouch');
+                    }
+                    this.updateBodySize(this.player.crouchHeight);
+                }
+
             } else {
-                // Restore full hitbox
-                this.player.body.setSize(
-                    this.config.hitboxWidth,
-                    this.config.hitboxHeight,
-                    true
-                );
+
+                if (this.player.isCrouching) {
+                    this.player.isCrouching = false;
+
+                    if (this.player.anims.currentAnim?.key !== 'patus_walk') {
+                        this.player.play('patus_walk');
+                    }
+
+
+                    this.updateBodySize(this.player.standHeight);
+                }
             }
         }
+
+
 
         // Update foam visibility (follows player on ground)
         if (this.foam) {
