@@ -137,7 +137,7 @@ class MenuScene extends Phaser.Scene {
         continueButton.on('pointerdown', () => {
             switch (key) {
                 case 'LEVEL_1_LORE':
-                    this.scene.start('GameScene', { level: 2 });
+                    this.scene.start('GameScene', { level: 1 });
                     break;
                 case 'LEVEL_2_LORE':
                     this.scene.start('GameScene', { level: 2 });
