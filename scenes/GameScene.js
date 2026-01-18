@@ -51,6 +51,10 @@ class GameScene extends Phaser.Scene {
             frameWidth: 55,
             frameHeight: 76
         });
+        this.load.spritesheet('patus_jump', 'assets/images/patus_jump.png', {
+            frameWidth: 59,
+            frameHeight: 76
+        });
         this.load.spritesheet('patus_crouch', 'assets/images/patus_crouch.png', {
             frameWidth: 55,
             frameHeight: 76
@@ -86,7 +90,7 @@ class GameScene extends Phaser.Scene {
     }
 
     create() {
-        const GROUND_Y = 165;
+        const GROUND_Y = 185;
         // SOUNDS
         this.sfx = {
             crash: this.sound.add('sfx_crash'),

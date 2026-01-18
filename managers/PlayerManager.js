@@ -29,7 +29,7 @@ class PlayerManager {
                 hasFoam: false,
                 hasSplash: false,
                 canDuck: true,
-                jumpVelocity: -650,
+                jumpVelocity: -550,
                 hitboxWidth: 18,
                 hitboxHeight: 40
             },
@@ -73,6 +73,12 @@ class PlayerManager {
                 spritesheet: 'patus_crouch',
                 frames: { start: 0, end: 7 },
                 frameRate: 8
+            },
+            {
+                key: 'patus_jump',
+                spritesheet: 'patus_jump',
+                frames: { start: 0, end: 0 }, // Single frame
+                frameRate: 1
             },
             {
                 key: 'bidet_foam',
@@ -174,6 +180,11 @@ class PlayerManager {
             this.player.setVelocityY(this.config.jumpVelocity);
             this.scene.sfx.jump.play();
 
+            // Play jump animation
+            if (this.player.anims.currentAnim?.key !== 'patus_jump') {
+                this.player.play('patus_jump');
+            }
+
             // Trigger splash effect if available
             if (this.splash && this.config.hasSplash) {
                 this.splash.setVisible(true);
@@ -210,6 +221,30 @@ class PlayerManager {
             }
         }
 
+        // Return to appropriate animation when landing
+        if (onGround && !cursors.space.isDown) {
+            if (this.config.canDuck && cursors.down.isDown) {
+                // Duck logic (existing code)
+                if (!this.player.isCrouching) {
+                    this.player.isCrouching = true;
+                    if (this.player.anims.currentAnim?.key !== 'patus_crouch') {
+                        this.player.play('patus_crouch');
+                    }
+                    this.updateBodySize(this.player.crouchHeight);
+                }
+            } else {
+                // Return to walk/bidet animation
+                if (this.player.isCrouching) {
+                    this.player.isCrouching = false;
+                    this.updateBodySize(this.player.standHeight);
+                }
+
+                const targetAnim = this.config.animation;
+                if (this.player.anims.currentAnim?.key !== targetAnim) {
+                    this.player.play(targetAnim);
+                }
+            }
+        }
 
 
         // Update foam visibility (follows player on ground)

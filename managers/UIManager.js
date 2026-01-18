@@ -6,7 +6,7 @@ class UIManager {
     }
 
     setup(level) {
-        this.scoreText = this.scene.add.text(16, 16, '000000', {
+        this.scoreText = this.scene.add.text(320 - 16 - (12 * 6), 16, '000000', {
             fontFamily: '"Press Start 2P"',
             fontSize: '12px',
             color: '#ffffff',
