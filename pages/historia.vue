@@ -28,7 +28,7 @@
 En el caso de nuestro querido Patus Klei, principalmente entre los muchos seguidores, enfermos, devotos, esclavos, enemigos, aduladores y detractores, encontramos variopintos grupos e individuos que intentaron, por un lado, continuar las enseñanzas Patales tratando de ser lo más fieles posible a su palabra, así como también por el otro, los que osaron en reescribir la historia a través de un revisionismo calumniador, infundado y mal intencionado, no solo atacando el menester de nuestro Santo del Bidet, sino también, se han encargado de tergiversar la integridad y honor de Rodolfa Muschi Klei, y como si esto fuera poco, faltarle el respeto a doña Luisana Anna Müschi Plâtze Klei; como es sabido, estos confluyen en dos de los mayores pecados e insultos posibles referidos hacia la investidura Patal-Klecal (si te metes con Rodolfa te metes conmigo, la κόλπος de tu μητέρα).
   </p>
 
-  <p>He aquí un listado descriptivo de algunos de los aformencionados organismos operantes:/p>
+  <p>He aquí un listado descriptivo de algunos de los aformencionados organismos operantes:</p>
   <h4 class="codex-item-title">1. Ordis Fraternis Patusmalis (.:.O.:.F.:.P.:.)</h4>
   <p class="story-text">
     Escuela de sabiduría y orden de talabartería psíquica, oriunda de las afueras del conurbano profundo Belga. Tomando como base su cosmovisión dualista antinómica no euclidiana, realizó diferentes investigaciones sobre el origen del plano plasmático original oculto bajo la Tierra de Klek, así como también intentaron descifrar el significado de uno de los mayores misterios de nuestra existencia...la mítica e indescriptible "Visión del Bidet Verde" (también conocida como "La Viçón du Le Porè Nevad").
