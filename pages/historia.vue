@@ -71,7 +71,7 @@ Su gurú, poeta maldito, nepotista, e hijo bastardo, conocido coloquialmente por
 .subtitle {
   margin-top: 50px;
   font-family: serif; /* Le da un toque más "códice" */
-  border-bottom: 2px solid #333;
+  border-bottom: 2px solid var(--ega-yellow);
   padding-bottom: 10px;
 }
 
@@ -82,8 +82,8 @@ Su gurú, poeta maldito, nepotista, e hijo bastardo, conocido coloquialmente por
 }
 
 .codex-box {
-  background-color: #f9f7f2; /* Color pergamino */
-  border: 1px solid #dcdcdc;
+  background-color: var(--ega-brown); /* Color pergamino */
+  border: 1px solid var(--ega-magenta);
   padding: 25px;
   border-radius: 4px;
 }  
