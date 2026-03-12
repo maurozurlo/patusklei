@@ -9,10 +9,27 @@
 </head>
 
 <body>
-    <button class="lang-toggle" onclick="toggleLanguage()">ES / EN</button>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-container">
+            <div class="navbar-logo">PATUS KLEI</div>
+            <button class="navbar-toggle" onclick="toggleMobileMenu()" aria-label="Toggle navigation">
+                <span class="navbar-toggle-bar"></span>
+                <span class="navbar-toggle-bar"></span>
+                <span class="navbar-toggle-bar"></span>
+            </button>
+            <ul class="navbar-menu">
+                <li><a href="#hero" data-en="Home">Inicio</a></li>
+                <li><a href="#story-section" data-en="Story">Historia</a></li>
+                <li><a href="#games-section" data-en="Mission">Mision</a></li>
+                <li><a href="#credits-section" data-en="Credits">Credito</a></li>
+                <li><button class="lang-toggle-nav" onclick="toggleLanguage()">ES / EN</button></li>
+            </ul>
+        </div>
+    </nav>
 
     <!-- Hero Section -->
-    <section class="hero">
+    <section class="hero" id="hero">
 
         <div class="text-overlay">
             <div class="diagonal-text">PATUS KLEI PATUS KLEI PATUS KLEI PATUS KLEI PATUS KLEI PATUS KLEI PATUS KLEI
@@ -66,7 +83,7 @@
     </section>
 
     <!-- Story Section -->
-    <section class="story-section">
+    <section class="story-section" id="story-section">
         <div class="story-container">
             <div class="story-box">
                 <p class="story-text" data-en="
@@ -115,7 +132,7 @@ He passed away in 2007 after tripping while washing his hair in the kitchen sink
     </section>
 
     <!-- Mini Games Section -->
-    <section class="games-section">
+    <section class="games-section" id="games-section">
         <h2 class="section-title" data-en="⚡ INTERACTIVE GAME ⚡">⚡ JUEGO
             INTERACTIVO ⚡</h2>
         <div class="games-grid">
@@ -148,7 +165,7 @@ He passed away in 2007 after tripping while washing his hair in the kitchen sink
     </section>
 
     <!-- Credits Section -->
-    <section class="credits-section">
+    <section class="credits-section" id="credits-section">
         <h2 class="section-title" data-en="CREDITS SUMMARY">RESUMEN CREDITICIO</h2>
         <div class="credits-grid">
             <div class="credit-card">
@@ -227,6 +244,30 @@ He passed away in 2007 after tripping while washing his hair in the kitchen sink
 
         updateCountdown();
         setInterval(updateCountdown, 1000);
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navbar = document.querySelector('.navbar');
+            navbar.classList.toggle('active');
+        }
+
+        // Close mobile menu when clicking a link
+        document.querySelectorAll('.navbar-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('.navbar').classList.remove('active');
+            });
+        });
+
+        // Smooth scroll behavior
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
     </script>
 </body>
 
