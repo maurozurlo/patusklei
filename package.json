@@ -1,10 +1,16 @@
 {
   "name": "patusklei",
   "version": "1.0.0",
+  "type": "module",
+  "private": true,
   "scripts": {
-    "dev": "live-server --port=3000"
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "preview": "nuxt preview",
+    "generate": "nuxt generate"
   },
-    "dependencies": {
-    "live-server": "^1.2.2"
+  "dependencies": {
+    "nuxt": "^4.4.2",
+    "vue": "^3.5.0"
   }
 }
