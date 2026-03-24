@@ -1,42 +1,42 @@
 import process from 'node:process';globalThis._importMeta_={url:import.meta.url,env:process.env};import { tmpdir } from 'node:os';
-import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, createError, getQuery as getQuery$1, readBody, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, getResponseStatusText } from 'file:///home/project/node_modules/h3/dist/index.mjs';
 import { Server } from 'node:http';
 import { resolve, dirname, join } from 'node:path';
 import nodeCrypto from 'node:crypto';
 import { parentPort, threadId } from 'node:worker_threads';
-import { escapeHtml } from 'file:///home/project/node_modules/@vue/shared/dist/shared.cjs.js';
-import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'file:///home/project/node_modules/vue-bundle-renderer/dist/runtime.mjs';
-import { parseURL, withoutBase, joinURL, getQuery, withQuery, withTrailingSlash, decodePath, withLeadingSlash, withoutTrailingSlash, joinRelativeURL } from 'file:///home/project/node_modules/ufo/dist/index.mjs';
-import destr, { destr as destr$1 } from 'file:///home/project/node_modules/destr/dist/index.mjs';
-import { createHooks } from 'file:///home/project/node_modules/nitropack/node_modules/hookable/dist/index.mjs';
-import { createFetch, Headers as Headers$1 } from 'file:///home/project/node_modules/ofetch/dist/node.mjs';
-import { fetchNodeRequestHandler, callNodeRequestHandler } from 'file:///home/project/node_modules/node-mock-http/dist/index.mjs';
-import { createStorage, prefixStorage } from 'file:///home/project/node_modules/unstorage/dist/index.mjs';
-import unstorage_47drivers_47fs from 'file:///home/project/node_modules/unstorage/drivers/fs.mjs';
-import { digest } from 'file:///home/project/node_modules/ohash/dist/index.mjs';
-import { klona } from 'file:///home/project/node_modules/klona/dist/index.mjs';
-import defu, { defuFn } from 'file:///home/project/node_modules/defu/dist/defu.mjs';
-import { snakeCase } from 'file:///home/project/node_modules/scule/dist/index.mjs';
-import { getContext } from 'file:///home/project/node_modules/unctx/dist/index.mjs';
-import { toRouteMatcher, createRouter } from 'file:///home/project/node_modules/radix3/dist/index.mjs';
+import { defineEventHandler, handleCacheHeaders, splitCookiesString, createEvent, fetchWithEvent, isEvent, eventHandler, setHeaders, sendRedirect, proxyRequest, getRequestHeader, setResponseHeaders, setResponseStatus, send, getRequestHeaders, setResponseHeader, appendResponseHeader, getRequestURL, getResponseHeader, removeResponseHeader, createError, getQuery as getQuery$1, readBody, createApp, createRouter as createRouter$1, toNodeListener, lazyEventHandler, getResponseStatus, getRouterParam, getResponseStatusText } from 'file://E:/webdev/patusklei/node_modules/h3/dist/index.mjs';
+import { escapeHtml } from 'file://E:/webdev/patusklei/node_modules/@vue/shared/dist/shared.cjs.js';
+import { createRenderer, getRequestDependencies, getPreloadLinks, getPrefetchLinks } from 'file://E:/webdev/patusklei/node_modules/vue-bundle-renderer/dist/runtime.mjs';
+import { parseURL, withoutBase, joinURL, getQuery, withQuery, withTrailingSlash, decodePath, withLeadingSlash, withoutTrailingSlash, joinRelativeURL } from 'file://E:/webdev/patusklei/node_modules/ufo/dist/index.mjs';
+import destr, { destr as destr$1 } from 'file://E:/webdev/patusklei/node_modules/destr/dist/index.mjs';
+import { renderToString } from 'file://E:/webdev/patusklei/node_modules/vue/server-renderer/index.mjs';
+import { klona } from 'file://E:/webdev/patusklei/node_modules/klona/dist/index.mjs';
+import defu, { defuFn } from 'file://E:/webdev/patusklei/node_modules/defu/dist/defu.mjs';
+import { snakeCase } from 'file://E:/webdev/patusklei/node_modules/scule/dist/index.mjs';
+import { createHead as createHead$1, propsToString, renderSSRHead } from 'file://E:/webdev/patusklei/node_modules/unhead/dist/server.mjs';
+import { stringify, uneval } from 'file://E:/webdev/patusklei/node_modules/devalue/index.js';
+import { isVNode, isRef, toValue } from 'file://E:/webdev/patusklei/node_modules/vue/index.mjs';
+import { createHooks } from 'file://E:/webdev/patusklei/node_modules/nitropack/node_modules/hookable/dist/index.mjs';
+import { createFetch, Headers as Headers$1 } from 'file://E:/webdev/patusklei/node_modules/ofetch/dist/node.mjs';
+import { fetchNodeRequestHandler, callNodeRequestHandler } from 'file://E:/webdev/patusklei/node_modules/node-mock-http/dist/index.mjs';
+import { createStorage, prefixStorage } from 'file://E:/webdev/patusklei/node_modules/unstorage/dist/index.mjs';
+import unstorage_47drivers_47fs from 'file://E:/webdev/patusklei/node_modules/unstorage/drivers/fs.mjs';
+import { digest } from 'file://E:/webdev/patusklei/node_modules/ohash/dist/index.mjs';
+import { toRouteMatcher, createRouter } from 'file://E:/webdev/patusklei/node_modules/radix3/dist/index.mjs';
 import { readFile } from 'node:fs/promises';
-import consola, { consola as consola$1 } from 'file:///home/project/node_modules/consola/dist/index.mjs';
-import { ErrorParser } from 'file:///home/project/node_modules/youch-core/build/index.js';
-import { Youch } from 'file:///home/project/node_modules/youch/build/index.js';
-import { SourceMapConsumer } from 'file:///home/project/node_modules/source-map/source-map.js';
+import consola, { consola as consola$1 } from 'file://E:/webdev/patusklei/node_modules/consola/dist/index.mjs';
+import { ErrorParser } from 'file://E:/webdev/patusklei/node_modules/youch-core/build/index.js';
+import { Youch } from 'file://E:/webdev/patusklei/node_modules/youch/build/index.js';
+import { SourceMapConsumer } from 'file://E:/webdev/patusklei/node_modules/source-map/source-map.js';
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { stringify, uneval } from 'file:///home/project/node_modules/devalue/index.js';
-import { captureRawStackTrace, parseRawStackTrace } from 'file:///home/project/node_modules/errx/dist/index.js';
-import { isVNode, isRef, toValue } from 'file:///home/project/node_modules/vue/index.mjs';
-import _wH6JrtIxmaSoA8lCPWFnE9z4lQeXW6H5z3l5aymEQw from 'file:///home/project/node_modules/@nuxt/vite-builder/dist/fix-stacktrace.mjs';
+import { getContext } from 'file://E:/webdev/patusklei/node_modules/unctx/dist/index.mjs';
+import { captureRawStackTrace, parseRawStackTrace } from 'file://E:/webdev/patusklei/node_modules/errx/dist/index.js';
+import _wH6JrtIxmaSoA8lCPWFnE9z4lQeXW6H5z3l5aymEQw from 'file://E:/webdev/patusklei/node_modules/@nuxt/vite-builder/dist/fix-stacktrace.mjs';
 import { promises } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dirname as dirname$1, resolve as resolve$1 } from 'file:///home/project/node_modules/pathe/dist/index.mjs';
-import { createHead as createHead$1, propsToString, renderSSRHead } from 'file:///home/project/node_modules/unhead/dist/server.mjs';
-import { renderToString } from 'file:///home/project/node_modules/vue/server-renderer/index.mjs';
-import { walkResolver } from 'file:///home/project/node_modules/unhead/dist/utils.mjs';
+import { dirname as dirname$1, resolve as resolve$1 } from 'file://E:/webdev/patusklei/node_modules/pathe/dist/index.mjs';
+import { walkResolver } from 'file://E:/webdev/patusklei/node_modules/unhead/dist/utils.mjs';
 
-const serverAssets = [{"baseName":"server","dir":"/home/project/server/assets"}];
+const serverAssets = [{"baseName":"server","dir":"E:/webdev/patusklei/server/assets"}];
 
 const assets$1 = createStorage();
 
@@ -48,11 +48,11 @@ const storage = createStorage({});
 
 storage.mount('/assets', assets$1);
 
-storage.mount('root', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"/home/project","watchOptions":{"ignored":[null]}}));
-storage.mount('src', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"/home/project/server","watchOptions":{"ignored":[null]}}));
-storage.mount('build', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"/home/project/.nuxt"}));
-storage.mount('cache', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"/home/project/.nuxt/cache"}));
-storage.mount('data', unstorage_47drivers_47fs({"driver":"fs","base":"/home/project/.data/kv"}));
+storage.mount('root', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"E:/webdev/patusklei","watchOptions":{"ignored":[null]}}));
+storage.mount('src', unstorage_47drivers_47fs({"driver":"fs","readOnly":true,"base":"E:/webdev/patusklei/server","watchOptions":{"ignored":[null]}}));
+storage.mount('build', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"E:/webdev/patusklei/.nuxt"}));
+storage.mount('cache', unstorage_47drivers_47fs({"driver":"fs","readOnly":false,"base":"E:/webdev/patusklei/.nuxt/cache"}));
+storage.mount('data', unstorage_47drivers_47fs({"driver":"fs","base":"E:/webdev/patusklei/.data/kv"}));
 
 function useStorage(base = "") {
   return base ? prefixStorage(storage, base) : storage;
@@ -691,11 +691,6 @@ new Proxy(/* @__PURE__ */ Object.create(null), {
     }
     return void 0;
   }
-});
-
-getContext("nitro-app", {
-  asyncContext: false,
-  AsyncLocalStorage: void 0
 });
 
 const config = useRuntimeConfig();
@@ -2025,13 +2020,13 @@ if (!window.__NUXT_DEVTOOLS_TIME_METRIC__) {
 window.__NUXT_DEVTOOLS_TIME_METRIC__.appInit = Date.now()
 `;
 
-const _gxLBPfSKsdxVhKHoXUzD83acLMdvfgCHjO8BEX4srNk = (function(nitro) {
+const _JYGsb0ktVAfhyOD6VDWpXkAh021YnSXDwDclNzhZRhg = (function(nitro) {
   nitro.hooks.hook("render:html", (htmlContext) => {
     htmlContext.head.push(`<script>${script}<\/script>`);
   });
 });
 
-const rootDir = "/home/project";
+const rootDir = "E:/webdev/patusklei";
 
 const appHead = {"meta":[{"name":"viewport","content":"width=device-width, initial-scale=1"},{"charset":"utf-8"},{"name":"description","content":"La Vida de Patus Klei - The Life of Patus Klei"}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"}],"style":[],"script":[],"noscript":[],"charset":"utf-8","viewport":"width=device-width, initial-scale=1","title":"Patus Klei"};
 
@@ -2060,7 +2055,7 @@ const asyncContext = getContext("nuxt-dev", {
 	asyncContext: true,
 	AsyncLocalStorage
 });
-const _HV2FfCHKEAgfE_h3jhipIPnk6ukj40AVWQuxP6pG1Ec = (nitroApp) => {
+const _bqK24LBTTElsS3zkVoTIc2dn1Hqulo4fuDRHEFcCQ = (nitroApp) => {
 	const handler = nitroApp.h3App.handler;
 	nitroApp.h3App.handler = (event) => {
 		return asyncContext.callAsync({
@@ -2134,8 +2129,8 @@ function onConsoleLog(callback) {
 }
 
 const plugins = [
-  _gxLBPfSKsdxVhKHoXUzD83acLMdvfgCHjO8BEX4srNk,
-_HV2FfCHKEAgfE_h3jhipIPnk6ukj40AVWQuxP6pG1Ec,
+  _JYGsb0ktVAfhyOD6VDWpXkAh021YnSXDwDclNzhZRhg,
+_bqK24LBTTElsS3zkVoTIc2dn1Hqulo4fuDRHEFcCQ,
 _wH6JrtIxmaSoA8lCPWFnE9z4lQeXW6H5z3l5aymEQw
 ];
 
@@ -2164,7 +2159,7 @@ function getAsset (id) {
 
 const METHODS = /* @__PURE__ */ new Set(["HEAD", "GET"]);
 const EncodingMap = { gzip: ".gz", br: ".br" };
-const _CsXF6C = eventHandler((event) => {
+const _7g5v1J = eventHandler((event) => {
   if (event.method && !METHODS.has(event.method)) {
     return;
   }
@@ -2305,9 +2300,9 @@ function publicAssetsURL(...path) {
 const APP_ROOT_OPEN_TAG = `<${appRootTag}${propsToString(appRootAttrs)}>`;
 const APP_ROOT_CLOSE_TAG = `</${appRootTag}>`;
 // @ts-expect-error file will be produced after app build
-const getServerEntry = () => import('file:///home/project/.nuxt//dist/server/server.mjs').then((r) => r.default || r);
+const getServerEntry = () => import('file://E:/webdev/patusklei/.nuxt//dist/server/server.mjs').then((r) => r.default || r);
 // @ts-expect-error file will be produced after app build
-const getClientManifest = () => import('file:///home/project/.nuxt//dist/server/client.manifest.mjs').then((r) => r.default || r).then((r) => typeof r === "function" ? r() : r);
+const getClientManifest = () => import('file://E:/webdev/patusklei/.nuxt//dist/server/client.manifest.mjs').then((r) => r.default || r).then((r) => typeof r === "function" ? r() : r);
 // -- SSR Renderer --
 const getSSRRenderer = lazyCachedFunction(async () => {
 	// Load server bundle
@@ -2599,13 +2594,13 @@ async function getIslandContext(event) {
 	};
 }
 
-const _lazy_tFbwAr = () => Promise.resolve().then(function () { return renderer; });
+const _lazy_JI91Oo = () => Promise.resolve().then(function () { return renderer; });
 
 const handlers = [
-  { route: '', handler: _CsXF6C, lazy: false, middleware: true, method: undefined },
-  { route: '/__nuxt_error', handler: _lazy_tFbwAr, lazy: true, middleware: false, method: undefined },
+  { route: '', handler: _7g5v1J, lazy: false, middleware: true, method: undefined },
+  { route: '/__nuxt_error', handler: _lazy_JI91Oo, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: handler$1, lazy: false, middleware: false, method: undefined },
-  { route: '/**', handler: _lazy_tFbwAr, lazy: true, middleware: false, method: undefined }
+  { route: '/**', handler: _lazy_JI91Oo, lazy: true, middleware: false, method: undefined }
 ];
 
 function createNitroApp() {

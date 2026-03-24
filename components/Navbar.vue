@@ -16,7 +16,7 @@
         <li><NuxtLink to="/historia" @click="closeMobileMenu">{{ t('historia') }}</NuxtLink></li>
         <li><NuxtLink to="/mision" @click="closeMobileMenu">{{ t('mision') }}</NuxtLink></li>
         <li><NuxtLink to="/credito" @click="closeMobileMenu">{{ t('credito') }}</NuxtLink></li>
-        <li><button class="lang-toggle-nav" @click="toggleLanguage">{{ langText }}</button></li>
+       <!-- <li><button class="lang-toggle-nav" @click="toggleLanguage">{{ langText }}</button></li>-->
       </ul>
     </div>
   </nav>

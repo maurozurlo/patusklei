@@ -4,7 +4,7 @@
     <section class="music-section" id="music-section">
       <h2 class="section-title">ESCUCHE EL DISCO</h2>
       <div class="music-player">
-        <p style="margin-bottom: 20px; color: var(--ega-teal);">Disponible en Bandcamp EL 25 DEL 12 DE 2025</p>
+        <p style="margin-bottom: 20px; color: var(--ega-teal);">Disponible en Bandcamp EL 25 DEL 04 DE 2026</p>
         <div>
           <h2 id="countdown-container" style="color: var(--ega-orange);">
             <span id="countdown"></span>
@@ -16,8 +16,10 @@
 </template>
 
 <script setup lang="ts">
+import { onMounted } from 'vue'
+
 onMounted(() => {
-  const target = new Date('2025-12-25T00:00:00').getTime()
+  const target = new Date('2026-04-25T00:00:00').getTime()
 
   function updateCountdown() {
     const now = new Date().getTime()

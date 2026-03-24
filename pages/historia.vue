@@ -17,9 +17,9 @@
           </p>
         </div>
 
-        <h3 class="subtitle">Crónicas y Controversias del Códice XXIII</h3>
+        <h2 class="section-title">Crónicas y Controversias del Códice XXIII</h2>
 <div class="story-box codex-box">
-  <p class="story-text">
+  <p class="story-text quote">
     <em>Fragmento encontrado en el códice XXIII "Contra Detractis Patus Boletus" del alquimista, detective e historiador proto-gallego Josefo Bachero y Roncá (también conocido como Hyeronimous Bach-Roncaglius, Girolamo da Baccio Roncagatti o Jasper Offenbakken "El Ronco").</em>
   </p>
 
@@ -64,8 +64,36 @@ Su gurú, poeta maldito, nepotista, e hijo bastardo, conocido coloquialmente por
 @import '~/assets/css/pages.css';
 
 .story-section {
-  min-height: 100vh;
+  background: var(--ega-darkblue);
+  padding: 80px 20px;
+    min-height: 100vh;
   padding-top: 100px;
+}
+
+.story-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.story-box {
+  background: var(--ega-black);
+  border: 4px solid var(--ega-teal);
+  padding: 30px;
+  position: relative;
+  box-shadow: 0 0 30px rgba(0, 255, 170, 0.4);
+  margin-bottom: 2rem;
+}
+
+.story-text {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--ega-lightgreen);
+  margin-bottom: 1rem;
+}
+
+.story-text .highlight {
+  color: var(--ega-orange);
+  font-weight: bold;
 }
 
 .subtitle {
@@ -76,15 +104,19 @@ Su gurú, poeta maldito, nepotista, e hijo bastardo, conocido coloquialmente por
 }
 
 .codex-item-title {
-  color: #d4af37; /* Un tono dorado envejecido */
+  color: var(--ega-orange); /* Un tono dorado envejecido */
   margin-top: 25px;
   margin-bottom: 10px;
 }
 
 .codex-box {
-  background-color: var(--ega-brown); /* Color pergamino */
-  border: 1px solid var(--ega-magenta);
-  padding: 25px;
-  border-radius: 4px;
-}  
+  border: 4px solid var(--ega-yellow);
+}
+
+.quote{
+  background-color: var(--ega-yellow);
+  color: var(--ega-darkblue);
+  padding: 16px;
+  border-left: 4px solid var(--ega-orange);
+}
 </style>
