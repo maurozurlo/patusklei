@@ -137,10 +137,7 @@ h1 {
     box-shadow: 4px 4px 0 var(--ega-darkmagenta), 0 0 20px rgba(255, 85, 255, 0.6);
 }
 
-.games-section {
-    background: var(--ega-darkgray);
-    padding: 80px 20px;
-}
+
 
 .section-title {
     text-align: center;
@@ -148,48 +145,6 @@ h1 {
     color: var(--ega-orange);
     margin-bottom: 40px;
     text-shadow: 2px 2px 0 var(--ega-black), 0 0 20px rgba(255, 136, 0, 0.6);
-}
-
-.games-grid {
-    max-width: 1000px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-}
-
-.game-card {
-    background: var(--ega-black);
-    border: 4px solid var(--ega-purple);
-    padding: 20px;
-    text-align: center;
-    transition: transform 0.3s;
-}
-
-.game-card iframe {
-    padding: 24px;
-}
-
-.game-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--ega-pink);
-    box-shadow: 0 0 30px rgba(255, 170, 255, 0.4);
-}
-
-.game-title {
-    font-size: 24px;
-    color: var(--ega-orange);
-    margin-bottom: 10px;
-}
-
-.game-desc {
-    color: var(--ega-lightgray);
-    font-size: 14px;
-}
-
-.music-section {
-    background: var(--ega-darkmagenta);
-    padding: 80px 20px;
 }
 
 .music-player {

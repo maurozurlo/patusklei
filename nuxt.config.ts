@@ -28,4 +28,20 @@ export default defineNuxtConfig({
       ],
     },
   },
+  nitro: {
+    routeRules: {
+      '/game.html': {
+        headers: {
+          'x-frame-options': 'SAMEORIGIN',
+          'content-security-policy': "frame-ancestors 'self'",
+        },
+      },
+      '/': {
+        headers: {
+          'x-frame-options': 'SAMEORIGIN',
+          'content-security-policy': "frame-ancestors 'self'",
+        },
+      },
+    },
+  },
 })

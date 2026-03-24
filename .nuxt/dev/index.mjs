@@ -635,6 +635,18 @@ const _inlineRuntimeConfig = {
       "/__nuxt_error": {
         "cache": false
       },
+      "/game.html": {
+        "headers": {
+          "x-frame-options": "SAMEORIGIN",
+          "content-security-policy": "frame-ancestors 'self'"
+        }
+      },
+      "/": {
+        "headers": {
+          "x-frame-options": "SAMEORIGIN",
+          "content-security-policy": "frame-ancestors 'self'"
+        }
+      },
       "/_nuxt/builds/meta/**": {
         "headers": {
           "cache-control": "public, max-age=31536000, immutable"
@@ -2223,13 +2235,6 @@ const _7g5v1J = eventHandler((event) => {
   return readAsset(id);
 });
 
-const _54ikFO = defineEventHandler((event) => {
-  if (event.path.startsWith("/game.html")) {
-    setResponseHeader(event, "X-Frame-Options", "SAMEORIGIN");
-    setResponseHeader(event, "Content-Security-Policy", "frame-ancestors 'self'");
-  }
-});
-
 const VueResolver = (_, value) => {
   return isRef(value) ? toValue(value) : value;
 };
@@ -2605,7 +2610,6 @@ const _lazy_JI91Oo = () => Promise.resolve().then(function () { return renderer;
 
 const handlers = [
   { route: '', handler: _7g5v1J, lazy: false, middleware: true, method: undefined },
-  { route: '', handler: _54ikFO, lazy: false, middleware: true, method: undefined },
   { route: '/__nuxt_error', handler: _lazy_JI91Oo, lazy: true, middleware: false, method: undefined },
   { route: '/__nuxt_island/**', handler: handler$1, lazy: false, middleware: false, method: undefined },
   { route: '/**', handler: _lazy_JI91Oo, lazy: true, middleware: false, method: undefined }
