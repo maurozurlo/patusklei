@@ -1,0 +1,69 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --ega-black: #000000;
+    --ega-blue: #0000AA;
+    --ega-green: #00AA00;
+    --ega-cyan: #00AAAA;
+    --ega-red: #AA0000;
+    --ega-magenta: #AA00AA;
+    --ega-brown: #AA5500;
+    --ega-lightgray: #AAAAAA;
+    --ega-darkgray: #555555;
+    --ega-lightblue: #5555FF;
+    --ega-lightgreen: #55FF55;
+    --ega-lightcyan: #55FFFF;
+    --ega-lightred: #FF5555;
+    --ega-lightmagenta: #FF55FF;
+    --ega-yellow: #FFFF55;
+    --ega-white: #FFFFFF;
+    --ega-darkblue: #00005F;
+    --ega-darkgreen: #005F00;
+    --ega-darkcyan: #005F5F;
+    --ega-darkred: #5F0000;
+    --ega-darkmagenta: #5F005F;
+    --ega-orange: #FF8800;
+    --ega-pink: #FFAAFF;
+    --ega-teal: #00FFAA;
+    --ega-purple: #8800FF;
+}
+
+@font-face {
+    font-family: 'DropCaps';
+    src: url('/AnnStone.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 70px;
+}
+
+body {
+    background: var(--ega-darkcyan);
+    font-family: 'Courier New', monospace;
+    color: var(--ega-white);
+    overflow-x: hidden;
+    padding-top: 60px;
+}
+
+/* Page Transitions */
+.page-enter-active,
+.page-leave-active {
+    transition: all 0.3s ease-out;
+}
+
+.page-enter-from {
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.page-leave-to {
+    opacity: 0;
+    transform: translateY(-20px);
+}

@@ -50,7 +50,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
-@import '~/assets/css/pages.css';
+@import '~/css/pages.css';
 
 .music-section {
   min-height: 100vh;

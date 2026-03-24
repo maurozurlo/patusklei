@@ -18,7 +18,7 @@
 </script>
 
 <style scoped>
-@import '~/assets/css/pages.css';
+@import '~/css/pages.css';
 
 .games-section {
   min-height: 100vh;

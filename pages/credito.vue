@@ -25,7 +25,7 @@
 </script>
 
 <style scoped>
-@import '~/assets/css/pages.css';
+@import '~/css/pages.css';
 
 .credits-section {
   min-height: 100vh;

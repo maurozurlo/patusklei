@@ -11,7 +11,7 @@
         <div class="diagonal-text">PATUS KLEI PATUS KLEI PATUS KLEI PATUS KLEI PATUS KLEI PATUS KLEI PATUS KLEI PATUS KLEI PATUS KLEI PATUS KLEI PATUS KLEI PATUS KLEI PATUS KLEI PATUS KLEI PATUS KLEI PATUS KLEI PATUS KLEI PATUS KLEI</div>
       </div>
       <div class="beach-scene">
-        <img src="/patushero.png" alt="PATUS KLEI" width="800" height="600">
+        <img src="~/assets/patushero.png" alt="PATUS KLEI" width="800" height="600">
       </div>
 
       <div class="title-box">
@@ -27,5 +27,5 @@
 </script>
 
 <style scoped>
-@import '~/assets/css/pages.css';
+@import '~/css/pages.css';
 </style>

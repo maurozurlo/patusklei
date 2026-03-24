@@ -1,7 +1,7 @@
 export default defineNuxtConfig({
   ssr: true,
   devtools: { enabled: true },
-  css: ['~/assets/css/style.css'],
+  css: ['~/css/style.css'],
   vite: {
     define: {
       global: 'globalThis',

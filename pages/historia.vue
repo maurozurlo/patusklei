@@ -61,7 +61,7 @@ Su gurú, poeta maldito, nepotista, e hijo bastardo, conocido coloquialmente por
 </template>
 
 <style scoped>
-@import '~/assets/css/pages.css';
+@import '~/css/pages.css';
 
 .story-section {
   background: var(--ega-darkblue);
