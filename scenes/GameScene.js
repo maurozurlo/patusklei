@@ -195,6 +195,12 @@ class GameScene extends Phaser.Scene {
 
         this.playerManager.handleInput(this.cursors);
 
+        // safety clamp: if the player somehow drops below the ground (physics glitch)
+        if (this.playerManager.player.y > this.groundY) {
+            this.playerManager.player.y = this.groundY;
+            this.playerManager.player.setVelocityY(0);
+        }
+
         this.backgroundManager.update(this.levelManager.obstacleSpeed);
         this.obstacleManager.cleanupOffScreen();
         this.coinManager.cleanupOffScreen();

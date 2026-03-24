@@ -90,7 +90,7 @@ class MenuScene extends Phaser.Scene {
             .setInteractive();
 
         startButton.on('pointerdown', () => {
-            this.showLoreScreen('LEVEL_1_LORE');
+            this.showLoreScreen('LEVEL_2_LORE');
         });
 
         this.musicButton = this.add.text(

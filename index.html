@@ -125,7 +125,7 @@ He passed away in 2007 after tripping while washing his hair in the kitchen sink
                 <p class="game-desc" data-en="Help Patus Klei win the Battle of the Triple Panera">
                     AYUDE A PATUS A GANAR LA BATALLA DE LA TRIPLE PANERA
                 </p>
-                <iframe src="game.html" width="320" height="200" frameborder="0"></iframe>
+                <div id="game-container"></div>
 
             </div>
         </div>
@@ -227,7 +227,20 @@ He passed away in 2007 after tripping while washing his hair in the kitchen sink
 
         updateCountdown();
         setInterval(updateCountdown, 1000);
+
+        let isMusicPlaying = false;
     </script>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+    <script src="/managers/BackgroundManager.js"></script>
+    <script src="/managers/PlayerManager.js"></script>
+    <script src="/managers/ObstacleManager.js"></script>
+    <script src="/managers/LevelManager.js"></script>
+    <script src="/managers/UIManager.js"></script>
+    <script src="/managers/CoinManager.js"></script>
+    <script src="/managers/FinishLineManager.js"></script>
+    <script src="/scenes/MenuScene.js"></script>
+    <script src="/scenes/GameScene.js"></script>
+    <script src="/src/main.js"></script>
 </body>
 
 </html>

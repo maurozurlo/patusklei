@@ -317,14 +317,6 @@ h1 {
     text-shadow: 2px 2px 0 var(--ega-black), 0 0 20px rgba(255, 136, 0, 0.6);
 }
 
-.games-grid {
-    max-width: 1000px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-}
-
 .game-card {
     background: var(--ega-black);
     border: 4px solid var(--ega-purple);
@@ -341,6 +333,10 @@ h1 {
     transform: translateY(-5px);
     border-color: var(--ega-pink);
     box-shadow: 0 0 30px rgba(255, 170, 255, 0.4);
+}
+
+#game-container {
+    display: flex;
 }
 
 .game-placeholder {

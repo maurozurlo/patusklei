@@ -117,19 +117,23 @@ class PlayerManager {
 
     createPlayer() {
         this.player = this.scene.physics.add.sprite(
-            50,
+            0,
             this.groundY,
             this.config.sprite
         );
 
-        this.player.setOrigin(0.5, 1);
+        this.player.setOrigin(.5, 1);
         this.player.setCollideWorldBounds(true);
         this.player.body.setAllowGravity(true);
         this.player.body.setSize(
             this.config.hitboxWidth,
             this.config.hitboxHeight,
-            true
+            false
         );
+
+        // Offset to match sprite (bottom-left origin)
+        //this.player.body.setOffset(100, this.player.height - this.config.hitboxHeight);
+
         this.player.play(this.config.animation);
         this.player.setDepth(10);
 
@@ -146,12 +150,12 @@ class PlayerManager {
         if (this.config.hasFoam) {
             this.foam = this.scene.add.sprite(
                 this.player.x,
-                this.player.y + 20,
+                this.player.y,
                 'bidet_foam'
             );
-            this.foam.setOrigin(0.5, 1);
+            this.foam.setOrigin(0.5, .7);
             this.foam.play('bidet_foam');
-            this.foam.setDepth(9);
+            this.foam.setDepth(10);
         }
 
         // Create splash effect (Level 1 only)
@@ -174,15 +178,18 @@ class PlayerManager {
 
     handleInput(cursors, level) {
         const onGround = this.player.body.touching.down;
+        const useJumpAnim = this.level > 1; // level 1 keeps the bidet sprite while jumping
 
         // Jump
         if (cursors.space.isDown && onGround) {
             this.player.setVelocityY(this.config.jumpVelocity);
             this.scene.sfx.jump.play();
 
-            // Play jump animation
-            if (this.player.anims.currentAnim?.key !== 'patus_jump') {
+            // Play jump animation only on levels that actually have one
+            if (useJumpAnim && this.player.anims.currentAnim?.key !== 'patus_jump') {
                 this.player.play('patus_jump');
+                // body size/offset is already correct for the standing sprite; we don't
+                // adjust here because we don't change sprite on level 1.
             }
 
             // Trigger splash effect if available
