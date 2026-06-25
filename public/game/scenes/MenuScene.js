@@ -9,6 +9,9 @@ class MenuScene extends Phaser.Scene {
     }
 
     create() {
+        // Apply the persisted sound preference (global to the sound manager).
+        this.sound.mute = !isMusicPlaying;
+
         const loreScreens = [
             'LEVEL_1_LORE',
             'LEVEL_2_LORE',
@@ -107,13 +110,9 @@ class MenuScene extends Phaser.Scene {
 
     toggleMusic() {
         isMusicPlaying = !isMusicPlaying;
-        this.musicButton.setText(`SONIDO: ${isMusicPlaying ? 'NO' : 'SI'}`);
-
-        if (isMusicPlaying) {
-            this.sound.mute = false;
-        } else {
-            this.sound.mute = true;
-        }
+        this.musicButton.setText(`SONIDO: ${isMusicPlaying ? 'SI' : 'NO'}`);
+        this.sound.mute = !isMusicPlaying;
+        localStorage.setItem('musicPlaying', isMusicPlaying);
     }
 
     // --------------------------------------------------

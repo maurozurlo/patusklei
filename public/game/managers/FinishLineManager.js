@@ -24,7 +24,7 @@ class FinishLineManager {
         this.stopAllSpawning();
 
         // Create the finish line (piece of land)
-        this.finishLine = this.scene.physics.add.sprite(820, this.groundY, 'cle_welcome');
+        this.finishLine = this.scene.physics.add.sprite(370, this.groundY, 'cle_welcome');
         this.finishLine.setOrigin(0.5, 1);
         this.finishLine.body.velocity.x = -obstacleSpeed;
         this.finishLine.body.setAllowGravity(false);

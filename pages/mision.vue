@@ -7,7 +7,9 @@
         <div class="game-card">
           <h3 class="game-title">PATUS KLEI</h3>
           <p class="game-desc">AYUDE A PATUS A GANAR LA BATALLA DE LA TRIPLE PANERA</p>
-          <iframe src="/game/index.html" width="640" height="400" frameborder="0"></iframe>
+          <div class="game-frame">
+            <iframe src="/game/index.html" frameborder="0" title="Patus Klei"></iframe>
+          </div>
         </div>
       </div>
     </section>
@@ -34,9 +36,8 @@
 .games-grid {
     max-width: 1000px;
     margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
+    /* Single game: a plain centered block so the card uses its full max-width
+       instead of a fractional auto-fit grid track. */
 }
 
 .game-card {
@@ -45,12 +46,25 @@
     padding: 20px;
     text-align: center;
     transition: transform 0.3s;
-
-    min-height: 768px;
+    max-width: 840px;
+    margin: 0 auto;
 }
 
-.game-card iframe {
-    padding: 24px;
+/* Keeps the game at its native 320x200 (8:5) aspect ratio, responsive down to mobile.
+   768x480 at 8:5 gives the requested ~480 height with no letterboxing. */
+.game-frame {
+    width: 100%;
+    max-width: 768px;
+    margin: 20px auto 0;
+    aspect-ratio: 8 / 5;
+    background: #000;
+}
+
+.game-frame iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: 0;
 }
 
 .game-card:hover {

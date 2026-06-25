@@ -15,17 +15,34 @@ class BackgroundManager {
         const configs = {
             1: {
                 skyColor: '#00ffff',
-                groundTexture: 'bg_beach',
+                groundTexture: 'bg_beach',  // 320px wide: loops in place
                 hasWater: true,
                 buildingsY: 60,
-                groundY: 40
+                groundY: 40,
+                // Scroll speed as a fraction of obstacleSpeed (px/sec).
+                buildingScroll: 0.12,
+                groundScroll: 0.06
             },
             2: {
                 skyColor: '#87ceeb',
+                groundTexture: 'bg_city',   // 1771px panorama: pans across the level
+                hasWater: false,
+                buildingsY: 30,
+                groundY: 0,
+                // Faster ground so the full city is revealed before the finish line.
+                buildingScroll: 0.1,
+                groundScroll: 0.2
+            },
+            3: {
+                // Boss fight takes place in Cle city; reuse the city backdrop
+                // with a darker sky to set the mood.
+                skyColor: '#4b3b6b',
                 groundTexture: 'bg_city',
                 hasWater: false,
                 buildingsY: 30,
-                groundY: 0
+                groundY: 0,
+                buildingScroll: 0.1,
+                groundScroll: 0.2
             }
         };
 
@@ -106,7 +123,6 @@ class BackgroundManager {
                     'water_anim'
                 );
                 water.setOrigin(0, 0);
-                water.setDepth(5); // Above beach, below obstacles
                 water.play('water_flow');
                 water.setDepth(-10); // Behind everything
                 // Offset animation start for variation
@@ -145,15 +161,18 @@ class BackgroundManager {
         }
     }
 
-    update(obstacleSpeed) {
-        this.bgBuilds.tilePositionX += obstacleSpeed * 0.002;
-        this.bgGround.tilePositionX += obstacleSpeed * 0.001;
+    update(obstacleSpeed, delta = 16.667) {
+        // Delta-time scaling keeps scroll speed frame-rate independent.
+        const dt = delta / 1000;
+
+        this.bgBuilds.tilePositionX += obstacleSpeed * this.config.buildingScroll * dt;
+        this.bgGround.tilePositionX += obstacleSpeed * this.config.groundScroll * dt;
 
         const screenWidth = this.scene.sys.game.config.width;
 
-        // Update clouds with parallax effect
+        // Update clouds with parallax effect (60x keeps the original feel)
         this.clouds.forEach(cloud => {
-            cloud.x -= obstacleSpeed * cloud.speed;
+            cloud.x -= obstacleSpeed * cloud.speed * 60 * dt;
 
             // Wrap cloud around when it goes off screen (left side)
             if (cloud.x < -cloud.width / 2) {

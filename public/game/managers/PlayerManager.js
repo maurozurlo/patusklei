@@ -111,13 +111,19 @@ class PlayerManager {
         const width = this.config.hitboxWidth;
         this.player.body.setSize(width, height, false);
 
-        const spriteHeight = this.player.height;
-        this.player.body.setOffset(0, spriteHeight - height);
+        // Center the hitbox horizontally within the (wider) sprite frame and
+        // pin it to the feet. Offsets are measured from the top-left of the
+        // frame regardless of the sprite's display origin.
+        const offsetX = (this.player.width - width) / 2;
+        const offsetY = this.player.height - height;
+        this.player.body.setOffset(offsetX, offsetY);
     }
 
     createPlayer() {
+        // Start a bit in from the left edge instead of hugging the wall.
+        const startX = 24;
         this.player = this.scene.physics.add.sprite(
-            0,
+            startX,
             this.groundY,
             this.config.sprite
         );
@@ -125,14 +131,6 @@ class PlayerManager {
         this.player.setOrigin(.5, 1);
         this.player.setCollideWorldBounds(true);
         this.player.body.setAllowGravity(true);
-        this.player.body.setSize(
-            this.config.hitboxWidth,
-            this.config.hitboxHeight,
-            false
-        );
-
-        // Offset to match sprite (bottom-left origin)
-        //this.player.body.setOffset(100, this.player.height - this.config.hitboxHeight);
 
         this.player.play(this.config.animation);
         this.player.setDepth(10);
@@ -176,7 +174,7 @@ class PlayerManager {
         }
     }
 
-    handleInput(cursors, level) {
+    handleInput(cursors) {
         const onGround = this.player.body.touching.down;
         const useJumpAnim = this.level > 1; // level 1 keeps the bidet sprite while jumping
 

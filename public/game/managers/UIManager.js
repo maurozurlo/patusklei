@@ -22,10 +22,14 @@ class UIManager {
         this.scoreText.setDepth(10);
 
         if (level === 3) {
-            this.bossHealthText = this.scene.add.text(650, 16, `Boss HP: ${this.scene.bossHealth}`, {
-                fontSize: '20px',
-                fill: '#ff0000'
+            this.bossHealthText = this.scene.add.text(8, 16, `HP: ${this.scene.bossHealth}`, {
+                fontFamily: '"Press Start 2P"',
+                fontSize: '12px',
+                color: '#ff0000',
+                stroke: '#000',
+                strokeThickness: 1
             });
+            this.bossHealthText.setDepth(10);
         }
     }
 
@@ -35,7 +39,7 @@ class UIManager {
 
     updateBossHealth(health) {
         if (this.bossHealthText) {
-            this.bossHealthText.setText(`Boss HP: ${health}`);
+            this.bossHealthText.setText(`HP: ${health}`);
         }
     }
 }

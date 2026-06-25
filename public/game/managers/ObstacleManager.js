@@ -21,8 +21,8 @@ class ObstacleManager {
                 offsetY: 15
             },
             2: {
-                sprite: 'taxi_moving',
-                animation: 'taxi_moving',
+                // A car is chosen at random from these variants on every spawn.
+                variants: ['car_taxi', 'car_blue', 'car_party', 'car_pink'],
                 width: 32,
                 height: 24,
                 offsetY: 12
@@ -53,15 +53,17 @@ class ObstacleManager {
             });
         }
 
-        // Level 2: Taxi animation
-        if (!this.scene.anims.exists('taxi_moving')) {
-            this.scene.anims.create({
-                key: 'taxi_moving',
-                frames: this.scene.anims.generateFrameNumbers('taxi_moving', { start: 0, end: 1 }),
-                frameRate: 8,
-                repeat: -1
-            });
-        }
+        // Level 2: one looping 2-frame animation per car variant.
+        ['car_taxi', 'car_blue', 'car_party', 'car_pink'].forEach(key => {
+            if (!this.scene.anims.exists(key)) {
+                this.scene.anims.create({
+                    key,
+                    frames: this.scene.anims.generateFrameNumbers(key, { start: 0, end: 1 }),
+                    frameRate: 8,
+                    repeat: -1
+                });
+            }
+        });
     }
 
     createGroups() {
@@ -71,22 +73,27 @@ class ObstacleManager {
     }
 
     spawnObstacle(obstacleSpeed) {
-        // Don't spawn regular obstacles in boss level
-        if (this.level === 3 || !this.obstacleConfig.sprite) {
-            return;
-        }
+        // Don't spawn regular obstacles in boss level (or if nothing's configured)
+        if (this.level === 3) return;
+        if (!this.obstacleConfig.sprite && !this.obstacleConfig.variants) return;
 
         // Track spawned obstacles for finish line trigger
         this.scene.obstaclesSpawned++;
 
+        // Single sprite (level 1) or a random variant from the list (level 2)
+        const spriteKey = this.obstacleConfig.variants
+            ? Phaser.Utils.Array.GetRandom(this.obstacleConfig.variants)
+            : this.obstacleConfig.sprite;
+        const animKey = this.obstacleConfig.animation || spriteKey;
+
         const obstacle = this.obstacles.create(
             320 + 50,
             this.groundY + this.obstacleConfig.offsetY,
-            this.obstacleConfig.sprite
+            spriteKey
         );
 
         obstacle.setOrigin(0.5, 1);
-        obstacle.play(this.obstacleConfig.animation);
+        obstacle.play(animKey);
         obstacle.body.velocity.x = -obstacleSpeed;
         obstacle.body.setAllowGravity(false);
         obstacle.setImmovable(true);

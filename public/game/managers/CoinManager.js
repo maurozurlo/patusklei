@@ -77,7 +77,7 @@ class CoinManager {
 
         const spawnHeight = Phaser.Utils.Array.GetRandom(heightVariations);
 
-        const coin = this.coins.create(820, spawnHeight, coinType);
+        const coin = this.coins.create(370, spawnHeight, coinType);
         coin.setOrigin(0.5, 0.5);
         coin.play(animKey); // Start the animation
 
@@ -92,41 +92,6 @@ class CoinManager {
         coin.wasCollected = false;
 
         this.coinsSpawned++;
-    }
-
-    checkForNearbyObstacles(spawnX, safeDistance) {
-        // Check all obstacle groups
-        const obstacleManager = this.scene.obstacleManager;
-
-        // Check regular obstacles
-        const obstacles = obstacleManager.obstacles.children.entries;
-        for (let obstacle of obstacles) {
-            if (Math.abs(obstacle.x - spawnX) < safeDistance) {
-                return true;
-            }
-        }
-
-        // Check boss projectiles (if they exist)
-        if (obstacleManager.bossProjectiles) {
-            const projectiles = obstacleManager.bossProjectiles.children.entries;
-            for (let projectile of projectiles) {
-                if (Math.abs(projectile.x - spawnX) < safeDistance) {
-                    return true;
-                }
-            }
-        }
-
-        // Check dynamites (if they exist)
-        if (obstacleManager.dynamites) {
-            const dynamites = obstacleManager.dynamites.children.entries;
-            for (let dynamite of dynamites) {
-                if (Math.abs(dynamite.x - spawnX) < safeDistance) {
-                    return true;
-                }
-            }
-        }
-
-        return false;
     }
 
     collectCoin(player, coin) {

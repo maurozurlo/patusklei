@@ -1,5 +1,7 @@
-const DEV_MODE = true;
-const isMusicPlaying = localStorage.getItem('musicPlaying') === 'true' ?? true;
+const DEV_MODE = false;
+// `let` because MenuScene.toggleMusic reassigns it. Defaults to ON unless the
+// user has explicitly turned sound off (stored as the string "false").
+let isMusicPlaying = localStorage.getItem('musicPlaying') !== 'false';
 
 // Game Configuration
 const config = {
@@ -20,7 +22,9 @@ const config = {
         GameScene
     ],
     scale: {
-        //mode: Phaser.Scale.NONE, // We'll handle scaling manually
+        // FIT scales the 320x200 canvas up to fill the parent while keeping
+        // the aspect ratio, and handles resize + input mapping automatically.
+        mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
         parent: 'game-container',
     },
@@ -31,27 +35,3 @@ const config = {
 
 // Initialize Phaser
 const game = new Phaser.Game(config);
-
-// Function to resize the canvas to fit the parent div
-function resizeGame() {
-    const container = document.getElementById('game-container');
-    const canvas = game.canvas;
-    if (!canvas) return; // Canvas might not be initialized yet
-
-    const parentWidth = container.clientWidth;
-    const parentHeight = container.clientHeight;
-
-    const scaleX = parentWidth / config.width;
-    const scaleY = parentHeight / config.height;
-    const scale = Math.min(scaleX, scaleY); // Maintain aspect ratio
-
-    canvas.style.width = config.width * scale + 'px';
-    canvas.style.height = config.height * scale + 'px';
-}
-
-// Resize on window changes
-window.addEventListener('resize', resizeGame);
-window.addEventListener('load', resizeGame);
-
-// Initial resize
-resizeGame();

@@ -1,3 +1,5 @@
+const GROUND_Y = 185;
+
 class GameScene extends Phaser.Scene {
     constructor() {
         super('GameScene');
@@ -37,9 +39,22 @@ class GameScene extends Phaser.Scene {
             frameWidth: 34,
             frameHeight: 62
         });
-        this.load.spritesheet('taxi_moving', 'images/car_00.png', {
+        // Level 2 cars (each is a 2-frame sheet). One is picked at random per spawn.
+        this.load.spritesheet('car_taxi', 'images/car_00.png', {
             frameWidth: 140,
             frameHeight: 64
+        });
+        this.load.spritesheet('car_blue', 'images/car_01.png', {
+            frameWidth: 137,
+            frameHeight: 60
+        });
+        this.load.spritesheet('car_party', 'images/car_02.png', {
+            frameWidth: 137,
+            frameHeight: 60
+        });
+        this.load.spritesheet('car_pink', 'images/car_03.png', {
+            frameWidth: 137,
+            frameHeight: 60
         });
 
         this.load.spritesheet('patus_bidet', 'images/patus_bidet.png', {
@@ -70,27 +85,20 @@ class GameScene extends Phaser.Scene {
             frameHeight: 80
         });
 
-        // Preload background elements with level parameter
-        if (!this.backgroundManager) {
-            this.backgroundManager = new BackgroundManager(this, this.level);
-        }
+        // Managers that own their own asset loading are constructed here so
+        // their queued loads run during this scene's load phase. They are
+        // reused (not rebuilt) in create().
+        this.backgroundManager = new BackgroundManager(this, this.level);
         this.backgroundManager.preload();
 
-        // Preload coins
-        if (!this.coinManager) {
-            this.coinManager = new CoinManager(this, 180);
-        }
+        this.coinManager = new CoinManager(this, GROUND_Y);
         this.coinManager.preload();
 
-        // Preload finish line
-        if (!this.finishLineManager) {
-            this.finishLineManager = new FinishLineManager(this, 180);
-        }
+        this.finishLineManager = new FinishLineManager(this, GROUND_Y);
         this.finishLineManager.preload();
     }
 
     create() {
-        const GROUND_Y = 185;
         // SOUNDS
         this.sfx = {
             crash: this.sound.add('sfx_crash'),
@@ -105,12 +113,11 @@ class GameScene extends Phaser.Scene {
 
         this.obstaclesSpawned = 0;
 
-        // Initialize managers
-        this.backgroundManager = new BackgroundManager(this, this.level);
+        // Initialize managers. backgroundManager/coinManager/finishLineManager
+        // were already constructed in preload() (they own asset loading); the
+        // rest are created here.
         this.playerManager = new PlayerManager(this, GROUND_Y);
         this.obstacleManager = new ObstacleManager(this, GROUND_Y, this.level);
-        this.coinManager = new CoinManager(this, GROUND_Y);
-        this.finishLineManager = new FinishLineManager(this, GROUND_Y);
         this.uiManager = new UIManager(this);
         this.levelManager = new LevelManager(this);
 
@@ -190,7 +197,7 @@ class GameScene extends Phaser.Scene {
     }
 
 
-    update() {
+    update(time, delta) {
         if (this.isGameOver) return;
 
         this.playerManager.handleInput(this.cursors);
@@ -201,7 +208,7 @@ class GameScene extends Phaser.Scene {
             this.playerManager.player.setVelocityY(0);
         }
 
-        this.backgroundManager.update(this.levelManager.obstacleSpeed);
+        this.backgroundManager.update(this.levelManager.obstacleSpeed, delta);
         this.obstacleManager.cleanupOffScreen();
         this.coinManager.cleanupOffScreen();
         this.finishLineManager.cleanupOffScreen();
@@ -214,8 +221,10 @@ class GameScene extends Phaser.Scene {
     }
 
     collectCoin(player, coin) {
-        const coinValue = this.coinManager.collectCoin(player, coin);
-        this.uiManager.updateScore(coinValue + this.score);
+        // CoinManager.collectCoin already adds the value to this.score,
+        // so the UI just mirrors the authoritative running total.
+        this.coinManager.collectCoin(player, coin);
+        this.uiManager.updateScore(this.score);
     }
 
     hitObstacle(player, obstacle) {
