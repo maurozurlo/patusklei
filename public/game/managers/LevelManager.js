@@ -128,29 +128,9 @@ class LevelManager {
     }
 
     setupLevel3(config) {
-        // Boss projectiles
-        this.scene.bossProjectileTimer = this.scene.time.addEvent({
-            delay: config.projectileDelay,
-            callback: () => this.scene.obstacleManager.spawnBossProjectile(this.obstacleSpeed),
-            callbackScope: this.scene,
-            loop: true
-        });
-
-        // Dynamite controls
-        this.scene.dynamiteTimer = this.scene.time.addEvent({
-            delay: config.dynamiteDelay,
-            callback: () => this.scene.obstacleManager.spawnDynamiteControl(this.obstacleSpeed),
-            callbackScope: this.scene,
-            loop: true
-        });
-
-        // Coins during boss fight
-        this.scene.coinTimer = this.scene.time.addEvent({
-            delay: config.coinDelay,
-            callback: () => this.scene.coinManager.spawnCoin(this.obstacleSpeed),
-            callbackScope: this.scene,
-            loop: true
-        });
+        // Fight logic (projectiles / dynamite / coins) is pending the design spec.
+        // The old placeholder spawners referenced textures that don't exist, so
+        // for now level 3 just shows the static boss scene (see BossManager).
     }
 
     // Clean up when switching levels or ending game

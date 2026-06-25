@@ -19,7 +19,8 @@ const config = {
     },
     scene: [
         MenuScene,
-        GameScene
+        GameScene,
+        DebugScene // TEMPORARY: boss-scene placement tool (press D in the menu)
     ],
     scale: {
         // FIT scales the 320x200 canvas up to fill the parent while keeping

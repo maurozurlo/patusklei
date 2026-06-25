@@ -8,9 +8,16 @@ class MenuScene extends Phaser.Scene {
         this.menuKey = data.menuKey || 'MAIN_MENU';
     }
 
+    preload() {
+        this.load.image('main_menu', 'images/main_menu.png');
+    }
+
     create() {
         // Apply the persisted sound preference (global to the sound manager).
         this.sound.mute = !isMusicPlaying;
+
+        // TEMPORARY: press D to open the boss-scene placement tool.
+        this.input.keyboard.once('keydown-D', () => this.scene.start('DebugScene'));
 
         const loreScreens = [
             'LEVEL_1_LORE',
@@ -85,8 +92,8 @@ class MenuScene extends Phaser.Scene {
         this.clearUI();
         const styles = this.getStyles();
 
-        this.add.text(160, 90, 'PATUS KLEI', styles.title)
-            .setOrigin(0.5);
+        // Full-screen menu artwork (320x200) behind the buttons.
+        this.add.image(160, 100, 'main_menu').setOrigin(0.5);
 
         const startButton = this.add.text(160, 145, 'INICIAR JUEGO', styles.buttonPrimary)
             .setOrigin(0.5)
@@ -106,6 +113,25 @@ class MenuScene extends Phaser.Scene {
             .setInteractive();
 
         this.musicButton.on('pointerdown', this.toggleMusic, this);
+
+        this.showDebugLevelSelect();
+    }
+
+    // TEMPORARY: jump straight into any level (skips lore). Remove with the boss work.
+    showDebugLevelSelect() {
+        this.add.rectangle(160, 193, 320, 15, 0x000000, 0.6).setDepth(50);
+        this.add.text(50, 189, 'DEBUG LVL:', {
+            fontFamily: 'monospace', fontSize: '8px', color: '#888888'
+        }).setDepth(51);
+
+        [1, 2, 3].forEach((lvl, i) => {
+            this.add.text(150 + i * 26, 189, `[${lvl}]`, {
+                fontFamily: 'monospace', fontSize: '8px', color: '#ffff00'
+            })
+                .setDepth(51)
+                .setInteractive({ useHandCursor: true })
+                .on('pointerdown', () => this.scene.start('GameScene', { level: lvl }));
+        });
     }
 
     toggleMusic() {

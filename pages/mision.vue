@@ -67,12 +67,6 @@
     border: 0;
 }
 
-.game-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--ega-pink);
-    box-shadow: 0 0 30px rgba(255, 170, 255, 0.4);
-}
-
 .game-title {
     font-size: 24px;
     color: var(--ega-orange);

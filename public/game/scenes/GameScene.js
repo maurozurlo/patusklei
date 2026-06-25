@@ -34,6 +34,17 @@ class GameScene extends Phaser.Scene {
         this.load.image('bg_beach', 'images/bg_beach.png');
         this.load.image('bg_city', 'images/bg_city.png');
 
+        // Boss scene assets (level 3 only)
+        if (this.level === 3) {
+            this.load.image('bg_boss', 'images/bg_boss.png');
+            this.load.image('boss_floor', 'images/boss_floor.png');
+            this.load.image('boss_body', 'images/boss_body.png');
+            this.load.image('boss_hand_l', 'images/boss_hand_l.png');
+            this.load.image('boss_hand_r', 'images/boss_hand_r.png');
+            this.load.image('boss_head', 'images/boss_head.png');
+            this.load.image('boss_sitting', 'images/boss_sitting.png');
+        }
+
         // OBSTACLES
         this.load.spritesheet('buoy_idle', 'images/buoy_idle.png', {
             frameWidth: 34,
@@ -121,8 +132,13 @@ class GameScene extends Phaser.Scene {
         this.uiManager = new UIManager(this);
         this.levelManager = new LevelManager(this);
 
-        // Setup
-        this.backgroundManager.setup();
+        // Setup. Level 3 uses the static boss scene instead of the scrolling background.
+        if (this.level === 3) {
+            this.bossManager = new BossManager(this);
+            this.bossManager.setup();
+        } else {
+            this.backgroundManager.setup();
+        }
         this.setupGround(GROUND_Y);
         this.playerManager.setup();
         this.obstacleManager.setup();
@@ -208,7 +224,9 @@ class GameScene extends Phaser.Scene {
             this.playerManager.player.setVelocityY(0);
         }
 
-        this.backgroundManager.update(this.levelManager.obstacleSpeed, delta);
+        if (this.level !== 3) {
+            this.backgroundManager.update(this.levelManager.obstacleSpeed, delta);
+        }
         this.obstacleManager.cleanupOffScreen();
         this.coinManager.cleanupOffScreen();
         this.finishLineManager.cleanupOffScreen();

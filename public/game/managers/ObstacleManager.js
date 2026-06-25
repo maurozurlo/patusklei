@@ -80,6 +80,11 @@ class ObstacleManager {
         // Track spawned obstacles for finish line trigger
         this.scene.obstaclesSpawned++;
 
+        // The spawn that reaches the cap lines up with the finish line (both at
+        // x=370), so skip its sprite — the counter still advances and triggers
+        // the finish line, leaving a clean run-up to the city/boss.
+        if (this.scene.obstaclesSpawned >= this.scene.maxObstacles) return;
+
         // Single sprite (level 1) or a random variant from the list (level 2)
         const spriteKey = this.obstacleConfig.variants
             ? Phaser.Utils.Array.GetRandom(this.obstacleConfig.variants)

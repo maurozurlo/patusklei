@@ -8,10 +8,17 @@ class FinishLineManager {
 
     preload() {
         this.scene.load.image('cle_welcome', 'images/cle_welcome.png');
+        this.scene.load.image('boss_welcome', 'images/boss_welcome.png');
     }
 
     setup() {
         // Nothing to setup initially
+    }
+
+    getFinishTexture() {
+        // Level 1 arrives at the city, level 2 at the boss.
+        const textures = { 1: 'cle_welcome', 2: 'boss_welcome' };
+        return textures[this.scene.level] || 'cle_welcome';
     }
 
     spawnFinishLine(obstacleSpeed) {
@@ -24,7 +31,7 @@ class FinishLineManager {
         this.stopAllSpawning();
 
         // Create the finish line (piece of land)
-        this.finishLine = this.scene.physics.add.sprite(370, this.groundY, 'cle_welcome');
+        this.finishLine = this.scene.physics.add.sprite(370, this.groundY, this.getFinishTexture());
         this.finishLine.setOrigin(0.5, 1);
         this.finishLine.body.velocity.x = -obstacleSpeed;
         this.finishLine.body.setAllowGravity(false);
