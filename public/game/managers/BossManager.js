@@ -78,4 +78,143 @@ class BossManager {
             ease: 'Sine.inOut'
         });
     }
+
+    // -----------------------------------------------------------------------
+    // LIVE FIGHT — the dodge core (BossFight.js is the data).
+    //
+    // Each hand cycles idle → twitch (telegraph) → attack → idle, and the two
+    // hands attack strictly alternating, one at a time. During each attack's
+    // damage window we read the player's pose (cheap, no physics overlap): if
+    // it's the wrong pose at any frame in the window it's a hit. For now a hit
+    // is just a flash — Patus is invincible until hearts are wired up.
+    // -----------------------------------------------------------------------
+    setupFight() {
+        // The static bake loops the twitch sheets as idle hands and shows the
+        // post-defeat reveal (boss_sitting). The live fight replaces both.
+        ['boss_hand_l_twitch', 'boss_hand_r_twitch'].forEach(k => this.parts[k]?.setVisible(false));
+        this.parts.boss_sitting?.setVisible(false);
+
+        this.fightTimers = [];
+        this.hands = {};
+        this.attackHitLatched = false;
+        Object.entries(BOSS_FIGHT.hands).forEach(([id, cfg]) => this.buildFightHand(id, cfg));
+
+        this.attackIndex = 0;
+        this.scene.events.once('shutdown', () => this.stopFight());
+
+        this.queueAttack(BOSS_FIGHT.timing.restBeforeTelegraph);
+    }
+
+    buildFightHand(id, cfg) {
+        // Resting hand (single frame), with the same gentle bob as the bake.
+        const idle = this.scene.add.image(cfg.idle.x, cfg.idle.y, cfg.idle.key)
+            .setOrigin(0.5, 1).setDepth(cfg.idle.depth);
+        if (cfg.idle.bob) {
+            this.scene.tweens.add({
+                targets: idle, y: cfg.idle.y - cfg.idle.bob,
+                duration: 1300, yoyo: true, repeat: -1, ease: 'Sine.inOut'
+            });
+        }
+
+        // Telegraph + attack layers, hidden until their turn. The attack arm is
+        // split _back (behind the body) / _front (over the face) for depth.
+        const t = BOSS_FIGHT.timing;
+        const twitch = this.makeFightAnim(id + '_twitch', cfg.twitch, t.twitchFrameRate);
+        const back   = this.makeFightAnim(id + '_back',   cfg.back,   t.attackFrameRate);
+        const front  = this.makeFightAnim(id + '_front',  cfg.front,  t.attackFrameRate);
+        [twitch, back, front].forEach(s => s.setVisible(false));
+
+        this.hands[id] = { cfg, idle, twitch, back, front };
+    }
+
+    // Build a play-once sprite for one fight state. `cfg.key` is the loaded
+    // texture; `cfg.frames` is the frame count.
+    makeFightAnim(animId, cfg, frameRate) {
+        const animKey = 'fight_' + animId;
+        if (!this.scene.anims.exists(animKey)) {
+            this.scene.anims.create({
+                key: animKey,
+                frames: this.scene.anims.generateFrameNumbers(cfg.key, { start: 0, end: cfg.frames - 1 }),
+                frameRate,
+                repeat: 0
+            });
+        }
+        const spr = this.scene.add.sprite(cfg.x, cfg.y, cfg.key).setOrigin(0.5, 1).setDepth(cfg.depth);
+        spr.fightAnimKey = animKey;
+        return spr;
+    }
+
+    queueAttack(delay) {
+        this.fightTimers.push(this.scene.time.delayedCall(delay, () => this.telegraph()));
+    }
+
+    // Wind-up: hide rest, play the twitch once, then strike.
+    telegraph() {
+        if (this.scene.isGameOver) return;
+        const id = BOSS_FIGHT.order[this.attackIndex % BOSS_FIGHT.order.length];
+        const hand = this.hands[id];
+
+        hand.idle.setVisible(false);
+        hand.twitch.setVisible(true).play(hand.twitch.fightAnimKey);
+        hand.twitch.once('animationcomplete', () => {
+            hand.twitch.setVisible(false);
+            this.attack(id);
+        });
+    }
+
+    // Strike: play both attack layers; watch the damage window for a bad pose.
+    attack(id) {
+        if (this.scene.isGameOver) return;
+        const hand = this.hands[id];
+        const [d0, d1] = hand.cfg.damageFrames; // 1-based, matches frame.index
+        this.attackHitLatched = false;
+
+        hand.back.setVisible(true).play(hand.back.fightAnimKey);
+        hand.front.setVisible(true).play(hand.front.fightAnimKey);
+
+        // frame.index is Phaser's 1-based position in the anim, matching the
+        // authored "frames start at 1" windows. One hit per attack (latched).
+        const onFrame = (anim, frame) => {
+            if (this.attackHitLatched) return;
+            if (frame.index >= d0 && frame.index <= d1 && !this.isPlayerSafe(hand.cfg.dodge)) {
+                this.attackHitLatched = true;
+                this.registerHit();
+            }
+        };
+        hand.front.on('animationupdate', onFrame);
+
+        hand.front.once('animationcomplete', () => {
+            hand.front.off('animationupdate', onFrame);
+            hand.back.setVisible(false);
+            hand.front.setVisible(false);
+            hand.idle.setVisible(true);
+            this.attackIndex++;
+            this.queueAttack(BOSS_FIGHT.timing.recoverAfterAttack);
+        });
+    }
+
+    // Cheap pose check — no physics overlap.
+    //   jump   → safe only while airborne
+    //   crouch → safe only while ducking
+    isPlayerSafe(dodge) {
+        const p = this.scene.playerManager.player;
+        if (dodge === 'jump')   return !p.body.touching.down;
+        if (dodge === 'crouch') return p.isCrouching === true;
+        return false;
+    }
+
+    // A failed dodge: drop one heart (latched to one per attack) and flash Patus.
+    registerHit() {
+        const p = this.scene.playerManager.player;
+        this.scene.loseHeart();
+        this.scene.tweens.add({
+            targets: p, alpha: 0.25, duration: 70, yoyo: true, repeat: 4,
+            onComplete: () => p.setAlpha(1)
+        });
+    }
+
+    stopFight() {
+        (this.fightTimers || []).forEach(t => t && t.remove());
+        this.fightTimers = [];
+    }
 }

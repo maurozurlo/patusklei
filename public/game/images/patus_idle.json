@@ -1,0 +1,32 @@
+{ "frames": {
+   "Sprite-0001 0.": {
+    "frame": { "x": 0, "y": 0, "w": 23, "h": 68 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 23, "h": 68 },
+    "sourceSize": { "w": 23, "h": 68 },
+    "duration": 100
+   },
+   "Sprite-0001 1.": {
+    "frame": { "x": 23, "y": 0, "w": 23, "h": 68 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 23, "h": 68 },
+    "sourceSize": { "w": 23, "h": 68 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://github.com/LibreSprite/LibreSprite/",
+  "version": "1.1-dev",
+  "image": "E:\\webdev\\patusklei\\public\\game\\images\\patus_idle.png",
+  "format": "RGBA8888",
+  "size": { "w": 46, "h": 68 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ]
+ }
+}

@@ -26,6 +26,7 @@ class PlayerManager {
             2: {
                 sprite: 'patus_walk',
                 animation: 'patus_walk',
+                crouchAnimation: 'patus_crouch',
                 hasFoam: false,
                 hasSplash: false,
                 canDuck: true,
@@ -34,8 +35,12 @@ class PlayerManager {
                 hitboxHeight: 40
             },
             3: {
-                sprite: 'patus_walk',
-                animation: 'patus_walk',
+                // Boss fight: Patus stands his ground, so he idles instead of
+                // running in place — and crouches to a static pose, not the
+                // running-crouch animation.
+                sprite: 'patus_idle',
+                animation: 'patus_idle',
+                crouchAnimation: 'patus_crouch_idle',
                 hasFoam: false,
                 hasSplash: false,
                 canDuck: true,
@@ -69,10 +74,22 @@ class PlayerManager {
                 frameRate: 8
             },
             {
+                key: 'patus_idle',
+                spritesheet: 'patus_idle',
+                frames: { start: 0, end: 1 },
+                frameRate: 3 // slow breathing idle
+            },
+            {
                 key: 'patus_crouch',
                 spritesheet: 'patus_crouch',
                 frames: { start: 0, end: 7 },
                 frameRate: 8
+            },
+            {
+                key: 'patus_crouch_idle',
+                spritesheet: 'patus_crouch_idle',
+                frames: { start: 0, end: 0 }, // Single static crouch pose
+                frameRate: 1
             },
             {
                 key: 'patus_jump',
@@ -205,8 +222,9 @@ class PlayerManager {
                 if (!this.player.isCrouching && onGround) {
                     this.player.isCrouching = true;
 
-                    if (this.player.anims.currentAnim?.key !== 'patus_crouch') {
-                        this.player.play('patus_crouch');
+                    const crouchAnim = this.config.crouchAnimation || 'patus_crouch';
+                    if (this.player.anims.currentAnim?.key !== crouchAnim) {
+                        this.player.play(crouchAnim);
                     }
                     this.updateBodySize(this.player.crouchHeight);
                 }
@@ -216,8 +234,9 @@ class PlayerManager {
                 if (this.player.isCrouching) {
                     this.player.isCrouching = false;
 
-                    if (this.player.anims.currentAnim?.key !== 'patus_walk') {
-                        this.player.play('patus_walk');
+                    const standAnim = this.config.animation;
+                    if (this.player.anims.currentAnim?.key !== standAnim) {
+                        this.player.play(standAnim);
                     }
 
 
@@ -232,8 +251,9 @@ class PlayerManager {
                 // Duck logic (existing code)
                 if (!this.player.isCrouching) {
                     this.player.isCrouching = true;
-                    if (this.player.anims.currentAnim?.key !== 'patus_crouch') {
-                        this.player.play('patus_crouch');
+                    const crouchAnim = this.config.crouchAnimation || 'patus_crouch';
+                    if (this.player.anims.currentAnim?.key !== crouchAnim) {
+                        this.player.play(crouchAnim);
                     }
                     this.updateBodySize(this.player.crouchHeight);
                 }

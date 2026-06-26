@@ -15,6 +15,11 @@ class GameScene extends Phaser.Scene {
         this.isGameOver = false;
         this.score = 0;
         this.bossHealth = 5;
+
+        // Player hearts (boss fight). PRD base is 3 (+1 per pepper later — pepper
+        // persistence isn't wired yet). Tweak maxHearts to taste.
+        this.maxHearts = 3;
+        this.hearts = this.maxHearts;
     }
     preload() {
 
@@ -46,6 +51,19 @@ class GameScene extends Phaser.Scene {
                     this.load.image(name, cfg.file);
                 }
             });
+
+            // Live-fight hand sprites (idle + attack layers). The telegraph
+            // reuses the twitch sheets loaded above; only these are new.
+            Object.values(BOSS_FIGHT.hands).forEach(h => {
+                this.load.image(h.idle.key, h.idle.file);
+                [h.back, h.front].forEach(s => this.load.spritesheet(s.key, s.file, {
+                    frameWidth: s.frameWidth, frameHeight: s.frameHeight
+                }));
+            });
+
+            // Player heart icons (HUD).
+            this.load.image('heart_full', 'images/heart_full.png');
+            this.load.image('heart_damage', 'images/heart_damage.png');
         }
 
         // OBSTACLES
@@ -87,6 +105,18 @@ class GameScene extends Phaser.Scene {
         this.load.spritesheet('patus_crouch', 'images/patus_crouch.png', {
             frameWidth: 55,
             frameHeight: 76
+        });
+
+        // 2-frame breathing idle used in the boss fight (level 3).
+        this.load.spritesheet('patus_idle', 'images/patus_idle.png', {
+            frameWidth: 23,
+            frameHeight: 68
+        });
+
+        // Single-frame static crouch pose for the boss fight (Patus isn't running).
+        this.load.spritesheet('patus_crouch_idle', 'images/patus_crouch_idle.png', {
+            frameWidth: 36,
+            frameHeight: 42
         });
 
         this.load.spritesheet('bidet_foam', 'images/bidet_foam.png', {
@@ -149,6 +179,12 @@ class GameScene extends Phaser.Scene {
         this.finishLineManager.setup();
         this.setupCollisions();
         this.uiManager.setup(this.level);
+
+        // Kick off the boss dodge core once the player exists (the hit checks
+        // read the player's pose).
+        if (this.level === 3) {
+            this.bossManager.setupFight();
+        }
 
         // Input
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -241,6 +277,16 @@ class GameScene extends Phaser.Scene {
         }
     }
 
+    // Called by BossManager when a hand attack catches Patus in the wrong pose.
+    // Drops one heart (damaged icon + stops the heartbeat). Death/restart at 0
+    // is still TODO — for now hearts just clamp at zero.
+    loseHeart() {
+        if (this.hearts <= 0) return;
+        this.hearts--;
+        this.uiManager.updateHearts(this.hearts);
+        // TODO: if (this.hearts <= 0) -> fade + restart level 3 (skip lore).
+    }
+
     collectCoin(player, coin) {
         // CoinManager.collectCoin already adds the value to this.score,
         // so the UI just mirrors the authoritative running total.
@@ -268,7 +314,6 @@ class GameScene extends Phaser.Scene {
         if (!player.body.touching.down) {
             dynamite.destroy();
             this.bossHealth--;
-            this.uiManager.updateBossHealth(this.bossHealth);
 
             if (this.bossHealth <= 0) {
                 this.winGame();
