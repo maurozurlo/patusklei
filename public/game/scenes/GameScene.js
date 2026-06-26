@@ -34,15 +34,18 @@ class GameScene extends Phaser.Scene {
         this.load.image('bg_beach', 'images/bg_beach.png');
         this.load.image('bg_city', 'images/bg_city.png');
 
-        // Boss scene assets (level 3 only)
+        // Boss scene assets (level 3 only) — driven by the shared BOSS_LAYOUT.
         if (this.level === 3) {
-            this.load.image('bg_boss', 'images/bg_boss.png');
-            this.load.image('boss_floor', 'images/boss_floor.png');
-            this.load.image('boss_body', 'images/boss_body.png');
-            this.load.image('boss_hand_l', 'images/boss_hand_l.png');
-            this.load.image('boss_hand_r', 'images/boss_hand_r.png');
-            this.load.image('boss_head', 'images/boss_head.png');
-            this.load.image('boss_sitting', 'images/boss_sitting.png');
+            Object.entries(BOSS_LAYOUT).forEach(([name, cfg]) => {
+                if (cfg.sheet) {
+                    this.load.spritesheet(name, cfg.file, {
+                        frameWidth: cfg.sheet.frameWidth,
+                        frameHeight: cfg.sheet.frameHeight
+                    });
+                } else {
+                    this.load.image(name, cfg.file);
+                }
+            });
         }
 
         // OBSTACLES

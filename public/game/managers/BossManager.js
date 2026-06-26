@@ -1,28 +1,11 @@
 // Builds the static level-3 boss scene: background, floor, and the puppet-master
-// monster assembled from separate parts. Coordinates/depths come from the
-// placement tool (DebugScene). Bottom-center origin (0.5, 1) matches how the
-// game's sprites sit on the ground.
+// monster assembled from separate parts. Coordinates/depths come from the shared
+// layout in data/BossLayout.js (tuned with the DebugScene placement tool).
 //
 // NOTE: the actual boss fight is not implemented yet. `boss_sitting` (the
 // puppet master revealed after the monster is defeated) is shown here only
 // because this is a static bake — once the fight exists it should stay hidden
 // until the puppet is beaten.
-
-const BOSS_LAYOUT = {
-    // Fixed backdrop. Floor sits above the ground-level boss parts (depth 1) so
-    // they look planted, but below the player (depth 10) so Patus stands on it.
-    bg_boss: { x: 160, y: 100, ox: 0.5, oy: 0.5, depth: -100 },
-    boss_floor: { x: 160, y: 200, ox: 0.5, oy: 1.0, depth: 1.5 },
-
-    // Puppet monster parts (bottom-center origin).
-    boss_hand_l: { x: 222, y: 162, depth: 0 },
-    boss_hand_r: { x: 89, y: 163, depth: 0 },
-    boss_body: { x: 156, y: 184, depth: 1 },
-    boss_head: { x: 157, y: 115, depth: 2 },
-
-    // Puppet master reveal (post-defeat).
-    boss_sitting: { x: 275, y: 193, depth: 2 },
-};
 
 class BossManager {
     constructor(scene) {
@@ -31,15 +14,11 @@ class BossManager {
     }
 
     setup() {
-        const L = BOSS_LAYOUT;
-
-        // Backdrop + floor
-        this.addImage('bg_boss', L.bg_boss);
-        this.addImage('boss_floor', L.boss_floor);
-
-        // Puppet parts + reveal
-        ['boss_hand_l', 'boss_hand_r', 'boss_body', 'boss_head', 'boss_sitting']
-            .forEach(name => this.addPart(name, L[name]));
+        // Fixed backdrop pieces vs. positioned (bottom-center) monster parts.
+        Object.entries(BOSS_LAYOUT).forEach(([name, cfg]) => {
+            if (cfg.fixed) this.addImage(name, cfg);
+            else this.addPart(name, cfg);
+        });
 
         this.addBob();
     }
@@ -53,7 +32,28 @@ class BossManager {
     }
 
     addPart(name, cfg) {
+        if (cfg.sheet) return this.addAnimatedPart(name, cfg);
         return this.addImage(name, { ...cfg, ox: 0.5, oy: 1 });
+    }
+
+    // Animated spritesheet part (looping idle). Frames are laid out horizontally,
+    // all the same size; the anim is created once and reused.
+    addAnimatedPart(name, cfg) {
+        const animKey = name + '_anim';
+        if (!this.scene.anims.exists(animKey)) {
+            this.scene.anims.create({
+                key: animKey,
+                frames: this.scene.anims.generateFrameNumbers(name),
+                frameRate: cfg.sheet.frameRate ?? 7,
+                repeat: -1
+            });
+        }
+        const spr = this.scene.add.sprite(cfg.x, cfg.y, name)
+            .setOrigin(0.5, 1)
+            .setDepth(cfg.depth)
+            .play(animKey);
+        this.parts[name] = spr;
+        return spr;
     }
 
     // Gentle vertical bob on head and body. Different amplitudes/durations (plus

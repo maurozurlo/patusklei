@@ -10,26 +10,34 @@
 //   • ESC           back to the main menu
 //
 // All placed coordinates use a bottom-center origin (0.5, 1), matching how the
-// game sprites sit on the ground. Remove this scene (and the D trigger in
-// MenuScene + the entries in main.js / index.html) when the boss layout is set.
+// game sprites sit on the ground. The boss parts come from the shared layout in
+// data/BossLayout.js — drag them, press J, and paste the dump back into that
+// file so the tool and the real scene stay in sync. Remove this scene (and the D
+// trigger in MenuScene + the entries in main.js / index.html) when it's set.
 // ---------------------------------------------------------------------------
 
-// Trivial, auto-placed elements (not draggable).
-const DBG_FIXED = [
-    { key: 'dbg_bg_boss',    file: 'images/bg_boss.png',    x: 160, y: 100, ox: 0.5, oy: 0.5, depth: -100 },
-    // Floor sits above the ground-level boss parts (body/sitting at depth 1) so
-    // they look planted, but below patus (depth 4) so he stands on top of it.
-    { key: 'dbg_boss_floor', file: 'images/boss_floor.png', x: 160, y: 200, ox: 0.5, oy: 1.0, depth: 1.5 },
-];
+// Hide the idle twitch hands while positioning the attack arm (they overlap it).
+const DBG_HIDE_TWITCH = true;
 
-// Draggable elements. Add new boss parts here as you create them.
-const DBG_PLACEABLES = [
-    { name: 'boss_body',    file: 'images/boss_body.png',    x: 156, y: 184, depth: 1 },
-    { name: 'boss_hand_l',  file: 'images/boss_hand_l.png',  x: 222, y: 162, depth: 0 },
-    { name: 'boss_hand_r',  file: 'images/boss_hand_r.png',  x: 89,  y: 163, depth: 0 },
-    { name: 'boss_head',    file: 'images/boss_head.png',    x: 157, y: 115, depth: 2 },
-    { name: 'boss_sitting', file: 'images/boss_sitting.png', x: 275, y: 193, depth: 1 },
-    { name: 'patus',        file: 'images/patus_jump.png',   x: 39,  y: 184, depth: 4 },
+// Debug-only sprites that aren't part of the shared static layout:
+//   • patus — the real animated player in-game; shown here just for scale.
+//   • boss_hand_*_attack — fight-state hands being positioned. They overlap the
+//     idle twitch hands, so they live here (not BOSS_LAYOUT) to stay out of the
+//     static scene-3 bake until the fight is wired up. The right attack arm is
+//     split into two layers: `_back` sits behind the body, `_front` over the face.
+//   • boss_hand_r_idle — single-frame resting hand. `bob` previews a gentle
+//     vertical sway around its resting position (the dump records that resting y,
+//     not the mid-bob value).
+const DBG_EXTRA = [
+    { name: 'patus', file: 'images/patus_jump.png', x: 40, y: 192, depth: 4 },
+    { name: 'boss_hand_r_idle', file: 'images/boss_hand_r_idle.png', x: 79, y: 203, depth: 0,
+      bob: { amp: 3, duration: 1300 } },
+    { name: 'boss_hand_l_idle', file: 'images/boss_hand_l_idle.png', x: 226, y: 202, depth: 0,
+      bob: { amp: 3, duration: 1300 } },
+    { name: 'boss_hand_r_attack_back',  file: 'images/boss_hand_r_attack_back.png',  x: 89, y: 200, depth: 0,
+      sheet: { frameWidth: 175, frameHeight: 200, frameRate: 10 } },
+    { name: 'boss_hand_r_attack_front', file: 'images/boss_hand_r_attack_front.png', x: 93, y: 201, depth: 3,
+      sheet: { frameWidth: 175, frameHeight: 200, frameRate: 10 } },
 ];
 
 class DebugScene extends Phaser.Scene {
@@ -38,35 +46,44 @@ class DebugScene extends Phaser.Scene {
     }
 
     preload() {
-        DBG_FIXED.forEach(item => this.load.image(item.key, item.file));
-        DBG_PLACEABLES.forEach(item => this.load.image('dbg_' + item.name, item.file));
+        Object.entries(BOSS_LAYOUT).forEach(([name, cfg]) => this.loadAsset(name, cfg));
+        DBG_EXTRA.forEach(item => this.loadAsset(item.name, item));
+    }
+
+    loadAsset(name, cfg) {
+        const key = 'dbg_' + name;
+        if (cfg.sheet) {
+            this.load.spritesheet(key, cfg.file, {
+                frameWidth: cfg.sheet.frameWidth,
+                frameHeight: cfg.sheet.frameHeight
+            });
+        } else {
+            this.load.image(key, cfg.file);
+        }
     }
 
     create() {
         this.cameras.main.setBackgroundColor('#202020');
 
-        // Trivial elements (background, floor)
-        DBG_FIXED.forEach(item => {
-            this.add.image(item.x, item.y, item.key)
-                .setOrigin(item.ox, item.oy)
-                .setDepth(item.depth);
-        });
-
-        // Draggable elements
+        // Fixed backdrop pieces (not draggable) vs. draggable parts.
         this.placeables = [];
-        DBG_PLACEABLES.forEach(item => {
-            const spr = this.add.image(item.x, item.y, 'dbg_' + item.name)
-                .setOrigin(0.5, 1)
-                .setDepth(item.depth)
-                .setInteractive({ draggable: true, useHandCursor: true });
-            spr.placeName = item.name;
-            this.placeables.push(spr);
+        Object.entries(BOSS_LAYOUT).forEach(([name, cfg]) => {
+            if (DBG_HIDE_TWITCH && name.includes('twitch')) return;
+            if (cfg.fixed) {
+                this.add.image(cfg.x, cfg.y, 'dbg_' + name)
+                    .setOrigin(cfg.ox ?? 0.5, cfg.oy ?? 0.5)
+                    .setDepth(cfg.depth);
+            } else {
+                this.addPlaceable(name, cfg);
+            }
         });
+        DBG_EXTRA.forEach(item => this.addPlaceable(item.name, item));
 
         // Dragging + selection
         this.input.on('drag', (pointer, obj, dragX, dragY) => {
             obj.x = Math.round(dragX);
-            obj.y = Math.round(dragY);
+            if (obj.bob) obj.baseY = Math.round(dragY);
+            else obj.y = Math.round(dragY);
         });
         this.input.on('dragstart', (pointer, obj) => this.selectSprite(obj));
         this.input.on('gameobjectdown', (pointer, obj) => {
@@ -85,6 +102,38 @@ class DebugScene extends Phaser.Scene {
         this.input.keyboard.on('keydown-ESC', () => this.scene.start('MenuScene'));
 
         this.buildHUD();
+    }
+
+    // Add a draggable, selectable sprite (animated if it has a `sheet`).
+    addPlaceable(name, cfg) {
+        const key = 'dbg_' + name;
+        let spr;
+        if (cfg.sheet) {
+            const animKey = 'dbg_anim_' + name;
+            if (!this.anims.exists(animKey)) {
+                this.anims.create({
+                    key: animKey,
+                    frames: this.anims.generateFrameNumbers(key),
+                    frameRate: cfg.sheet.frameRate ?? 7,
+                    repeat: -1
+                });
+            }
+            spr = this.add.sprite(cfg.x, cfg.y, key).play(animKey);
+        } else {
+            spr = this.add.image(cfg.x, cfg.y, key);
+        }
+        spr.setOrigin(0.5, 1)
+            .setDepth(cfg.depth)
+            .setInteractive({ draggable: true, useHandCursor: true });
+        spr.placeName = name;
+        if (cfg.bob) {
+            // Oscillate around baseY (the resting position) so dragging/dumping
+            // still report the resting y, not the mid-bob value.
+            spr.bob = cfg.bob;
+            spr.baseY = cfg.y;
+            spr.bobT = 0;
+        }
+        this.placeables.push(spr);
     }
 
     buildHUD() {
@@ -115,7 +164,8 @@ class DebugScene extends Phaser.Scene {
     dumpJSON() {
         const data = {};
         this.placeables.forEach(s => {
-            data[s.placeName] = { x: Math.round(s.x), y: Math.round(s.y), depth: s.depth };
+            const y = s.bob ? s.baseY : Math.round(s.y);
+            data[s.placeName] = { x: Math.round(s.x), y, depth: s.depth };
         });
         const json = JSON.stringify(data, null, 2);
         console.log('=== BOSS LAYOUT ===\n' + json);
@@ -134,7 +184,16 @@ class DebugScene extends Phaser.Scene {
         this.time.delayedCall(2000, () => { if (this.statusText) this.statusText.setText(''); });
     }
 
-    update() {
+    update(time, delta) {
+        // Bob preview: smooth (ease in/out) yoyo around each bobbing sprite's
+        // resting baseY, matching BossManager's body/head sway.
+        this.placeables.forEach(s => {
+            if (!s.bob) return;
+            s.bobT += delta;
+            const offset = -s.bob.amp * (1 - Math.cos(Math.PI * s.bobT / s.bob.duration)) / 2;
+            s.y = s.baseY + offset;
+        });
+
         this.selectionBox.clear();
         if (!this.selected) {
             this.infoText.setText('');
@@ -145,6 +204,7 @@ class DebugScene extends Phaser.Scene {
         this.selectionBox.strokeRect(b.x, b.y, b.width, b.height);
 
         const s = this.selected;
-        this.infoText.setText(`sel:${s.placeName}  x:${Math.round(s.x)}  y:${Math.round(s.y)}  depth:${s.depth}`);
+        const restY = s.bob ? s.baseY : Math.round(s.y);
+        this.infoText.setText(`sel:${s.placeName}  x:${Math.round(s.x)}  y:${restY}  depth:${s.depth}`);
     }
 }

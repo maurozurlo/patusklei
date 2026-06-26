@@ -140,17 +140,19 @@ crouched, making the HIGH hand unreadable. Therefore, as part of this feature:
 
 ## 10. Scene layout (current static bake)
 
-Bottom-center origin (0.5, 1) unless noted. From `BossManager.BOSS_LAYOUT`:
+Bottom-center origin (0.5, 1) unless noted. Single source of truth:
+`public/game/data/BossLayout.js` (shared by `BossManager`, `DebugScene`, and
+`GameScene.preload`).
 
 | Element | x | y | depth | notes |
 |---|---|---|---|---|
 | `bg_boss` | 160 | 100 | -100 | origin 0.5,0.5 |
 | `boss_floor` | 160 | 200 | 1.5 | above body/sitting, below player |
-| `boss_hand_l` (HIGH) | 222 | 162 | 0 | behind body |
-| `boss_hand_r` (LOW) | 89 | 163 | 0 | behind body |
-| `boss_body` | 156 | 184 | 1 | bobs (−3px, 1300ms) |
-| `boss_head` | 157 | 115 | 2 | bobs (−4px, 1600ms, +400ms delay) |
-| `boss_sitting` (Lars) | 275 | 193 | 1 | hidden until victory in the real fight |
+| `boss_hand_l_twitch` (HIGH) | 233 | 196 | 0 | behind body; animated idle twitch |
+| `boss_hand_r_twitch` (LOW) | 70 | 196 | 0 | behind body; animated idle twitch |
+| `boss_body` | 154 | 200 | 1 | bobs (−3px, 1300ms) |
+| `boss_head` | 154 | 94 | 2 | bobs (−4px, 1600ms, +400ms delay) |
+| `boss_sitting` (Lars) | 275 | 193 | 2 | hidden until victory in the real fight |
 | Patus | ~24–39 | ~184 | 10 | player start x is 24 today |
 | shelf (NEW) | TBD | TBD | TBD | Rodolfa bomb-drop point (high-hand bomb) |
 

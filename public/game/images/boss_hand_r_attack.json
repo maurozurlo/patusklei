@@ -1,0 +1,107 @@
+{ "frames": {
+   "boss_hand_r_attack 0.png": {
+    "frame": { "x": 0, "y": 0, "w": 175, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 200 },
+    "sourceSize": { "w": 175, "h": 200 },
+    "duration": 100
+   },
+   "boss_hand_r_attack 1.png": {
+    "frame": { "x": 175, "y": 0, "w": 175, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 200 },
+    "sourceSize": { "w": 175, "h": 200 },
+    "duration": 100
+   },
+   "boss_hand_r_attack 2.png": {
+    "frame": { "x": 350, "y": 0, "w": 175, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 200 },
+    "sourceSize": { "w": 175, "h": 200 },
+    "duration": 100
+   },
+   "boss_hand_r_attack 3.png": {
+    "frame": { "x": 525, "y": 0, "w": 175, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 200 },
+    "sourceSize": { "w": 175, "h": 200 },
+    "duration": 100
+   },
+   "boss_hand_r_attack 4.png": {
+    "frame": { "x": 700, "y": 0, "w": 175, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 200 },
+    "sourceSize": { "w": 175, "h": 200 },
+    "duration": 100
+   },
+   "boss_hand_r_attack 5.png": {
+    "frame": { "x": 875, "y": 0, "w": 175, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 200 },
+    "sourceSize": { "w": 175, "h": 200 },
+    "duration": 100
+   },
+   "boss_hand_r_attack 6.png": {
+    "frame": { "x": 1050, "y": 0, "w": 175, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 200 },
+    "sourceSize": { "w": 175, "h": 200 },
+    "duration": 100
+   },
+   "boss_hand_r_attack 7.png": {
+    "frame": { "x": 1225, "y": 0, "w": 175, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 200 },
+    "sourceSize": { "w": 175, "h": 200 },
+    "duration": 100
+   },
+   "boss_hand_r_attack 8.png": {
+    "frame": { "x": 1400, "y": 0, "w": 175, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 200 },
+    "sourceSize": { "w": 175, "h": 200 },
+    "duration": 100
+   },
+   "boss_hand_r_attack 9.png": {
+    "frame": { "x": 1575, "y": 0, "w": 175, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 200 },
+    "sourceSize": { "w": 175, "h": 200 },
+    "duration": 100
+   },
+   "boss_hand_r_attack 10.png": {
+    "frame": { "x": 1750, "y": 0, "w": 175, "h": 200 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 175, "h": 200 },
+    "sourceSize": { "w": 175, "h": 200 },
+    "duration": 100
+   }
+ },
+ "meta": {
+  "app": "https://github.com/LibreSprite/LibreSprite/",
+  "version": "1.1-dev",
+  "image": "E:\\webdev\\patusklei\\public\\game\\images\\boss_hand_r_attack.png",
+  "format": "RGBA8888",
+  "size": { "w": 1925, "h": 200 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" },
+   { "name": "Layer 2", "opacity": 255, "blendMode": "normal" },
+   { "name": "Sprite Sheet", "opacity": 255, "blendMode": "normal" },
+   { "name": "Layer 3", "opacity": 255, "blendMode": "normal" }
+  ]
+ }
+}
