@@ -1,43 +1,51 @@
 // ---------------------------------------------------------------------------
 // DebugScene — boss-scene placement tool (TEMPORARY)
 //
-// Trigger from the main menu by pressing D. Composes the level-3 boss scene so
-// you can position sprites and read back their coordinates:
-//   • DRAG          move a sprite
-//   • click         select a sprite
-//   • I / O         move the selected sprite up / down a layer (depth)
-//   • J  or [DUMP]  copy the layout JSON to the clipboard (also logs to console)
+// Trigger from the main menu by pressing D. The static boss scene + Patus are
+// drawn as non-draggable CONTEXT (already placed); the things we're positioning
+// now — Rodolfa, the bombs, the shelf, the explosions — are the draggable
+// placeables.
+//   • DRAG          move a placeable
+//   • click         select a placeable
+//   • I / O         move the selected placeable up / down a layer (depth)
+//   • J  or [DUMP]  copy the placeable coords (x/y/depth by id) to the clipboard
 //   • ESC           back to the main menu
 //
-// All placed coordinates use a bottom-center origin (0.5, 1), matching how the
-// game sprites sit on the ground. The boss parts come from the shared layout in
-// data/BossLayout.js — drag them, press J, and paste the dump back into that
-// file so the tool and the real scene stay in sync. Remove this scene (and the D
-// trigger in MenuScene + the entries in main.js / index.html) when it's set.
+// Placeables use a bottom-center origin (0.5, 1) unless they set ox/oy — e.g.
+// the explosions use a centered origin so the blast sits over its bomb. Drag,
+// press J, and hand me the numbers.
 // ---------------------------------------------------------------------------
 
-// Hide the idle twitch hands while positioning the attack arm (they overlap it).
-const DBG_HIDE_TWITCH = true;
+// Non-draggable scale/context references that aren't part of BOSS_LAYOUT.
+const DBG_CONTEXT = [
+    { name: 'patus', file: 'images/patus_idle.png', x: 24, y: 185, depth: 10,
+      sheet: { frameWidth: 23, frameHeight: 68, frameRate: 3 } },
+];
 
-// Debug-only sprites that aren't part of the shared static layout:
-//   • patus — the real animated player in-game; shown here just for scale.
-//   • boss_hand_*_attack — fight-state hands being positioned. They overlap the
-//     idle twitch hands, so they live here (not BOSS_LAYOUT) to stay out of the
-//     static scene-3 bake until the fight is wired up. The right attack arm is
-//     split into two layers: `_back` sits behind the body, `_front` over the face.
-//   • boss_hand_r_idle — single-frame resting hand. `bob` previews a gentle
-//     vertical sway around its resting position (the dump records that resting y,
-//     not the mid-bob value).
+// The items being positioned. Bombs and explosions reuse the same files under
+// distinct ids so each instance places independently.
+//   rodolfa         — the mole; enters from the right and walks LEFT, so she's
+//                     previewed flipped (flip at runtime too).
+//   boss_platform   — the shelf the high-hand bomb sits on (background prop).
+//   bomb_carried    — bomb held in Rodolfa's arms (attachment point).
+//   bomb_low        — ground bomb baited by the LOW hand.
+//   bomb_high       — bomb on the shelf, baited by the HIGH hand.
+//   explosion_low   — blast for the ground bomb (centered origin).
+//   explosion_high  — blast for the shelf bomb (centered origin).
 const DBG_EXTRA = [
-    { name: 'patus', file: 'images/patus_jump.png', x: 40, y: 192, depth: 4 },
-    { name: 'boss_hand_r_idle', file: 'images/boss_hand_r_idle.png', x: 79, y: 203, depth: 0,
-      bob: { amp: 3, duration: 1300 } },
-    { name: 'boss_hand_l_idle', file: 'images/boss_hand_l_idle.png', x: 226, y: 202, depth: 0,
-      bob: { amp: 3, duration: 1300 } },
-    { name: 'boss_hand_r_attack_back',  file: 'images/boss_hand_r_attack_back.png',  x: 89, y: 200, depth: 0,
-      sheet: { frameWidth: 175, frameHeight: 200, frameRate: 10 } },
-    { name: 'boss_hand_r_attack_front', file: 'images/boss_hand_r_attack_front.png', x: 93, y: 201, depth: 3,
-      sheet: { frameWidth: 175, frameHeight: 200, frameRate: 10 } },
+    { name: 'rodolfa', file: 'images/rodolfa-walk.png', x: 290, y: 185, depth: 6, flipX: true,
+      sheet: { frameWidth: 29, frameHeight: 32, frameRate: 10 } }, // authored 100ms/frame
+
+    { name: 'boss_platform', file: 'images/boss_platform.png', x: 230, y: 140, depth: 4 },
+
+    { name: 'bomb_carried', file: 'images/bomb.png', x: 280, y: 165, depth: 7 },
+    { name: 'bomb_low',     file: 'images/bomb.png', x: 70,  y: 195, depth: 7 },
+    { name: 'bomb_high',    file: 'images/bomb.png', x: 230, y: 132, depth: 7 },
+
+    { name: 'explosion_low',  file: 'images/explosion.png', x: 70,  y: 190, depth: 8, ox: 0.5, oy: 0.5,
+      sheet: { frameWidth: 100, frameHeight: 85, frameRate: 10 } }, // authored 100ms/frame
+    { name: 'explosion_high', file: 'images/explosion.png', x: 230, y: 128, depth: 8, ox: 0.5, oy: 0.5,
+      sheet: { frameWidth: 100, frameHeight: 85, frameRate: 10 } }, // authored 100ms/frame
 ];
 
 class DebugScene extends Phaser.Scene {
@@ -47,6 +55,7 @@ class DebugScene extends Phaser.Scene {
 
     preload() {
         Object.entries(BOSS_LAYOUT).forEach(([name, cfg]) => this.loadAsset(name, cfg));
+        DBG_CONTEXT.forEach(item => this.loadAsset(item.name, item));
         DBG_EXTRA.forEach(item => this.loadAsset(item.name, item));
     }
 
@@ -65,18 +74,12 @@ class DebugScene extends Phaser.Scene {
     create() {
         this.cameras.main.setBackgroundColor('#202020');
 
-        // Fixed backdrop pieces (not draggable) vs. draggable parts.
+        // Static boss scene + Patus, drawn as non-draggable context.
+        Object.entries(BOSS_LAYOUT).forEach(([name, cfg]) => this.addContext(name, cfg));
+        DBG_CONTEXT.forEach(item => this.addContext(item.name, item));
+
+        // The draggable placeables we're positioning now.
         this.placeables = [];
-        Object.entries(BOSS_LAYOUT).forEach(([name, cfg]) => {
-            if (DBG_HIDE_TWITCH && name.includes('twitch')) return;
-            if (cfg.fixed) {
-                this.add.image(cfg.x, cfg.y, 'dbg_' + name)
-                    .setOrigin(cfg.ox ?? 0.5, cfg.oy ?? 0.5)
-                    .setDepth(cfg.depth);
-            } else {
-                this.addPlaceable(name, cfg);
-            }
-        });
         DBG_EXTRA.forEach(item => this.addPlaceable(item.name, item));
 
         // Dragging + selection
@@ -104,6 +107,28 @@ class DebugScene extends Phaser.Scene {
         this.buildHUD();
     }
 
+    // Non-interactive reference sprite (animated if it has a `sheet`).
+    addContext(name, cfg) {
+        const key = 'dbg_' + name;
+        let obj;
+        if (cfg.sheet) {
+            const animKey = 'dbg_anim_' + name;
+            if (!this.anims.exists(animKey)) {
+                this.anims.create({
+                    key: animKey,
+                    frames: this.anims.generateFrameNumbers(key),
+                    frameRate: cfg.sheet.frameRate ?? 7,
+                    repeat: -1
+                });
+            }
+            obj = this.add.sprite(cfg.x, cfg.y, key).play(animKey);
+        } else {
+            obj = this.add.image(cfg.x, cfg.y, key);
+        }
+        obj.setOrigin(cfg.ox ?? 0.5, cfg.oy ?? 1).setDepth(cfg.depth).setAlpha(0.85);
+        return obj;
+    }
+
     // Add a draggable, selectable sprite (animated if it has a `sheet`).
     addPlaceable(name, cfg) {
         const key = 'dbg_' + name;
@@ -122,9 +147,10 @@ class DebugScene extends Phaser.Scene {
         } else {
             spr = this.add.image(cfg.x, cfg.y, key);
         }
-        spr.setOrigin(0.5, 1)
+        spr.setOrigin(cfg.ox ?? 0.5, cfg.oy ?? 1)
             .setDepth(cfg.depth)
             .setInteractive({ draggable: true, useHandCursor: true });
+        if (cfg.flipX) spr.setFlipX(true);
         spr.placeName = name;
         if (cfg.bob) {
             // Oscillate around baseY (the resting position) so dragging/dumping
