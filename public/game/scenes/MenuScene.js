@@ -31,6 +31,12 @@ class MenuScene extends Phaser.Scene {
             return;
         }
 
+        // Boss victory: 3 lore screens in sequence, then back to the main menu.
+        if (this.menuKey === 'BOSS_ENDING') {
+            this.showLoreSequence(['BOSS_VICTORY', 'GAME_COMPLETED', 'TRUE_ENDING']);
+            return;
+        }
+
         if (this.menuKey === 'GAME_OVER') {
             this.showGameOver();
             return;
@@ -177,6 +183,27 @@ class MenuScene extends Phaser.Scene {
         });
     }
 
+    // Show a chain of lore screens; CONTINUAR advances, the last shows FIN and
+    // returns to the main menu.
+    showLoreSequence(keys, index = 0) {
+        this.clearUI();
+        const styles = this.getStyles();
+        const lore = this.getLoreText(keys[index]);
+
+        this.add.text(160, 40, lore.title, styles.subtitle).setOrigin(0.5);
+        this.add.text(10, 65, lore.text, styles.body);
+
+        const last = index === keys.length - 1;
+        const button = this.add.text(160, 190, last ? 'FIN' : 'CONTINUAR', styles.buttonPrimary)
+            .setOrigin(0.5)
+            .setInteractive();
+
+        button.on('pointerdown', () => {
+            if (last) this.scene.start('MenuScene');
+            else this.showLoreSequence(keys, index + 1);
+        });
+    }
+
     // --------------------------------------------------
     // Lore content
     // --------------------------------------------------
@@ -194,6 +221,11 @@ class MenuScene extends Phaser.Scene {
             BOSS_LORE: {
                 title: 'la Triple Panera',
                 text: "Patus finalmente ha llegado a la guarida del perito ventrilocuista Lars Wampiola. Esquiva los proyectiles, usa la mandarina."
+            },
+            // MOCK copy for the boss-victory reveal (3rd screen TBD per PRD §6).
+            BOSS_VICTORY: {
+                title: 'El Titiritero',
+                text: "La marioneta se desploma entre chispas. Tras los hilos, sentado y tranquilo, aguarda Lars Wampiola — el verdadero titiritero. Patus se acerca para encararlo."
             },
             GAME_COMPLETED: {
                 title: 'Victoria: Patus Klei',

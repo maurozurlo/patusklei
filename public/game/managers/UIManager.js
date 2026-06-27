@@ -22,10 +22,25 @@ class UIManager {
 
         this.scoreText.setDepth(10);
 
-        // Boss fight shows a row of hearts (replaces the old "HP:" text).
+        // Boss fight shows a row of hearts (replaces the old "HP:" text) plus a
+        // countdown to Rodolfa's next bomb.
         if (level === 3) {
             this.buildHearts(this.scene.maxHearts);
+            this.rodolfaText = this.scene.add.text(8, 28, '', {
+                fontFamily: '"Press Start 2P"',
+                fontSize: '8px',
+                color: '#ffd24a',
+                stroke: '#000',
+                strokeThickness: 1
+            }).setDepth(10);
         }
+    }
+
+    // n>0 → attacks remaining; 0 → Rodolfa is here; null → hide.
+    setRodolfaCounter(n) {
+        if (!this.rodolfaText) return;
+        if (n === null || n === undefined) { this.rodolfaText.setText(''); return; }
+        this.rodolfaText.setText(n > 0 ? `RODOLFA ${n}` : 'RODOLFA!');
     }
 
     updateScore(score) {

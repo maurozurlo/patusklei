@@ -192,7 +192,9 @@ class PlayerManager {
     }
 
     handleInput(cursors) {
-        const onGround = this.player.body.touching.down;
+        // blocked.down is reliable when resting on the static ground; touching.down
+        // alone can read false on the landing frame and strand the jump animation.
+        const onGround = this.player.body.blocked.down || this.player.body.touching.down;
         const useJumpAnim = this.level > 1; // level 1 keeps the bidet sprite while jumping
 
         // Jump

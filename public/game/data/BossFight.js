@@ -33,6 +33,11 @@ const BOSS_FIGHT = {
     // Strictly alternating; index 0 attacks first.
     order: ['low', 'high'],
 
+    // Bomb cadence (PRD §5): survive N attacks → Rodolfa delivers a bomb that
+    // destroys a hand. Phase 1 destroys the LOW hand, phase 2 the HIGH hand.
+    // PRD values are 10 / 5 — lowered to 2 / 1 for testing the full sequence.
+    cadence: { phase1: 2, phase2: 1 },
+
     hands: {
         // LOW — far hand, screen-wide low sweep. JUMP to dodge.
         low: {
@@ -85,6 +90,7 @@ const BOSS_FIGHT = {
             frameWidth: 29, frameHeight: 32, frames: 4, frameRate: 10,
             depth: 6,
             bombOffset: { x: -3, y: -28 },
+            walkSpeed: 130, runSpeed: 280, jumpDuration: 420, // movement tuning (px/s, ms)
 
             spawn: { x: 306, y: 189 }, // enters from the right
             exitX: 345,                // runs off the right edge → despawn

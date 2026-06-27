@@ -20,6 +20,10 @@ class GameScene extends Phaser.Scene {
         // persistence isn't wired yet). Tweak maxHearts to taste.
         this.maxHearts = 3;
         this.hearts = this.maxHearts;
+
+        // True while a scripted sequence (e.g. the victory run) drives Patus and
+        // player input is locked out.
+        this.cutscene = false;
     }
     preload() {
 
@@ -64,6 +68,12 @@ class GameScene extends Phaser.Scene {
             // Player heart icons (HUD).
             this.load.image('heart_full', 'images/heart_full.png');
             this.load.image('heart_damage', 'images/heart_damage.png');
+
+            // Bomb-phase props (Rodolfa, bomb, shelf, explosion).
+            this.load.spritesheet('rodolfa', 'images/rodolfa-walk.png', { frameWidth: 29, frameHeight: 32 });
+            this.load.spritesheet('explosion', 'images/explosion.png', { frameWidth: 100, frameHeight: 85 });
+            this.load.image('bomb', 'images/bomb.png');
+            this.load.image('boss_platform', 'images/boss_platform.png');
         }
 
         // OBSTACLES
@@ -255,7 +265,10 @@ class GameScene extends Phaser.Scene {
     update(time, delta) {
         if (this.isGameOver) return;
 
-        this.playerManager.handleInput(this.cursors);
+        // Player is locked out while a scripted sequence drives Patus.
+        if (!this.cutscene) {
+            this.playerManager.handleInput(this.cursors);
+        }
 
         // safety clamp: if the player somehow drops below the ground (physics glitch)
         if (this.playerManager.player.y > this.groundY) {

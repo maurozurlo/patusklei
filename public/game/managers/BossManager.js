@@ -80,13 +80,18 @@ class BossManager {
     }
 
     // -----------------------------------------------------------------------
-    // LIVE FIGHT — the dodge core (BossFight.js is the data).
+    // LIVE FIGHT — dodge core + bomb phase (BossFight.js is the data).
     //
-    // Each hand cycles idle → twitch (telegraph) → attack → idle, and the two
-    // hands attack strictly alternating, one at a time. During each attack's
-    // damage window we read the player's pose (cheap, no physics overlap): if
-    // it's the wrong pose at any frame in the window it's a hit. For now a hit
-    // is just a flash — Patus is invincible until hearts are wired up.
+    // Hands cycle idle → twitch (telegraph) → attack → idle, strictly
+    // alternating, one at a time. During an attack's damage window we read the
+    // player's pose (cheap, no physics overlap); the wrong pose at any window
+    // frame is a hit (flash + one heart).
+    //
+    // Bomb phase (PRD §5): after surviving `cadence.phase1` attacks, Rodolfa
+    // walks in and drops a bomb at a hand's bait spot; that hand's NEXT attack
+    // slams into the bomb → explosion → hand destroyed. Then the remaining hand
+    // attacks `cadence.phase2` times and gets the same treatment → victory.
+    // NO DAMAGE YET from the blast — it only destroys the hand.
     // -----------------------------------------------------------------------
     setupFight() {
         // The static bake loops the twitch sheets as idle hands and shows the
@@ -98,11 +103,62 @@ class BossManager {
         this.hands = {};
         this.attackHitLatched = false;
         Object.entries(BOSS_FIGHT.hands).forEach(([id, cfg]) => this.buildFightHand(id, cfg));
+        this.buildBombProps();
 
-        this.attackIndex = 0;
+        // Fight state.
+        this.activeHands = [...BOSS_FIGHT.order]; // 'low' attacks first
+        this.turn = 0;
+        this.phase = 1;
+        this.phaseAttacks = 0;
+        this.baitedHand = null;   // hand whose next attack detonates a bomb
+        this.cadence = BOSS_FIGHT.cadence;
+
+        this.scene.uiManager.setRodolfaCounter(this.cadence.phase1);
         this.scene.events.once('shutdown', () => this.stopFight());
 
         this.queueAttack(BOSS_FIGHT.timing.restBeforeTelegraph);
+    }
+
+    // Shelf (visible scenery), bombs, explosions and Rodolfa — all created up
+    // front; everything but the shelf starts hidden.
+    buildBombProps() {
+        const P = BOSS_FIGHT.props;
+
+        this.parts.boss_platform = this.scene.add.image(P.platform.x, P.platform.y, 'boss_platform')
+            .setOrigin(0.5, 1).setDepth(P.platform.depth);
+
+        this.bombs = {};
+        Object.entries(P.bombs).forEach(([id, c]) => {
+            this.bombs[id] = this.scene.add.image(c.x, c.y, 'bomb')
+                .setOrigin(0.5, 1).setDepth(c.depth).setVisible(false);
+        });
+
+        this.explosions = {};
+        Object.entries(P.explosions).forEach(([id, c]) => {
+            const animKey = 'fight_explosion_' + id;
+            if (!this.scene.anims.exists(animKey)) {
+                this.scene.anims.create({
+                    key: animKey,
+                    frames: this.scene.anims.generateFrameNumbers('explosion', { start: 0, end: 5 }),
+                    frameRate: 10, repeat: 0
+                });
+            }
+            const ex = this.scene.add.sprite(c.x, c.y, 'explosion')
+                .setOrigin(0.5, 0.5).setDepth(c.depth).setVisible(false);
+            ex.fightAnimKey = animKey;
+            this.explosions[id] = ex;
+        });
+
+        const r = P.rodolfa;
+        if (!this.scene.anims.exists('rodolfa_walk')) {
+            this.scene.anims.create({
+                key: 'rodolfa_walk',
+                frames: this.scene.anims.generateFrameNumbers('rodolfa', { start: 0, end: r.frames - 1 }),
+                frameRate: r.frameRate, repeat: -1
+            });
+        }
+        this.rodolfa = this.scene.add.sprite(r.spawn.x, r.spawn.y, 'rodolfa')
+            .setOrigin(0.5, 1).setDepth(r.depth).setVisible(false);
     }
 
     buildFightHand(id, cfg) {
@@ -145,35 +201,49 @@ class BossManager {
     }
 
     queueAttack(delay) {
-        this.fightTimers.push(this.scene.time.delayedCall(delay, () => this.telegraph()));
+        this.fightTimers.push(this.scene.time.delayedCall(delay, () => this.startAttack()));
     }
 
-    // Wind-up: hide rest, play the twitch once, then strike.
-    telegraph() {
+    // Pick the attacker (forced to the baited hand when a bomb is armed, else
+    // the next in rotation), telegraph, then strike.
+    startAttack() {
         if (this.scene.isGameOver) return;
-        const id = BOSS_FIGHT.order[this.attackIndex % BOSS_FIGHT.order.length];
-        const hand = this.hands[id];
+        let id;
+        if (this.baitedHand) {
+            id = this.baitedHand;
+        } else {
+            id = this.activeHands[this.turn % this.activeHands.length];
+            this.turn++;
+        }
+        this.telegraph(id, () => {
+            if (this.scene.isGameOver) return;
+            if (id === this.baitedHand) this.baitedAttack(id);
+            else this.normalAttack(id);
+        });
+    }
 
+    // Wind-up: hide rest, play the twitch once, then continue.
+    telegraph(id, onDone) {
+        const hand = this.hands[id];
         hand.idle.setVisible(false);
         hand.twitch.setVisible(true).play(hand.twitch.fightAnimKey);
         hand.twitch.once('animationcomplete', () => {
             hand.twitch.setVisible(false);
-            this.attack(id);
+            onDone();
         });
     }
 
-    // Strike: play both attack layers; watch the damage window for a bad pose.
-    attack(id) {
-        if (this.scene.isGameOver) return;
+    // Normal strike: play both attack layers; watch the damage window for a bad
+    // pose. frame.index is Phaser's 1-based position, matching the authored
+    // "frames start at 1" windows. One hit per attack (latched).
+    normalAttack(id) {
         const hand = this.hands[id];
-        const [d0, d1] = hand.cfg.damageFrames; // 1-based, matches frame.index
+        const [d0, d1] = hand.cfg.damageFrames;
         this.attackHitLatched = false;
 
         hand.back.setVisible(true).play(hand.back.fightAnimKey);
         hand.front.setVisible(true).play(hand.front.fightAnimKey);
 
-        // frame.index is Phaser's 1-based position in the anim, matching the
-        // authored "frames start at 1" windows. One hit per attack (latched).
         const onFrame = (anim, frame) => {
             if (this.attackHitLatched) return;
             if (frame.index >= d0 && frame.index <= d1 && !this.isPlayerSafe(hand.cfg.dodge)) {
@@ -188,9 +258,40 @@ class BossManager {
             hand.back.setVisible(false);
             hand.front.setVisible(false);
             hand.idle.setVisible(true);
-            this.attackIndex++;
-            this.queueAttack(BOSS_FIGHT.timing.recoverAfterAttack);
+            this.onAttackResolved();
         });
+    }
+
+    // Baited strike: the hand slams into the armed bomb. At the first damage
+    // frame it detonates and the hand is destroyed (no player damage yet).
+    baitedAttack(id) {
+        const hand = this.hands[id];
+        const impact = hand.cfg.damageFrames[0];
+
+        hand.back.setVisible(true).play(hand.back.fightAnimKey);
+        hand.front.setVisible(true).play(hand.front.fightAnimKey);
+
+        const onFrame = (anim, frame) => {
+            if (frame.index >= impact) {
+                hand.front.off('animationupdate', onFrame);
+                this.detonate(id);
+            }
+        };
+        hand.front.on('animationupdate', onFrame);
+    }
+
+    // After a survived attack: tick the phase counter; at the threshold, send
+    // Rodolfa with a bomb, otherwise schedule the next attack.
+    onAttackResolved() {
+        this.phaseAttacks++;
+        const threshold = this.phase === 1 ? this.cadence.phase1 : this.cadence.phase2;
+        this.scene.uiManager.setRodolfaCounter(Math.max(0, threshold - this.phaseAttacks));
+
+        if (this.phaseAttacks >= threshold) {
+            this.startDelivery(this.phase === 1 ? 'low' : 'high');
+        } else {
+            this.queueAttack(BOSS_FIGHT.timing.recoverAfterAttack);
+        }
     }
 
     // Cheap pose check — no physics overlap.
@@ -211,6 +312,169 @@ class BossManager {
             targets: p, alpha: 0.25, duration: 70, yoyo: true, repeat: 4,
             onComplete: () => p.setAlpha(1)
         });
+    }
+
+    // ----- Rodolfa bomb delivery --------------------------------------------
+
+    startDelivery(targetId) {
+        this.scene.uiManager.setRodolfaCounter(0);
+        this.runRodolfa(targetId, () => {
+            // Bomb is armed (baitedHand set at the drop step); the next attack is
+            // forced to the baited hand and detonates it.
+            this.queueAttack(700);
+        });
+    }
+
+    runRodolfa(deliveryId, onDone) {
+        const r = BOSS_FIGHT.props.rodolfa;
+        this.rodolfa.setPosition(r.spawn.x, r.spawn.y).setFlipX(true).setVisible(true).play('rodolfa_walk');
+        this.bombs.carried.setVisible(true);
+        this.syncCarriedBomb();
+        this.runSteps(r.deliveries[deliveryId], 0, deliveryId, onDone);
+    }
+
+    runSteps(steps, i, deliveryId, onDone) {
+        if (i >= steps.length) {
+            this.rodolfa.setVisible(false);
+            onDone();
+            return;
+        }
+        const step = steps[i];
+        const next = () => this.runSteps(steps, i + 1, deliveryId, onDone);
+        switch (step.action) {
+            case 'walk': this.rodolfaMove(step.x, step.y ?? this.rodolfa.y, false, next); break;
+            case 'run':  this.rodolfaMove(step.x, this.rodolfa.y, true, next); break;
+            case 'jump': this.rodolfaJump(step.x, step.y, next); break;
+            case 'drop': this.rodolfaDrop(deliveryId, step.hold ?? 0, next); break;
+            default:     next();
+        }
+    }
+
+    rodolfaMove(x, y, run, done) {
+        const r = BOSS_FIGHT.props.rodolfa;
+        const speed = run ? r.runSpeed : r.walkSpeed;
+        const dist = Math.hypot(x - this.rodolfa.x, y - this.rodolfa.y) || 1;
+        this.rodolfa.setFlipX(x < this.rodolfa.x); // art faces right; flip to go left
+        if (!this.rodolfa.anims.isPlaying) this.rodolfa.play('rodolfa_walk');
+        this.scene.tweens.add({
+            targets: this.rodolfa, x, y, duration: (dist / speed) * 1000, ease: 'Linear',
+            onUpdate: () => this.syncCarriedBomb(),
+            onComplete: done
+        });
+    }
+
+    rodolfaJump(x, y, done) {
+        const up = y < this.rodolfa.y;
+        this.rodolfa.setFlipX(x < this.rodolfa.x);
+        this.scene.tweens.add({
+            targets: this.rodolfa, x, y,
+            duration: BOSS_FIGHT.props.rodolfa.jumpDuration,
+            ease: up ? 'Sine.out' : 'Sine.in',
+            onUpdate: () => this.syncCarriedBomb(),
+            onComplete: done
+        });
+    }
+
+    // Swap the carried bomb for the placed (armed) bomb and mark the hand baited.
+    rodolfaDrop(deliveryId, hold, done) {
+        this.bombs.carried.setVisible(false);
+        const c = BOSS_FIGHT.props.bombs[deliveryId];
+        this.bombs[deliveryId].setPosition(c.x, c.y).setVisible(true);
+        this.baitedHand = deliveryId;
+        // TODO: drop animation + a visible bomb timer.
+        if (hold > 0) this.fightTimers.push(this.scene.time.delayedCall(hold, done));
+        else done();
+    }
+
+    syncCarriedBomb() {
+        if (!this.bombs.carried.visible) return;
+        const o = BOSS_FIGHT.props.rodolfa.bombOffset;
+        this.bombs.carried.setPosition(this.rodolfa.x + o.x, this.rodolfa.y + o.y)
+            .setFlipX(this.rodolfa.flipX);
+    }
+
+    // ----- Hand destruction / victory ---------------------------------------
+
+    detonate(id) {
+        const hand = this.hands[id];
+        hand.back.anims.stop(); hand.front.anims.stop();
+        [hand.back, hand.front, hand.idle, hand.twitch].forEach(s => s.setVisible(false));
+        this.bombs[id].setVisible(false);
+        this.playExplosion(id);
+
+        this.activeHands = this.activeHands.filter(h => h !== id);
+        this.baitedHand = null;
+        this.afterDestroy();
+    }
+
+    playExplosion(id) {
+        const ex = this.explosions[id];
+        ex.setVisible(true).play(ex.fightAnimKey);
+        ex.once('animationcomplete', () => ex.setVisible(false));
+    }
+
+    afterDestroy() {
+        if (this.activeHands.length === 0) {
+            this.victory();
+            return;
+        }
+        // Into phase 2 — only the remaining hand attacks.
+        this.phase = 2;
+        this.phaseAttacks = 0;
+        this.scene.uiManager.setRodolfaCounter(this.cadence.phase2);
+        this.queueAttack(BOSS_FIGHT.timing.recoverAfterAttack + 400);
+    }
+
+    victory() {
+        this.stopFight();
+        this.scene.uiManager.setRodolfaCounter(null);
+        this.scene.cutscene = true; // lock player input for the scripted run
+
+        // Input is now locked, so handleInput won't clear a mid-jump pose. Drop
+        // Patus back to idle (gravity still lands him) so he isn't frozen in the
+        // single-frame jump sprite during the collapse.
+        const p = this.scene.playerManager.player;
+        p.setVelocityX(0);
+        p.play('patus_idle');
+
+        // Puppet collapses; Lars (boss_sitting) is revealed.
+        ['boss_body', 'boss_head'].forEach(k => {
+            if (this.parts[k]) {
+                this.scene.tweens.add({
+                    targets: this.parts[k], alpha: 0, y: this.parts[k].y + 12, duration: 800
+                });
+            }
+        });
+        if (this.parts.boss_sitting) {
+            this.parts.boss_sitting.setVisible(true).setAlpha(0);
+            this.scene.tweens.add({ targets: this.parts.boss_sitting, alpha: 1, delay: 700, duration: 600 });
+        }
+
+        // Beat to let the reveal land, then Patus runs right to Lars.
+        this.fightTimers.push(this.scene.time.delayedCall(1300, () => this.runToLars()));
+    }
+
+    // Scripted victory walk: Patus runs to just short of Lars, then the game
+    // hands off to the 3 ending lore screens (mock — see MenuScene BOSS_ENDING).
+    // Driven by velocity (tweening x would fight the Arcade body), stopped after
+    // the computed travel time.
+    runToLars() {
+        const p = this.scene.playerManager.player;
+        const larsX = this.parts.boss_sitting ? this.parts.boss_sitting.x : 240;
+        const stopX = larsX - 45;             // stop just short of him
+        const speed = 100;                    // px/s
+        const dist = Math.max(0, stopX - p.x);
+
+        p.play('patus_walk').setFlipX(false);
+        p.setVelocityX(speed);
+
+        this.fightTimers.push(this.scene.time.delayedCall((dist / speed) * 1000, () => {
+            p.setVelocityX(0);
+            p.play('patus_idle');
+            this.fightTimers.push(this.scene.time.delayedCall(900, () => {
+                this.scene.scene.start('MenuScene', { menuKey: 'BOSS_ENDING' });
+            }));
+        }));
     }
 
     stopFight() {
