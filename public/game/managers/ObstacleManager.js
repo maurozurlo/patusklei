@@ -148,6 +148,7 @@ class ObstacleManager {
         bird.setDepth(9);
         bird.body.setSize(c.width, c.height, false);
         bird.body.setOffset(c.offsetX, c.offsetY);
+        bird.isBird = true; // so hitObstacle plays the bird hit cue
 
         // One-time "duck!" hint the first time a bird shows up.
         if (!this.birdHintShown) {

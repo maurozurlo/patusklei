@@ -215,6 +215,9 @@ class BossManager {
             id = this.activeHands[this.turn % this.activeHands.length];
             this.turn++;
         }
+        // Baited wind-up: start the bomb's beep fuse so it climaxes at the slam.
+        if (id === this.baitedHand) this.playBombCountdown();
+
         this.telegraph(id, () => {
             if (this.scene.isGameOver) return;
             if (id === this.baitedHand) this.baitedAttack(id);
@@ -307,6 +310,8 @@ class BossManager {
     // A failed dodge: drop one heart (latched to one per attack) and flash Patus.
     registerHit() {
         const p = this.scene.playerManager.player;
+        this.scene.sfx.boss_hit.play();
+        this.scene.sfx.patus_hit.play();
         this.scene.loseHeart();
         this.scene.tweens.add({
             targets: p, alpha: 0.25, duration: 70, yoyo: true, repeat: 4,
@@ -381,9 +386,19 @@ class BossManager {
         const c = BOSS_FIGHT.props.bombs[deliveryId];
         this.bombs[deliveryId].setPosition(c.x, c.y).setVisible(true);
         this.baitedHand = deliveryId;
+        this.scene.sfx.bomb_planted.play();
         // TODO: drop animation + a visible bomb timer.
         if (hold > 0) this.fightTimers.push(this.scene.time.delayedCall(hold, done));
         else done();
+    }
+
+    // Accelerating beep "fuse" — 3 slow then 3 fast, leading into the boom.
+    // Started when the baited hand winds up, so it climaxes near detonation.
+    playBombCountdown() {
+        const beepTimes = [0, 300, 600, 800, 1000, 1200];
+        beepTimes.forEach(t => this.fightTimers.push(
+            this.scene.time.delayedCall(t, () => this.scene.sfx.bomb_beep.play())
+        ));
     }
 
     syncCarriedBomb() {
@@ -409,6 +424,7 @@ class BossManager {
 
     playExplosion(id) {
         const ex = this.explosions[id];
+        this.scene.sfx.explo.play();
         ex.setVisible(true).play(ex.fightAnimKey);
         ex.once('animationcomplete', () => ex.setVisible(false));
     }

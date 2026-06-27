@@ -10,6 +10,7 @@ class MenuScene extends Phaser.Scene {
 
     preload() {
         this.load.image('main_menu', 'images/main_menu.png');
+        this.load.audio('sfx_click', 'audio/sfx_click.wav');
 
         // Auto-load any backdrop images referenced by lore entries (keyed by
         // their path), so a screen just needs `image: 'images/foo.png'`.
@@ -21,6 +22,9 @@ class MenuScene extends Phaser.Scene {
     create() {
         // Apply the persisted sound preference (global to the sound manager).
         this.sound.mute = !isMusicPlaying;
+
+        // Click SFX on any UI button (every menu/lore control is interactive).
+        this.input.on('gameobjectdown', () => this.sound.play('sfx_click'));
 
         // TEMPORARY: press D to open the boss-scene placement tool.
         this.input.keyboard.once('keydown-D', () => this.scene.start('DebugScene'));

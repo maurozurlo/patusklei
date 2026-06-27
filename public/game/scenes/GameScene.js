@@ -35,6 +35,14 @@ class GameScene extends Phaser.Scene {
         this.load.audio('sfx_pepper', 'audio/sfx_pepper.wav');
         this.load.audio('sfx_tuna', 'audio/sfx_tuna.wav');
 
+        // Hit feedback + boss bomb sequence.
+        this.load.audio('sfx_patus_hit', 'audio/sfx_patus_hit.wav');
+        this.load.audio('sfx_birdhit', 'audio/sfx_birdhit.wav');
+        this.load.audio('sfx_boss_hit', 'audio/sfx_boss_hit.wav');
+        this.load.audio('sfx_bomb_planted', 'audio/sfx_bomb_planted.wav');
+        this.load.audio('sfx_bomb_beep', 'audio/sfx_bomb_beep.wav');
+        this.load.audio('sfx_explo', 'audio/sfx_explo.wav');
+
         this.load.audio('bgm_lvl1', 'audio/bgm_lvl1.wav');
 
         // IMAGES
@@ -168,6 +176,12 @@ class GameScene extends Phaser.Scene {
             pepper: this.sound.add('sfx_pepper'),
             tuna: this.sound.add('sfx_tuna'),
             lvl1: this.sound.add('bgm_lvl1', { loop: true }),
+            patus_hit: this.sound.add('sfx_patus_hit'),
+            birdhit: this.sound.add('sfx_birdhit'),
+            boss_hit: this.sound.add('sfx_boss_hit'),
+            bomb_planted: this.sound.add('sfx_bomb_planted'),
+            bomb_beep: this.sound.add('sfx_bomb_beep'),
+            explo: this.sound.add('sfx_explo'),
         };
 
 
@@ -320,7 +334,13 @@ class GameScene extends Phaser.Scene {
         this.physics.pause();
         player.setTint(0xff0000);
 
-        this.sfx.crash.play();
+        // The level-2 bird gets its own hit cue; everything else is a crash.
+        if (obstacle && obstacle.isBird) {
+            this.sfx.birdhit.play();
+            this.sfx.patus_hit.play();
+        } else {
+            this.sfx.crash.play();
+        }
 
         // Add a slight delay so the player sees the "red" tint before switching
         this.time.delayedCall(1000, () => {
