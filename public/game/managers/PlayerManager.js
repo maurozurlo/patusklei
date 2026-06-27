@@ -274,6 +274,13 @@ class PlayerManager {
         }
 
 
+        // Keep the hitbox bottom pinned to Patus's feet regardless of the
+        // current frame's height. On level 3 the idle (68px), jump (76px) and
+        // crouch (42px) frames differ, so a body offset computed for one frame
+        // leaves the body floating/short on another — which strands the jump
+        // animation because the body never reaches the ground on landing.
+        this.updateBodySize(this.player.isCrouching ? this.player.crouchHeight : this.player.standHeight);
+
         // Update foam visibility (follows player on ground)
         if (this.foam) {
             this.foam.setVisible(onGround);
