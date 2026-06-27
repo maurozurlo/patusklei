@@ -10,6 +10,8 @@ class MenuScene extends Phaser.Scene {
 
     preload() {
         this.load.image('main_menu', 'images/main_menu.png');
+        this.load.image('icon_soundon', 'images/icon_soundon.png');
+        this.load.image('icon_soundoff', 'images/icon_soundoff.png');
         this.load.audio('sfx_click', 'audio/sfx_click.wav');
 
         // Auto-load any backdrop images referenced by lore entries (keyed by
@@ -67,37 +69,52 @@ class MenuScene extends Phaser.Scene {
     }
 
     getStyles() {
+        // Black outline on the pixel text, per the designer's spec (~4px stroke
+        // at 18px — scaled per size). strokeThickness values are tunable.
+        const outline = '#000000';
         return {
             title: {
                 fontFamily: '"Press Start 2P"',
                 fontSize: '26px',
                 color: '#ffffff',
+                stroke: outline,
+                strokeThickness: 6
             },
             subtitle: {
                 fontFamily: '"Press Start 2P"',
                 fontSize: '18px',
-                fill: '#ffcc00'
+                fill: '#ffcc00',
+                stroke: outline,
+                strokeThickness: 4
             },
             body: {
                 fontFamily: '"Press Start 2P"',
                 fontSize: '12px',
                 fill: '#ffffff',
-                wordWrap: { width: 310 }
+                wordWrap: { width: 310 },
+                stroke: outline,
+                strokeThickness: 2
             },
             buttonPrimary: {
                 fontFamily: '"Press Start 2P"',
                 fontSize: '16px',
-                fill: '#00ff00'
+                fill: '#FFFF55',
+                stroke: outline,
+                strokeThickness: 4
             },
             buttonSecondary: {
                 fontFamily: '"Press Start 2P"',
                 fontSize: '16px',
-                fill: '#ffffff'
+                fill: '#ffffff',
+                stroke: outline,
+                strokeThickness: 4
             },
             danger: {
                 fontFamily: '"Press Start 2P"',
                 fontSize: '26px',
-                fill: '#ff0000'
+                fill: '#ff0000',
+                stroke: outline,
+                strokeThickness: 6
             }
         };
     }
@@ -122,14 +139,12 @@ class MenuScene extends Phaser.Scene {
             this.showLoreScreen('LEVEL_1_LORE');
         });
 
-        this.musicButton = this.add.text(
-            160,
-            175,
-            `SONIDO: ${isMusicPlaying ? 'SI' : 'NO'}`,
-            styles.buttonSecondary
-        )
-            .setOrigin(0.5)
-            .setInteractive();
+        // Sound toggle icon, anchored top-right with a little padding.
+        const pad = 8;
+        this.musicButton = this.add.image(320 - pad, pad, isMusicPlaying ? 'icon_soundon' : 'icon_soundoff')
+            .setOrigin(1, 0)
+            .setDepth(60)
+            .setInteractive({ useHandCursor: true });
 
         this.musicButton.on('pointerdown', this.toggleMusic, this);
 
@@ -155,7 +170,7 @@ class MenuScene extends Phaser.Scene {
 
     toggleMusic() {
         isMusicPlaying = !isMusicPlaying;
-        this.musicButton.setText(`SONIDO: ${isMusicPlaying ? 'SI' : 'NO'}`);
+        this.musicButton.setTexture(isMusicPlaying ? 'icon_soundon' : 'icon_soundoff');
         this.sound.mute = !isMusicPlaying;
         localStorage.setItem('musicPlaying', isMusicPlaying);
     }

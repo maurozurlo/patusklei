@@ -34,5 +34,19 @@ const config = {
     }
 };
 
-// Initialize Phaser
-const game = new Phaser.Game(config);
+// Initialize Phaser only after the pixel font is ready. Phaser renders each
+// text object to a texture once, using whatever font is available at that
+// moment — boot too early and the fallback (Arial) gets baked in permanently.
+let game;
+function bootGame() {
+    game = new Phaser.Game(config);
+}
+
+if (document.fonts && document.fonts.load) {
+    document.fonts.load('16px "Press Start 2P"')
+        .then(() => document.fonts.ready)
+        .then(bootGame)
+        .catch(bootGame); // never let a font hiccup block the game
+} else {
+    bootGame();
+}

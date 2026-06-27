@@ -50,9 +50,11 @@ class UIManager {
     // One-time on-screen hint the first time the level-2 bird appears (teaches
     // crouch). Copy/placement are tunable.
     showHint(type) {
-        const hint = this.scene.add.text(160, 70, type === "crouch" ? 'AGACHATE CON ⬇' : 'SALTA CON ⬆', {
+        const isMobile = this.scene.sys.game.device.os.android || this.scene.sys.game.device.os.iOS;
+        const jumpText = `SALTA CON ${isMobile ? '⬆' : 'ESPACIO'}`;
+        const hint = this.scene.add.text(160, 70, type === "crouch" ? 'AGACHATE CON ⬇' : jumpText, {
             fontFamily: '"Press Start 2P"',
-            fontSize: '24px',
+            fontSize: '14px',
             color: '#ffff00',
             stroke: '#000',
             strokeThickness: 2

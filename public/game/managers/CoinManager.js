@@ -123,6 +123,36 @@ class CoinManager {
         return coin.coinValue;
     }
 
+    // The player has earned a bonus bellpepper (COINS_FOR_BONUS consecutive tuna)
+    // that hasn't been spawned yet.
+    isBonusOwed() {
+        return this.tunaCansConsecutive >= this.COINS_FOR_BONUS;
+    }
+
+    // A bellpepper is currently on screen and not yet collected (so the level
+    // shouldn't end out from under it).
+    hasPendingBellPepper() {
+        return this.coins.children.entries.some(
+            c => c.coinType === 'bellpepper_coin' && !c.wasCollected
+        );
+    }
+
+    // Force the earned bellpepper out at a low, easy-to-grab height — used when
+    // the level is ending so the reward isn't stranded past the finish line.
+    spawnBonus(obstacleSpeed) {
+        const coin = this.coins.create(370, this.groundY - 45, 'bellpepper_coin');
+        coin.setOrigin(0.5, 0.5);
+        coin.play('bellpepper_spin');
+        coin.body.velocity.x = -obstacleSpeed * 0.7;
+        coin.body.setAllowGravity(false);
+        coin.setImmovable(true);
+        coin.coinValue = this.BELLPEPPER_VALUE;
+        coin.coinType = 'bellpepper_coin';
+        coin.wasCollected = false;
+        this.tunaCansConsecutive = 0; // bonus consumed
+        this.coinsSpawned++;
+    }
+
     cleanupOffScreen() {
         this.coins.children.entries.forEach(coin => {
             if (coin.x < -50) {

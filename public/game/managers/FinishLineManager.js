@@ -21,16 +21,32 @@ class FinishLineManager {
         return textures[this.scene.level] || 'cle_welcome';
     }
 
-    spawnFinishLine(obstacleSpeed) {
+    // Called once the obstacle cap is hit. Claims the level-end immediately and
+    // stops spawning. If the player earned a final bellpepper that never made it
+    // out, send it first with runway and delay the (faster) arrival sprite so it
+    // doesn't overtake the pepper — otherwise you'd see a coin you can't reach.
+    beginLevelEnd(obstacleSpeed, coinManager) {
         if (this.isSpawned) return;
+        this.isSpawned = true;     // claim now so update() won't re-enter
+        this.stopAllSpawning();    // no more obstacles/coins from here
 
-        this.isSpawned = true;
+        // Earned-but-unspawned bellpepper → send it out now. Already in flight →
+        // just wait. Either way, delay the faster finish line so the pepper
+        // reaches the player first instead of being left behind the goal.
+        let delay = 0;
+        if (coinManager && coinManager.isBonusOwed()) {
+            coinManager.spawnBonus(obstacleSpeed);
+            delay = 1500;
+        } else if (coinManager && coinManager.hasPendingBellPepper()) {
+            delay = 1500;
+        }
+        this.scene.time.delayedCall(delay, () => this.createFinishLine(obstacleSpeed));
+    }
+
+    createFinishLine(obstacleSpeed) {
         this.scene.sound.play('sfx_endlvl1');
 
-        // Stop all spawning timers
-        this.stopAllSpawning();
-
-        // Create the finish line (piece of land)
+        // The finish line (piece of land) the player rides in on.
         this.finishLine = this.scene.physics.add.sprite(370, this.groundY, this.getFinishTexture());
         this.finishLine.setOrigin(0.5, 1);
         this.finishLine.body.velocity.x = -obstacleSpeed;
@@ -38,7 +54,7 @@ class FinishLineManager {
         this.finishLine.setImmovable(true);
         this.finishLine.setDepth(10);
 
-        console.log('Finish line spawned! Get ready to complete the level!');
+        this.scene.setupFinishLineCollision();
     }
 
     stopAllSpawning() {

@@ -307,10 +307,10 @@ class GameScene extends Phaser.Scene {
         this.coinManager.cleanupOffScreen();
         this.finishLineManager.cleanupOffScreen();
 
-        // Check if we should spawn the finish line
+        // Check if we should end the level (spawns the finish line, plus a last
+        // earned bellpepper first if one is owed).
         if (this.obstaclesSpawned >= this.maxObstacles && !this.finishLineManager.isSpawned) {
-            this.finishLineManager.spawnFinishLine(this.levelManager.obstacleSpeed);
-            this.setupFinishLineCollision();
+            this.finishLineManager.beginLevelEnd(this.levelManager.obstacleSpeed, this.coinManager);
         }
     }
 
