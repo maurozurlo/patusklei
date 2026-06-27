@@ -14,7 +14,7 @@
 const LORE = {
     LEVEL_1_LORE: {
         title: 'Los Inicios',
-        text: "Apreciado amigo Patus Klei, nacido en agosto de 1907. A los 16 años escuchó el llamado de la tierra de Cle. Construyó su bidet y zarpó. Traga el atún y los morrones. Evita las boyas."
+        text: "Apreciado amigo Patus Klei, nacido en agosto de 1907. \nA los 16 años escuchó el llamado de la tierra de Cle. Construyó su bidet y zarpó.\nTraga el atún y los morrones.\nEvita las boyas."
     },
     LEVEL_2_LORE: {
         title: 'Ciudad de Cle',

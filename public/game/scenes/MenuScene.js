@@ -5,7 +5,7 @@ class MenuScene extends Phaser.Scene {
     }
 
     init(data) {
-        this.menuKey = data.menuKey || 'MAIN_MENU';
+        this.menuKey = (data && data.menuKey) || 'MAIN_MENU';
     }
 
     preload() {
@@ -13,6 +13,7 @@ class MenuScene extends Phaser.Scene {
         this.load.image('icon_soundon', 'images/icon_soundon.png');
         this.load.image('icon_soundoff', 'images/icon_soundoff.png');
         this.load.audio('sfx_click', 'audio/sfx_click.wav');
+        this.load.audio('sfx_gameover', 'audio/sfx_gameover.wav');
 
         // Auto-load any backdrop images referenced by lore entries (keyed by
         // their path), so a screen just needs `image: 'images/foo.png'`.
@@ -89,7 +90,7 @@ class MenuScene extends Phaser.Scene {
             },
             body: {
                 fontFamily: '"Press Start 2P"',
-                fontSize: '12px',
+                fontSize: '10px',
                 fill: '#ffffff',
                 wordWrap: { width: 310 },
                 stroke: outline,
@@ -111,10 +112,10 @@ class MenuScene extends Phaser.Scene {
             },
             danger: {
                 fontFamily: '"Press Start 2P"',
-                fontSize: '26px',
+                fontSize: '16px',
                 fill: '#ff0000',
                 stroke: outline,
-                strokeThickness: 6
+                strokeThickness: 4
             }
         };
     }
@@ -190,7 +191,7 @@ class MenuScene extends Phaser.Scene {
 
         this.add.text(10, 65, lore.text, styles.body);
 
-        const continueButton = this.add.text(160, 190, 'CONTINUAR', styles.buttonPrimary)
+        const continueButton = this.add.text(160, 180, 'CONTINUAR', styles.buttonPrimary)
             .setOrigin(0.5)
             .setInteractive();
 
@@ -206,7 +207,7 @@ class MenuScene extends Phaser.Scene {
                     this.scene.start('GameScene', { level: 3 });
                     break;
                 case 'GAME_COMPLETED':
-                    this.scene.start('MenuScene');
+                    this.scene.start('MenuScene', { menuKey: 'MAIN_MENU' });
                     break;
             }
         });
@@ -224,12 +225,14 @@ class MenuScene extends Phaser.Scene {
         this.add.text(10, 65, lore.text, styles.body);
 
         const last = index === keys.length - 1;
-        const button = this.add.text(160, 190, last ? 'FIN' : 'CONTINUAR', styles.buttonPrimary)
+        const button = this.add.text(160, 180, last ? 'FIN' : 'CONTINUAR', styles.buttonPrimary)
             .setOrigin(0.5)
             .setInteractive();
 
         button.on('pointerdown', () => {
-            if (last) this.scene.start('MenuScene');
+            // Explicit menuKey: scene.start with no data reuses the previous
+            // data (BOSS_ENDING), which would restart the ending.
+            if (last) this.scene.start('MenuScene', { menuKey: 'MAIN_MENU' });
             else this.showLoreSequence(keys, index + 1);
         });
     }
@@ -256,6 +259,7 @@ class MenuScene extends Phaser.Scene {
 
     showGameOver() {
         this.clearUI();
+        this.sound.play('sfx_gameover');
 
         this.add.text(160, 65, 'G A M E   O V E R', {
             fontFamily: '"Press Start 2P"',
@@ -263,7 +267,7 @@ class MenuScene extends Phaser.Scene {
             fill: '#ffffff',
         }).setOrigin(0.5);
 
-        const restartButton = this.add.text(160, 160, 'REINICIAR', this.getStyles().danger)
+        const restartButton = this.add.text(160, 180, 'REINICIAR', this.getStyles().danger)
             .setOrigin(0.5)
             .setInteractive();
 
