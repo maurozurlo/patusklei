@@ -18,17 +18,17 @@ const LORE = {
     },
     LEVEL_2_LORE: {
         title: 'Ciudad de Cle',
-        text: "Patus Klei ha llegado a la mitica ciudad de Cle. Debe enfrentarse al terrible planeamiento urbano y recorrer sus turbulentas calles."
+        text: "Patus Klei ha llegado a la mitica ciudad de Cle. Debe enfrentarse al terrible planeamiento urbano y recorrer sus turbulentas calles. Evite las palomas y los autos."
     },
     BOSS_LORE: {
         title: 'la Triple Panera',
-        text: "Patus finalmente ha llegado a la guarida del perito ventrilocuista Lars Wampiola. Esquiva los proyectiles, usa la mandarina."
+        text: "Patus finalmente ha llegado a la guarida del perito ventrilocuista Lars Wampiola. Esquive los zarpasos, espere a RMK."
     },
 
     // --- Victory reveal (shared first screen of both endings) ---
     BOSS_VICTORY: {
         title: 'El Titiritero',
-        text: "La marioneta se desploma entre chispas. Tras los hilos, sentado y tranquilo, aguarda Lars Wampiola — el verdadero titiritero. Patus se acerca para encararlo."
+        text: "Lars Wampiola se desploma. Tras los hilos, sentado y tranquilo, aguarda Luis Guampiolar. Patus se acerca para batírsela."
     },
 
     // --- GOOD ending (>= 3 peppers) ---
@@ -55,5 +55,5 @@ const LORE = {
 // Named ending sequences. Both open on the reveal, then diverge.
 const LORE_SEQUENCES = {
     good: ['BOSS_VICTORY', 'GAME_COMPLETED', 'TRUE_ENDING'],
-    bad:  ['BOSS_VICTORY', 'BAD_ENDING_1', 'BAD_ENDING_2']
+    bad: ['BOSS_VICTORY', 'BAD_ENDING_1', 'BAD_ENDING_2']
 };

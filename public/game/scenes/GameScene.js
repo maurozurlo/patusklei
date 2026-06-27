@@ -24,6 +24,10 @@ class GameScene extends Phaser.Scene {
         // True while a scripted sequence (e.g. the victory run) drives Patus and
         // player input is locked out.
         this.cutscene = false;
+
+        // On-screen control state (mobile). Merged with the keyboard each frame.
+        this.touchJump = false;
+        this.touchCrouch = false;
     }
     preload() {
 
@@ -222,9 +226,57 @@ class GameScene extends Phaser.Scene {
 
         // Input
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.createMobileControls();
 
         // Start level
         this.levelManager.initializeLevel(this.level);
+    }
+
+    // On-screen jump/crouch buttons for touch devices. They drive the same
+    // touchJump/touchCrouch flags that get merged with the keyboard in getInput,
+    // so PlayerManager.handleInput needs no changes. Crouch is held (press to
+    // duck, release to stand); jump behaves like the space key.
+    createMobileControls() {
+        const hasTouch = this.sys.game.device.input.touch || (navigator.maxTouchPoints > 0);
+        if (!hasTouch) return;
+
+        // One extra touch pointer (so both buttons can be held at once). Guarded
+        // because create() runs every level and addPointer accumulates.
+        if (this.input.manager.pointersTotal < 3) this.input.addPointer(1);
+
+        // Bottom-right, clear of Patus (bottom-left) and the score (top-right).
+        const up = this.makeTouchButton(290, 128, '▲');   // ▲ jump
+        up.on('pointerdown', () => { this.touchJump = true; });
+        ['pointerup', 'pointerout', 'pointerupoutside'].forEach(
+            ev => up.on(ev, () => { this.touchJump = false; }));
+
+        const down = this.makeTouchButton(290, 174, '▼'); // ▼ crouch
+        down.on('pointerdown', () => { this.touchCrouch = true; });
+        ['pointerup', 'pointerout', 'pointerupoutside'].forEach(
+            ev => down.on(ev, () => { this.touchCrouch = false; }));
+    }
+
+    makeTouchButton(x, y, glyph) {
+        return this.add.text(x, y, glyph, {
+            fontFamily: 'Arial, sans-serif',
+            fontSize: '24px',
+            color: '#ffffff',
+            backgroundColor: 'rgba(0,0,0,0.35)',
+            padding: { x: 14, y: 10 }
+        })
+            .setOrigin(0.5)
+            .setScrollFactor(0)
+            .setDepth(1000)
+            .setAlpha(0.85)
+            .setInteractive({ useHandCursor: true });
+    }
+
+    // Keyboard OR on-screen buttons — handleInput only reads space/down.
+    getInput() {
+        return {
+            space: { isDown: this.cursors.space.isDown || this.touchJump },
+            down: { isDown: this.cursors.down.isDown || this.touchCrouch }
+        };
     }
 
     setupGround(groundY) {
@@ -291,7 +343,7 @@ class GameScene extends Phaser.Scene {
 
         // Player is locked out while a scripted sequence drives Patus.
         if (!this.cutscene) {
-            this.playerManager.handleInput(this.cursors);
+            this.playerManager.handleInput(this.getInput());
         }
 
         // safety clamp: if the player somehow drops below the ground (physics glitch)
