@@ -30,9 +30,13 @@ class PlayerManager {
                 hasFoam: false,
                 hasSplash: false,
                 canDuck: true,
-                jumpVelocity: -550,
+                // Lowered (was -550) so a jump still clears cars but CANNOT clear
+                // the duck-under bird — forcing a crouch.
+                jumpVelocity: -450,
                 hitboxWidth: 18,
-                hitboxHeight: 40
+                // Taller (was 40) so a standing Patus is still caught by the
+                // raised bird; crouch halves it (25) and ducks safely under.
+                hitboxHeight: 50
             },
             3: {
                 // Boss fight: Patus stands his ground, so he idles instead of

@@ -10,6 +10,12 @@ class MenuScene extends Phaser.Scene {
 
     preload() {
         this.load.image('main_menu', 'images/main_menu.png');
+
+        // Auto-load any backdrop images referenced by lore entries (keyed by
+        // their path), so a screen just needs `image: 'images/foo.png'`.
+        Object.values(LORE).forEach(entry => {
+            if (entry.image) this.load.image(entry.image, entry.image);
+        });
     }
 
     create() {
@@ -31,9 +37,11 @@ class MenuScene extends Phaser.Scene {
             return;
         }
 
-        // Boss victory: 3 lore screens in sequence, then back to the main menu.
+        // Boss victory: good or bad ending based on peppers collected this run.
         if (this.menuKey === 'BOSS_ENDING') {
-            this.showLoreSequence(['BOSS_VICTORY', 'GAME_COMPLETED', 'TRUE_ENDING']);
+            const ending = Save.isGoodEnding() ? 'good' : 'bad';
+            Save.unlockEnding(ending);
+            this.showLoreSequence(LORE_SEQUENCES[ending]);
             return;
         }
 
@@ -106,6 +114,7 @@ class MenuScene extends Phaser.Scene {
             .setInteractive();
 
         startButton.on('pointerdown', () => {
+            Save.startNewGame(); // fresh run: reset peppers, bump timesPlayed
             this.showLoreScreen('LEVEL_1_LORE');
         });
 
@@ -156,6 +165,7 @@ class MenuScene extends Phaser.Scene {
         const styles = this.getStyles();
         const lore = this.getLoreText(key);
 
+        this.drawLoreImage(lore);
         this.add.text(160, 40, lore.title, styles.subtitle)
             .setOrigin(0.5);
 
@@ -190,6 +200,7 @@ class MenuScene extends Phaser.Scene {
         const styles = this.getStyles();
         const lore = this.getLoreText(keys[index]);
 
+        this.drawLoreImage(lore);
         this.add.text(160, 40, lore.title, styles.subtitle).setOrigin(0.5);
         this.add.text(10, 65, lore.text, styles.body);
 
@@ -209,35 +220,15 @@ class MenuScene extends Phaser.Scene {
     // --------------------------------------------------
 
     getLoreText(key) {
-        const lore = {
-            LEVEL_1_LORE: {
-                title: 'Los Inicios',
-                text: "Apreciado amigo Patus Klei, nacido en agosto de 1907. A los 16 años escuchó el llamado de la tierra de Cle. Construyó su bidet y zarpó. Traga el atún y los morrones. Evita las boyas."
-            },
-            LEVEL_2_LORE: {
-                title: 'Ciudad de Cle',
-                text: "Patus Klei ha llegado a la mitica ciudad de Cle. Debe enfrentarse al terrible planeamiento urbano y recorrer sus turbulentas calles."
-            },
-            BOSS_LORE: {
-                title: 'la Triple Panera',
-                text: "Patus finalmente ha llegado a la guarida del perito ventrilocuista Lars Wampiola. Esquiva los proyectiles, usa la mandarina."
-            },
-            // MOCK copy for the boss-victory reveal (3rd screen TBD per PRD §6).
-            BOSS_VICTORY: {
-                title: 'El Titiritero',
-                text: "La marioneta se desploma entre chispas. Tras los hilos, sentado y tranquilo, aguarda Lars Wampiola — el verdadero titiritero. Patus se acerca para encararlo."
-            },
-            GAME_COMPLETED: {
-                title: 'Victoria: Patus Klei',
-                text: "Patus Klei derrotó a Lars Wampiola, perdió un ojo, una uvula, una vesícula y tres dedos del pie que reemplazó heróicamente con corchos. Bien jugado"
-            },
-            TRUE_ENDING: {
-                title: 'El final de verdad',
-                text: "Patus Klei encontró a Rodolfa Muschi Klei, su fiel mascota y amiga, Patus vivirá feliz y firmará la paz con Lars Wampiola en china. Gran juego muchachito, gracias por jugar a PATUS KLEI."
-            }
-        };
+        // Content lives in data/Lore.js (LORE) so it's editable in one place.
+        return LORE[key] || { title: 'Error', text: 'Lore not found.' };
+    }
 
-        return lore[key] || { title: 'Error', text: 'Lore not found.' };
+    // Optional full-screen backdrop for a lore screen (entry.image is a path).
+    drawLoreImage(lore) {
+        if (lore && lore.image) {
+            this.add.image(160, 100, lore.image).setOrigin(0.5).setDepth(-1);
+        }
     }
 
     // --------------------------------------------------

@@ -47,6 +47,23 @@ class UIManager {
         this.scoreText.setText(score.toString().padStart(6, '0'));
     }
 
+    // One-time on-screen hint the first time the level-2 bird appears (teaches
+    // crouch). Copy/placement are tunable.
+    showCrouchHint() {
+        const hint = this.scene.add.text(160, 70, 'AGACHATE!', {
+            fontFamily: '"Press Start 2P"',
+            fontSize: '12px',
+            color: '#ffff00',
+            stroke: '#000',
+            strokeThickness: 2
+        }).setOrigin(0.5).setDepth(20);
+
+        this.scene.tweens.add({
+            targets: hint, alpha: 0, delay: 1600, duration: 700,
+            onComplete: () => hint.destroy()
+        });
+    }
+
     // ----- Hearts (boss fight) ------------------------------------------------
 
     buildHearts(max) {

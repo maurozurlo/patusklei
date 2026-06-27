@@ -16,9 +16,9 @@ class GameScene extends Phaser.Scene {
         this.score = 0;
         this.bossHealth = 5;
 
-        // Player hearts (boss fight). PRD base is 3 (+1 per pepper later — pepper
-        // persistence isn't wired yet). Tweak maxHearts to taste.
-        this.maxHearts = 3;
+        // Player hearts (boss fight): 3 base +1 per bell pepper collected this
+        // run (persisted in Save), capped so the heart row stays sane.
+        this.maxHearts = 3 + Math.min(Save.getPeppers(), 5);
         this.hearts = this.maxHearts;
 
         // True while a scripted sequence (e.g. the victory run) drives Patus and
@@ -97,6 +97,12 @@ class GameScene extends Phaser.Scene {
         this.load.spritesheet('car_pink', 'images/car_03.png', {
             frameWidth: 137,
             frameHeight: 60
+        });
+
+        // Level 2 duck-under bird (flies between cars; must be crouched under).
+        this.load.spritesheet('bird', 'images/bird.png', {
+            frameWidth: 60,
+            frameHeight: 45
         });
 
         this.load.spritesheet('patus_bidet', 'images/patus_bidet.png', {

@@ -1,9 +1,21 @@
 # Boss Fight PRD — Patus vs. Lars Wampiola (Level 3)
 
-> Status: **spec, not yet implemented.** Source of truth for the level-3 boss
-> fight. Companion to the original idea in `boss_fight.md`. The static boss scene
-> (background, floor, assembled puppet) is already baked in — see
-> `public/game/managers/BossManager.js`.
+> Status: **substantially implemented** — dodge core, hearts + heartbeat, bomb
+> phase, victory + 3 *mock* lore screens, and the level-2 duck-under bird. Data
+> lives in `public/game/data/BossFight.js`; logic in `BossManager.js` /
+> `PlayerManager.js` / `UIManager.js`. Companion to the original idea in
+> `boss_fight.md`.
+>
+> **As-built hand mapping is the OPPOSITE of this doc's original L/R** (map by
+> behavior, not the `_l`/`_r` suffix): **LOW** attack = far hand `boss_hand_l`
+> (full-canvas screen sweep) → **JUMP**; **HIGH** attack = near hand
+> `boss_hand_r` (overhead) → **CROUCH**. The §3 table below is corrected to match
+> the code.
+>
+> Deliberately still off ("no damage yet"): the bomb blast does **not** hurt
+> Patus and there's no death/restart at 0 hearts. Also open: pepper persistence,
+> bomb drop/fuse + Rodolfa jump art, ending artwork + real 3rd-screen copy. The
+> cadence is temporarily **2/1** in `BossFight.js` (PRD value is 10/5) for testing.
 
 ---
 
@@ -35,8 +47,8 @@ always map hands by behavior/position, not by the `_l`/`_r` suffix:
 
 | Role | Asset (current static) | Screen pos (bake) | Attack hits | Safe response |
 |---|---|---|---|---|
-| **HIGH hand** | `boss_hand_l` | x≈222 (far from Patus) | standing **or** jumping | **CROUCH** |
-| **LOW hand** | `boss_hand_r` | x≈89 (near Patus) | standing **or** crouching | **JUMP** |
+| **HIGH hand** | `boss_hand_r` | x≈79 (near Patus) | standing **or** jumping | **CROUCH** |
+| **LOW hand** | `boss_hand_l` | x≈226 (far; full-screen sweep) | standing **or** crouching | **JUMP** |
 
 Attack rules:
 - **Twitch telegraph** before every attack (a short "wind-up" animation on the

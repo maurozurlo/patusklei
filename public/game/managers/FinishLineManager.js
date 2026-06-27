@@ -82,6 +82,7 @@ class FinishLineManager {
         this.scene.time.delayedCall(1000, () => {
             if (this.scene.level < 3) {
                 const nextLevel = this.scene.level + 1;
+                Save.unlockLevel(nextLevel); // reached the next level (for a level-select)
                 const menuKey = nextLevel === 2 ? 'LEVEL_2_LORE' : 'BOSS_LORE';
                 this.scene.scene.start('MenuScene', { menuKey });
             } else {

@@ -68,12 +68,11 @@ class CoinManager {
             animKey = 'tunacan_spin';
         }
 
-        // Spawn at varying heights (can be in the air or on ground)
-        const heightVariations = [
-            this.groundY - 60, // Low jump height
-            this.groundY - 90, // Mid jump height
-            this.groundY - 120 // High jump height
-        ];
+        // Spawn at varying heights. Level 2 uses lower heights because its jump
+        // was capped (−450) for the bird — the original heights are unreachable.
+        const heightVariations = this.scene.level === 2
+            ? [this.groundY - 50, this.groundY - 75, this.groundY - 100]
+            : [this.groundY - 60, this.groundY - 90, this.groundY - 120];
 
         const spawnHeight = Phaser.Utils.Array.GetRandom(heightVariations);
 
@@ -110,6 +109,9 @@ class CoinManager {
         } else if (coin.coinType === 'bellpepper_coin') {
             this.bellPeppersCollected++;
             this.scene.sfx.pepper.play()
+            // Persist across levels — each pepper is +1 boss heart and counts
+            // toward the good/bad ending.
+            Save.addPepper();
         }
 
 

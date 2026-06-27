@@ -9,6 +9,13 @@ class ObstacleManager {
 
         // Level-specific obstacle configuration
         this.obstacleConfig = this.getObstacleConfig(level);
+
+        // Level 2 duck-under bird. The hitbox sits at y 102-142 (origin bottom
+        // at y=142): a standing Patus (body top 135 on lvl2) is still hit, a
+        // crouch ducks under it (< 160), and the lowered jump (apex feet ~117)
+        // can't lift him above it. Tunable.
+        this.birdConfig = { y: 142, width: 40, height: 40, offsetX: 10, offsetY: 5 };
+        this.birdHintShown = false;
     }
 
     getObstacleConfig(level) {
@@ -64,6 +71,16 @@ class ObstacleManager {
                 });
             }
         });
+
+        // Level 2: duck-under bird (4-frame flap, authored at 100ms/frame).
+        if (!this.scene.anims.exists('bird_fly')) {
+            this.scene.anims.create({
+                key: 'bird_fly',
+                frames: this.scene.anims.generateFrameNumbers('bird', { start: 0, end: 3 }),
+                frameRate: 10,
+                repeat: -1
+            });
+        }
     }
 
     createGroups() {
@@ -84,6 +101,14 @@ class ObstacleManager {
         // x=370), so skip its sprite — the counter still advances and triggers
         // the finish line, leaving a clean run-up to the city/boss.
         if (this.scene.obstaclesSpawned >= this.scene.maxObstacles) return;
+
+        // Level 2: every 4th obstacle is a duck-under bird instead of a car. It
+        // takes a car's slot, so it's naturally spaced between cars. The first
+        // few are cars to let the player warm up.
+        if (this.level === 2 && this.scene.obstaclesSpawned % 4 === 0) {
+            this.spawnBird(obstacleSpeed);
+            return;
+        }
 
         // Single sprite (level 1) or a random variant from the list (level 2)
         const spriteKey = this.obstacleConfig.variants
@@ -108,6 +133,28 @@ class ObstacleManager {
             this.obstacleConfig.height,
             true
         );
+    }
+
+    // Flying obstacle (level 2): same obstacles group + collider as the cars
+    // (so hitting it is a crash), but airborne at crouch height and un-jumpable.
+    spawnBird(obstacleSpeed) {
+        const c = this.birdConfig;
+        const bird = this.obstacles.create(320 + 50, c.y, 'bird');
+        bird.setOrigin(0.5, 1);
+        bird.play('bird_fly');
+        bird.body.velocity.x = -obstacleSpeed;
+        bird.body.setAllowGravity(false);
+        bird.setImmovable(true);
+        bird.setDepth(9);
+        bird.body.setSize(c.width, c.height, false);
+        bird.body.setOffset(c.offsetX, c.offsetY);
+
+        // One-time "duck!" hint the first time a bird shows up.
+        if (!this.birdHintShown) {
+            this.birdHintShown = true;
+            this.scene.uiManager.showCrouchHint();
+        }
+        return bird;
     }
 
     spawnBossProjectile(obstacleSpeed) {
