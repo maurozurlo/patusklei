@@ -82,6 +82,10 @@ class GameScene extends Phaser.Scene {
             this.load.spritesheet('explosion', 'images/explosion.png', { frameWidth: 100, frameHeight: 85 });
             this.load.image('bomb', 'images/bomb.png');
             this.load.image('boss_platform', 'images/boss_platform.png');
+
+            // Progressive puppet damage (body + head) as each hand is destroyed.
+            ['boss_body_dmg1', 'boss_body_dmg2', 'boss_head_dmg1', 'boss_head_dmg2']
+                .forEach(k => this.load.image(k, 'images/' + k + '.png'));
         }
 
         // OBSTACLES

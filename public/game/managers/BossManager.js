@@ -105,9 +105,11 @@ class BossManager {
         Object.entries(BOSS_FIGHT.hands).forEach(([id, cfg]) => this.buildFightHand(id, cfg));
         this.buildBombProps();
 
-        // Fight state.
-        this.activeHands = [...BOSS_FIGHT.order]; // 'low' attacks first
-        this.turn = 0;
+        // Fight state. Attacker is chosen at random (telegraphed), not strictly
+        // alternating — alternation got predictable/boring in playtests.
+        this.activeHands = [...BOSS_FIGHT.order];
+        this.lastHand = null;
+        this.sameHandStreak = 0;
         this.phase = 1;
         this.phaseAttacks = 0;
         this.baitedHand = null;   // hand whose next attack detonates a bomb
@@ -212,8 +214,7 @@ class BossManager {
         if (this.baitedHand) {
             id = this.baitedHand;
         } else {
-            id = this.activeHands[this.turn % this.activeHands.length];
-            this.turn++;
+            id = this.pickHand();
         }
         // Baited wind-up: start the bomb's beep fuse so it climaxes at the slam.
         if (id === this.baitedHand) this.playBombCountdown();
@@ -223,6 +224,19 @@ class BossManager {
             if (id === this.baitedHand) this.baitedAttack(id);
             else this.normalAttack(id);
         });
+    }
+
+    // Random next attacker, but never the same hand 3x in a row — unpredictable
+    // without unfair streaks. With one hand left (phase 2) it's forced.
+    pickHand() {
+        if (this.activeHands.length === 1) return this.activeHands[0];
+        let id;
+        do {
+            id = Phaser.Utils.Array.GetRandom(this.activeHands);
+        } while (id === this.lastHand && this.sameHandStreak >= 2);
+        this.sameHandStreak = (id === this.lastHand) ? this.sameHandStreak + 1 : 1;
+        this.lastHand = id;
+        return id;
     }
 
     // Wind-up: hide rest, play the twitch once, then continue.
@@ -291,7 +305,9 @@ class BossManager {
         this.scene.uiManager.setRodolfaCounter(Math.max(0, threshold - this.phaseAttacks));
 
         if (this.phaseAttacks >= threshold) {
-            this.startDelivery(this.phase === 1 ? 'low' : 'high');
+            // Destroy the CROUCH hand (high) first so the JUMP hand (low) remains
+            // for phase 2 — otherwise the player could just hold crouch to win.
+            this.startDelivery(this.phase === 1 ? 'high' : 'low');
         } else {
             this.queueAttack(BOSS_FIGHT.timing.recoverAfterAttack);
         }
@@ -430,6 +446,9 @@ class BossManager {
     }
 
     afterDestroy() {
+        // Swap the puppet to its next damage stage (1 hand gone -> dmg1, both -> dmg2).
+        this.applyBossDamage(BOSS_FIGHT.order.length - this.activeHands.length);
+
         if (this.activeHands.length === 0) {
             this.victory();
             return;
@@ -439,6 +458,12 @@ class BossManager {
         this.phaseAttacks = 0;
         this.scene.uiManager.setRodolfaCounter(this.cadence.phase2);
         this.queueAttack(BOSS_FIGHT.timing.recoverAfterAttack + 400);
+    }
+
+    // Progressive puppet damage on body + head (level 1 or 2).
+    applyBossDamage(level) {
+        if (this.parts.boss_body) this.parts.boss_body.setTexture('boss_body_dmg' + level);
+        if (this.parts.boss_head) this.parts.boss_head.setTexture('boss_head_dmg' + level);
     }
 
     victory() {

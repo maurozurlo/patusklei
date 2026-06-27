@@ -48,7 +48,9 @@ class PlayerManager {
                 hasFoam: false,
                 hasSplash: false,
                 canDuck: true,
-                jumpVelocity: -700,
+                // Lowered (was -700) — the boss-dodge only needs Patus airborne
+                // during the low sweep, and -700 felt too floaty.
+                jumpVelocity: -600,
                 hitboxWidth: 18,
                 hitboxHeight: 40
             }

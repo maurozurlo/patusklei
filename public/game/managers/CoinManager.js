@@ -69,9 +69,10 @@ class CoinManager {
         }
 
         // Spawn at varying heights. Level 2 uses lower heights because its jump
-        // was capped (−450) for the bird — the original heights are unreachable.
+        // was capped (−450) for the bird — the higher ones needed apex-perfect
+        // timing, so the top of the range is brought down.
         const heightVariations = this.scene.level === 2
-            ? [this.groundY - 50, this.groundY - 75, this.groundY - 100]
+            ? [this.groundY - 45, this.groundY - 65, this.groundY - 85]
             : [this.groundY - 60, this.groundY - 90, this.groundY - 120];
 
         const spawnHeight = Phaser.Utils.Array.GetRandom(heightVariations);

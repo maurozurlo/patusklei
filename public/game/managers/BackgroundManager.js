@@ -99,7 +99,7 @@ class BackgroundManager {
         // Create water animation
         this.scene.anims.create({
             key: 'water_flow',
-            frames: this.scene.anims.generateFrameNumbers('water_anim', { start: 0, end: 3 }),
+            frames: this.scene.anims.generateFrameNumbers('water_anim', { start: 0, end: 2 }),
             frameRate: 8,
             repeat: -1
         });

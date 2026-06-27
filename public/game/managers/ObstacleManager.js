@@ -14,8 +14,9 @@ class ObstacleManager {
         // at y=142): a standing Patus (body top 135 on lvl2) is still hit, a
         // crouch ducks under it (< 160), and the lowered jump (apex feet ~117)
         // can't lift him above it. Tunable.
-        this.birdConfig = { y: 142, width: 40, height: 40, offsetX: 10, offsetY: 5 };
+        this.birdConfig = { y: 152, width: 40, height: 40, offsetX: 10, offsetY: 5 };
         this.birdHintShown = false;
+        this.jumpHintShown = false;
     }
 
     getObstacleConfig(level) {
@@ -110,6 +111,13 @@ class ObstacleManager {
             return;
         }
 
+        // Level 1: teach jump as the very first obstacle appears (it's still far
+        // right, so the player has time to read it before it arrives).
+        if (this.level === 1 && !this.jumpHintShown) {
+            this.jumpHintShown = true;
+            this.scene.uiManager.showHint('jump');
+        }
+
         // Single sprite (level 1) or a random variant from the list (level 2)
         const spriteKey = this.obstacleConfig.variants
             ? Phaser.Utils.Array.GetRandom(this.obstacleConfig.variants)
@@ -153,7 +161,7 @@ class ObstacleManager {
         // One-time "duck!" hint the first time a bird shows up.
         if (!this.birdHintShown) {
             this.birdHintShown = true;
-            this.scene.uiManager.showCrouchHint();
+            this.scene.uiManager.showHint("crouch");
         }
         return bird;
     }
