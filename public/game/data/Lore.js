@@ -32,28 +32,95 @@ const LORE = {
     },
 
     // --- GOOD ending (>= 3 peppers) ---
-    GAME_COMPLETED: {
-        title: 'Lars Guampiola y Patus Klei',
-        text: `PATUS: Uste es Lars Wampiola?\nLARS: Si, pibe, qué queré?\nPATUS: Vengo a firmar la paz, traigo morrone.\nLARS: Viejo, la paz no se puede firmar acá. Pero si quiere podemos ir a China.\nPATUS: Ta bien, llevo unas Fauna.\nLARS/PATUS: Vaffanculo!`
+    GOOD_ENDING_1: {
+        image: 'images/good_ending_1.png',
+        dialogue: [
+            {
+                speaker: 'PATUS',
+                text: 'Uste es Lars Wampiola?'
+            },
+            {
+                speaker: 'LARS',
+                text: 'Si, pibe, qué queré?'
+            },
+            {
+                speaker: 'PATUS',
+                text: 'Vengo a firmar la paz, traigo morrone.'
+            },
+            {
+                speaker: 'LARS',
+                text: 'La paz no se puede firmar acá.\nPero podemos ir a China.'
+            },
+            {
+                speaker: 'PATUS',
+                text: 'Ta bien, llevo unas Fauna.'
+            },
+        ]
     },
-    TRUE_ENDING: {
+    GOOD_ENDING_2: {
+        image: 'images/good_ending_2.png',
+        dialogue: [
+            {
+                speaker: 'LARS/PATUS',
+                text: 'Vaffanculo!'
+            }
+        ]
+    },
+    GOOD_ENDING_3: {
         title: 'El final final',
         text: "Patus Klei junto a Rodolfa Muschi Klei derrotaron a Lars Wampiola.\nGran juego muchachito, gracias por jugar a PATUS KLEI."
     },
 
     // --- BAD ending (< 3 peppers) — MOCK copy, replace with your lines ---
     BAD_ENDING_1: {
-        title: 'Patu',
-        text: `PATUS: Uste es Lars Wampiola?\nLARS: y los morrone?\nPATUS: Eh?\nLARS: No se puede ahora viejo.\nPATUS: Weno, ta bien, seguiremo la batalla.\nLARS/PATUS: Kevaser.`
+        image: 'images/bad_ending_1.png',
+        dialogue: [
+            {
+                speaker: 'PATUS',
+                text: 'Uste es Lars Wampiola?'
+            },
+            {
+                speaker: 'LARS',
+                text: 'y los morrone?'
+            },
+            {
+                speaker: 'PATUS',
+                text: 'Eh?'
+            },
+            {
+                speaker: 'LARS',
+                text: 'No se puede ahora viejo.'
+            },
+            {
+                speaker: 'PATUS',
+                text: 'Weno, ta bien, seguiremo la batalla.'
+            },
+
+        ]
     },
     BAD_ENDING_2: {
+        image: 'images/bad_ending_2.png',
+        dialogue: [
+            {
+                speaker: 'LARS/PATUS',
+                text: 'Kevaser.'
+            }
+        ]
+    },
+    BAD_ENDING_3: {
         title: 'Un final',
-        text: 'Nadie nunca supo qué fue de Patus Klei. Rodolfa Muschi Klei se retiró a su mansión y Lars Wampiola volvió a su guarida. \\"Gracias\\" por jugar Patus Klei, pongale más esfuerzo la prossima',
+        text: 'Nadie nunca supo qué fue de Patus Klei.\nRodolfa Muschi Klei se retiró a su mansión y Lars Wampiola volvió a su guarida.\n"Gracias" por jugar Patus Klei, pongale más esfuerzo la prossima.',
     }
+};
+
+const PORTRAITS = {
+    PATUS: 'images/portrait_patus.png',
+    LARS: 'images/portrait_lars.png',
+    'LARS/PATUS': 'images/portrait_lars_patus.png'
 };
 
 // Named ending sequences. Both open on the reveal, then diverge.
 const LORE_SEQUENCES = {
-    good: ['BOSS_VICTORY', 'GAME_COMPLETED', 'TRUE_ENDING'],
-    bad: ['BOSS_VICTORY', 'BAD_ENDING_1', 'BAD_ENDING_2']
+    good: ['BOSS_VICTORY', 'GOOD_ENDING_1', 'GOOD_ENDING_2', 'GOOD_ENDING_3'],
+    bad: ['BOSS_VICTORY', 'BAD_ENDING_1', 'BAD_ENDING_2', 'BAD_ENDING_3']
 };
