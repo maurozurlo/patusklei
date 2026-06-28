@@ -175,6 +175,11 @@ class GameScene extends Phaser.Scene {
     }
 
     create() {
+        // Stop anything the previous scene left playing — Phaser's sound manager
+        // is global, so scene changes don't stop sounds on their own (e.g. the
+        // game-over jingle bleeding into a fresh run).
+        this.sound.stopAll();
+
         // SOUNDS
         this.sfx = {
             crash: this.sound.add('sfx_crash'),

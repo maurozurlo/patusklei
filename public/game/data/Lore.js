@@ -17,11 +17,11 @@ const LORE = {
         text: "Apreciado amigo Patus Klei, nacido en agosto de 1907. \nA los 16 años escuchó el llamado de la tierra de Cle. Construyó su bidet y zarpó.\nTraga el atún y los morrones.\nEvita las boyas."
     },
     LEVEL_2_LORE: {
-        title: 'Ciudad de Cle',
+        title: 'Tierra de Cle',
         text: "Patus Klei ha llegado a la Mítica Tierra de Cle. Debe enfrentarse al terrible planeamiento urbano y recorrer sus turbulentas calles. Evite las palomas y los autos."
     },
     BOSS_LORE: {
-        title: 'La Batalla de La Triple Panera',
+        title: 'La Batalla',
         text: "Patus finalmente ha llegado a la guarida del perito ventrilocuista Lars Wampiola. Esquive los zarpasos, espere a RMK."
     },
 
@@ -109,7 +109,7 @@ const LORE = {
     },
     BAD_ENDING_3: {
         title: 'Un final',
-        text: 'Nadie nunca supo qué fue de Patus Klei.\nRodolfa Muschi Klei se retiró a su mansión y Lars Wampiola volvió a su guarida.\n"Gracias" por jugar Patus Klei, pongale más esfuerzo la prossima.',
+        text: 'Nadie nunca supo qué fue de Patus Klei.\nRodolfa Muschi Klei se retiró a su mansión y Lars Wampiola volvió a su guarida.\n"Gracias" por jugar Patus Klei, pongale más guevo la prossima.',
     }
 };
 

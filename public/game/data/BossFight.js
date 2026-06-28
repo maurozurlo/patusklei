@@ -30,13 +30,13 @@ const BOSS_FIGHT = {
         flashDuration: 600,         // hit-flash length (no damage yet — invincible)
     },
 
-    // Strictly alternating; index 0 attacks first.
+    // Both hands start active; the attacker is chosen at random (see pickHand).
     order: ['low', 'high'],
 
     // Bomb cadence (PRD §5): survive N attacks → Rodolfa delivers a bomb that
-    // destroys a hand. Phase 1 destroys the LOW hand, phase 2 the HIGH hand.
-    // PRD values are 10 / 5 — lowered to 2 / 1 for testing the full sequence.
-    cadence: { phase1: 2, phase2: 1 },
+    // destroys a hand. Phase 1 destroys the HIGH (crouch) hand, phase 2 the LOW
+    // (jump) hand. (Was 2 / 1 while testing the full sequence.)
+    cadence: { phase1: 10, phase2: 5 },
 
     hands: {
         // LOW — far hand, screen-wide low sweep. JUMP to dodge.
