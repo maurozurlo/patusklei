@@ -14,6 +14,7 @@
       <ul class="navbar-menu">
         <li><NuxtLink to="/" @click="closeMobileMenu">{{ t('inicio') }}</NuxtLink></li>
         <li><NuxtLink to="/historia" @click="closeMobileMenu">{{ t('historia') }}</NuxtLink></li>
+        <li><NuxtLink to="/buklet" @click="closeMobileMenu">{{ t('buklet') }}</NuxtLink></li>
         <li><NuxtLink to="/mision" @click="closeMobileMenu">{{ t('mision') }}</NuxtLink></li>
         <li><NuxtLink to="/credito" @click="closeMobileMenu">{{ t('credito') }}</NuxtLink></li>
        <!-- <li><button class="lang-toggle-nav" @click="toggleLanguage">{{ langText }}</button></li>-->
@@ -32,12 +33,14 @@ const translations = {
   es: {
     inicio: 'Inicio',
     historia: 'Historia',
+    buklet: 'Buklet',
     mision: 'Mision',
     credito: 'Credito',
   },
   en: {
     inicio: 'Home',
     historia: 'Story',
+    buklet: 'Booklet',
     mision: 'Mission',
     credito: 'Credits',
   },
