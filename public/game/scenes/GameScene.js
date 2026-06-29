@@ -372,13 +372,13 @@ class GameScene extends Phaser.Scene {
     }
 
     // Called by BossManager when a hand attack catches Patus in the wrong pose.
-    // Drops one heart (damaged icon + stops the heartbeat). Death/restart at 0
-    // is still TODO — for now hearts just clamp at zero.
+    // Drops one heart (damaged icon + stops the heartbeat); at 0 it's Game Over,
+    // whose Reintentar button drops straight back into the boss fight.
     loseHeart() {
         if (this.hearts <= 0) return;
         this.hearts--;
         this.uiManager.updateHearts(this.hearts);
-        // TODO: if (this.hearts <= 0) -> fade + restart level 3 (skip lore).
+        if (this.hearts <= 0) this.gameOver();
     }
 
     collectCoin(player, coin) {
@@ -391,10 +391,6 @@ class GameScene extends Phaser.Scene {
     hitObstacle(player, obstacle) {
         if (this.isGameOver) return;
 
-        this.isGameOver = true;
-        this.physics.pause();
-        player.setTint(0xff0000);
-
         // The level-2 bird gets its own hit cue; everything else is a crash.
         if (obstacle && obstacle.isBird) {
             this.sfx.birdhit.play();
@@ -403,10 +399,20 @@ class GameScene extends Phaser.Scene {
             this.sfx.crash.play();
         }
 
-        // Add a slight delay so the player sees the "red" tint before switching
+        this.gameOver();
+    }
+
+    // Freeze the scene, let the death feedback land, then hand off to the Game
+    // Over screen — which offers a Reintentar button for the current level.
+    gameOver() {
+        if (this.isGameOver) return;
+        this.isGameOver = true;
+        this.physics.pause();
+        this.playerManager.player.setTint(0xff0000);
+
+        // Slight delay so the player sees the red tint before the screen switches.
         this.time.delayedCall(1000, () => {
-            // Start MenuScene and pass a data object
-            this.scene.start('MenuScene', { menuKey: 'GAME_OVER' });
+            this.scene.start('MenuScene', { menuKey: 'GAME_OVER', level: this.level });
         });
     }
 

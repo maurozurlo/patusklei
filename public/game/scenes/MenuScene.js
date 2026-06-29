@@ -7,6 +7,7 @@ class MenuScene extends Phaser.Scene {
     init(data) {
         this.menuKey = (data && data.menuKey) || 'MAIN_MENU';
         this.forceEnding = (data && data.forceEnding) || null; // debug: 'good'|'bad'
+        this.retryLevel = (data && data.level) || 1; // GAME_OVER: level to retry
     }
 
     preload() {
@@ -204,13 +205,15 @@ class MenuScene extends Phaser.Scene {
 
         this.musicButton.on('pointerdown', this.toggleMusic, this);
 
-        // this.showDebugLevelSelect(); // DEBUG level selector — uncomment to skip to a level
+        // Level select, unlocked once the game's been beaten (persisted in Save).
+        if (Save.isGameCompleted()) this.showLevelSelect();
     }
 
-    // TEMPORARY: jump straight into any level (skips lore). Remove with the boss work.
-    showDebugLevelSelect() {
+    // Post-game level select: jump straight into any level (skips lore). Shown on
+    // the main menu only after the game's been beaten once (see showMainMenu).
+    showLevelSelect() {
         this.add.rectangle(160, 193, 320, 15, 0x000000, 0.6).setDepth(50);
-        this.add.text(50, 189, 'DEBUG LVL:', {
+        this.add.text(50, 189, 'NIVELES:', {
             fontFamily: 'monospace', fontSize: '8px', color: '#888888'
         }).setDepth(51);
 
@@ -485,13 +488,14 @@ class MenuScene extends Phaser.Scene {
             fill: '#ffffff',
         }).setOrigin(0.5);
 
-        const restartButton = this.add.text(160, 145, 'REINICIAR', this.getStyles().danger)
+        const retryButton = this.add.text(160, 145, '¿REINTENTAR?', this.getStyles().danger)
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true });
-        this.bob(restartButton);
+        this.bob(retryButton);
 
-        const restart = () => this.scene.start('MenuScene', { menuKey: 'MAIN_MENU' });
-        restartButton.on('pointerdown', restart);
-        this.setPrimaryAction(restart);
+        // Retry drops straight back into the level that was lost (skips its lore).
+        const retry = () => this.scene.start('GameScene', { level: this.retryLevel });
+        retryButton.on('pointerdown', retry);
+        this.setPrimaryAction(retry);
     }
 }

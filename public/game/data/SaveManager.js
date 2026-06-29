@@ -77,4 +77,8 @@ const Save = {
             this.persist();
         }
     },
+
+    // The game has been beaten at least once if any ending has been reached
+    // (unlockEnding fires when the boss is defeated). Gates the menu level-select.
+    isGameCompleted() { return this.get().endingsUnlocked.length > 0; },
 };
