@@ -17,6 +17,10 @@
           Patus Klei a ganar la <span class="hl">Batalla de la Triple Panera</span>.
           Con las manos arriba. Ahora. Abajo. ⬇
         </p>
+                <p class="mission-twist">
+          ADVERTENCIA: Patus Klei no se hace responsable por la aparición de nuevos ombligos en la persona que juegue el juego. La aparición de ombligos es un efecto secundario catalogado como 'Inusual pero aceptable' del juego y no está cubierta por la garantía.
+          Rogamos discreción por parte del jugador y de los padres o tutores del jugador. La aparición de ombligos puede ser permanente o temporal, dependiendo de la cantidad de veces que se juegue el juego.
+        </p>
       </div>
 
       <!-- Briefing + the boss watching -->
@@ -26,9 +30,10 @@
           <ul class="briefing-list">
             <li><span class="b-key">OBJETIVO</span> sobreviva 3 niveles llenos de emoción.</li>
             <li><span class="b-key">EQUIPO</span> tres dedos de corcho, una mandarina con triple chipa, fe.</li>
-            <li><span class="b-key">CONTROLES</span> probá las flechas y el espacio, ya vas a entender (o no).</li>
+            <li><span class="b-key">CONTROLES</span> pruebe las flechas y el espacio, ya entenderá (o no).</li>
             <li><span class="b-key">REGLA #1</span> ponga guevo.</li>
-            <li><span class="b-key">ADVERTENCIA</span> el Lars Wampiola es un titiritero. No oseis mirar a los ojo del títere.</li>
+            <li><span class="b-key">REGLA #2</span> chequee preventivamente su espacio perimetral por la aparición de ombligos foráneos, a modo de precaución y para tener un estimado de la cantidad de ombligos que usté poseía o poseyó al iniciar el juego.</li>
+            <li><span class="b-key">ADVERTENCIA</span> el Lars Wampiola es un perito ventriluquista. Mirar a los ojo del títere anula la garantía, ipso facto Dominus Espiritu Cum gracias a teconología patentada UX OpenTelemetry de mirasión de ojo.</li>
           </ul>
         </div>
 
@@ -52,7 +57,7 @@
           <div class="game-frame">
             <iframe src="/game/index.html" frameborder="0" title="Patus Klei"></iframe>
           </div>
-          <p class="game-foot">¿Lo logró? Felicitaciones muchachito, ya puede escuchar el pisco. ¿Perdió? Git guuuuud.</p>
+          <p class="game-foot">¿Lo logró? Felicitaciones muchachito, ya puede escuchar el pisco. ¿Perdió? consulte la regla 1.</p>
         </div>
       </div>
     </section>
