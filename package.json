@@ -15,6 +15,7 @@
     "vue": "^3.5.0"
   },
   "devDependencies": {
+    "@types/page-flip": "^2.0.4",
     "pngjs": "^7.0.0"
   }
 }
