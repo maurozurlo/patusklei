@@ -144,7 +144,7 @@ class PlayerManager {
 
     createPlayer() {
         // Start a bit in from the left edge instead of hugging the wall.
-        const startX = 24;
+        const startX = 44;
         this.player = this.scene.physics.add.sprite(
             startX,
             this.groundY,

@@ -15,6 +15,7 @@ class MenuScene extends Phaser.Scene {
         this.load.image('icon_soundoff', 'images/icon_soundoff.png');
         this.load.audio('sfx_click', 'audio/sfx_click.wav');
         this.load.audio('sfx_gameover', 'audio/sfx_gameover.wav');
+        this.load.audio('bgm_menu', 'audio/bgm_menu.wav');
 
         // Auto-load any backdrop images referenced by lore entries (keyed by
         // their path), so a screen just needs `image: 'images/foo.png'`.
@@ -34,6 +35,13 @@ class MenuScene extends Phaser.Scene {
         // Apply the persisted sound preference (global to the sound manager).
         this.sound.mute = !isMusicPlaying;
 
+        // Looping menu/lore background track. Global mute (above + toggleMusic)
+        // covers it, so there's nothing per-sound to manage here. Skipped on the
+        // Game Over screen, which has its own jingle (sfx_gameover).
+        if (this.menuKey !== 'GAME_OVER') {
+            this.sound.add('bgm_menu', { loop: true }).play();
+        }
+
         // Click SFX on any UI button (every menu/lore control is interactive).
         this.input.on('gameobjectdown', () => this.sound.play('sfx_click'));
 
@@ -42,6 +50,22 @@ class MenuScene extends Phaser.Scene {
             const next = this.forceEnding === 'good' ? 'bad' : 'good';
             this.scene.start('MenuScene', { menuKey: 'BOSS_ENDING', forceEnding: next });
         });
+
+        // SPACE / ENTER trigger the current screen's primary button (start /
+        // continue / restart) so the menus aren't click-only. Each screen arms
+        // its action via setPrimaryAction(). `event.repeat` is ignored so a key
+        // still held from gameplay (space is jump) can't auto-repeat through
+        // screens — only a fresh press counts. Dialogue screens manage their own
+        // keys, so they leave _primaryAction null.
+        this.input.keyboard.addCapture('SPACE,ENTER');
+        this._primaryAction = null;
+        const primary = (event) => {
+            if (event.repeat || !this._primaryAction) return;
+            this.sound.play('sfx_click');
+            this._primaryAction();
+        };
+        this.input.keyboard.on('keydown-SPACE', primary);
+        this.input.keyboard.on('keydown-ENTER', primary);
 
         const loreScreens = [
             'LEVEL_1_LORE',
@@ -79,6 +103,13 @@ class MenuScene extends Phaser.Scene {
     clearUI() {
         this.children.removeAll();
         this.cameras.main.setBackgroundColor('#000000');
+        this._primaryAction = null; // each screen re-arms its own keyboard action
+    }
+
+    // Arm SPACE/ENTER for the current screen's primary button (see create()).
+    // Pass null (via clearUI) to disable keyboard advance on a screen.
+    setPrimaryAction(fn) {
+        this._primaryAction = fn;
     }
 
     // Gentle looping vertical bob (titles + continue buttons).
@@ -154,13 +185,15 @@ class MenuScene extends Phaser.Scene {
 
         const startButton = this.add.text(160, 145, 'INICIAR JUEGO', styles.buttonPrimary)
             .setOrigin(0.5)
-            .setInteractive();
+            .setInteractive({ useHandCursor: true });
         this.bob(startButton);
 
-        startButton.on('pointerdown', () => {
+        const start = () => {
             Save.startNewGame(); // fresh run: reset peppers, bump timesPlayed
             this.showLoreScreen('LEVEL_1_LORE');
-        });
+        };
+        startButton.on('pointerdown', start);
+        this.setPrimaryAction(start); // SPACE / ENTER also start the game
 
         // Sound toggle icon, anchored top-right with a little padding.
         const pad = 8;
@@ -214,10 +247,10 @@ class MenuScene extends Phaser.Scene {
 
         const continueButton = this.add.text(160, 180, 'CONTINUAR', styles.buttonPrimary)
             .setOrigin(0.5)
-            .setInteractive();
+            .setInteractive({ useHandCursor: true });
         this.bob(continueButton, { delay: 450 });
 
-        continueButton.on('pointerdown', () => {
+        const advance = () => {
             switch (key) {
                 case 'LEVEL_1_LORE':
                     this.scene.start('GameScene', { level: 1 });
@@ -232,7 +265,9 @@ class MenuScene extends Phaser.Scene {
                     this.scene.start('MenuScene', { menuKey: 'MAIN_MENU' });
                     break;
             }
-        });
+        };
+        continueButton.on('pointerdown', advance);
+        this.setPrimaryAction(advance);
     }
 
     // Play a chain of ending screens. Each entry renders either as a typewriter
@@ -260,8 +295,9 @@ class MenuScene extends Phaser.Scene {
         this.add.text(10, 65, entry.text, styles.body);
         const button = this.add.text(160, 180, last ? 'FIN' : 'CONTINUAR', styles.buttonPrimary)
             .setOrigin(0.5)
-            .setInteractive();
+            .setInteractive({ useHandCursor: true });
         button.on('pointerdown', onNext);
+        this.setPrimaryAction(onNext);
         this.bob(button, { delay: 450 });
     }
 
@@ -394,11 +430,11 @@ class MenuScene extends Phaser.Scene {
 
         const restartButton = this.add.text(160, 145, 'REINICIAR', this.getStyles().danger)
             .setOrigin(0.5)
-            .setInteractive();
+            .setInteractive({ useHandCursor: true });
         this.bob(restartButton);
 
-        restartButton.on('pointerdown', () => {
-            this.scene.start('MenuScene', { menuKey: 'MAIN_MENU' });
-        });
+        const restart = () => this.scene.start('MenuScene', { menuKey: 'MAIN_MENU' });
+        restartButton.on('pointerdown', restart);
+        this.setPrimaryAction(restart);
     }
 }

@@ -81,7 +81,7 @@ const LORE = {
             },
             {
                 speaker: 'LARS',
-                text: 'y los morrone?'
+                text: 'Y los morrone?'
             },
             {
                 speaker: 'PATUS',
