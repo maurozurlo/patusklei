@@ -3,7 +3,7 @@
     <div class="social-links">
       <a href="https://urpite.bandcamp.com" target="_blank">Bandcamp</a>
     </div>
-    <p style="color: var(--ega-lightgray);">© 2024 Patus Klei | La Mítica Tierra de Cle</p>
+    <p style="color: var(--ega-lightgray);">© 1907-2026 Patus Klei | La Mítica Tierra de Cle</p>
     <p class="easter-egg">CONSIGA SU BIDET DE CLE IMPRESO EN 3D PROSSIMAMENTE</p>
   </footer>
 </template>

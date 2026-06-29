@@ -69,7 +69,7 @@
           <span class="portal-icon" aria-hidden="true">🕹️</span>
           <h3>JUGÁ EL JUEGO PATUS</h3>
           <p>Ayudá a Patus a ganar la Batalla de la Triple Panera. Ojo con el boss titiritero.</p>
-          <p>Ispirao por la gran epoca de los 90 y los protocolos EGA que regian el mundo con juegos como Duke Nukem 2 o Monkey Islands.</p>
+          <p>Respetando Protocolos Internacionales EGA de 1992, hoy prohibidos en siete países que regian al/el mundo con juegos como Duke Nukem 2 o Monkey Islands.</p>
           <span class="portal-go">Entrar al juego →</span>
         </NuxtLink>
 
@@ -97,6 +97,41 @@
         ></video>
       </div>
       <p class="transmision-foot">REC ●  CLE-TV  ·  CANAL 714  ·  NO APTO PARA DETRACTIS PATUS BOLETUS</p>
+    </section>
+
+    <!-- Reconocimientos: tongue-in-cheek international awards, a wall of
+         non-existent endorsing institutions, and the closing disco CTA -->
+    <section class="reconocimientos" id="reconocimientos">
+      <h2 class="section-title">RECONOCIMIENTOS INTERNACIONALES</h2>
+
+      <figure class="reco-quote">
+        <p class="stars" aria-hidden="true">★★★★★</p>
+        <blockquote>"Qué basura en puestos quiten esa basura."</blockquote>
+        <figcaption>— @joseccoyllo5264</figcaption>
+      </figure>
+
+      <ul class="reco-list">
+        <li><span class="reco-mark" aria-hidden="true">🏆</span> Premio al Álbum del Año 1907–2026.</li>
+        <li><span class="reco-mark" aria-hidden="true">🚫</span> Prohibido por el Sindicato Internacional de Peritaje De Longcheims.</li>
+        <li><span class="reco-mark" aria-hidden="true">🦐</span> Recomendado por 3 de cada 4 rolis.</li>
+        <li><span class="reco-mark" aria-hidden="true">🍞</span> Elegido Disco Oficial de la Batalla de la Triple Panera.</li>
+      </ul>
+
+      <!-- Banda de logos falsos: instituciones inexistentes que avalan el disco -->
+      <div class="logo-wall" aria-label="Avalado por instituciones que no existen">
+        <span class="fake-logo">CLE TV</span>
+        <span class="fake-logo">BIDET+</span>
+        <span class="fake-logo">PANERA AWARDS</span>
+        <span class="fake-logo">NPC FREE</span>
+        <span class="fake-logo">ISO-1907</span>
+      </div>
+
+      <a
+        href="https://urpite.bandcamp.com/album/patus-klei"
+        class="cta-button reco-cta"
+        target="_blank"
+        rel="noopener"
+      >Conseguí EL DISKO →</a>
     </section>
   </div>
 </template>
@@ -458,6 +493,105 @@ useHead({
   margin-top: 22px;
 }
 
+/* ============================================================
+   Reconocimientos: fake international awards, a logo wall of
+   non-existent institutions, and the closing disco CTA
+   ============================================================ */
+.reconocimientos {
+  background: linear-gradient(to bottom, var(--ega-darkmagenta), var(--ega-black));
+  padding: 80px 20px 90px;
+  text-align: center;
+}
+
+.reco-quote {
+  max-width: 640px;
+  margin: 0 auto 44px;
+}
+
+.reco-quote .stars {
+  color: var(--ega-yellow);
+  font-size: 28px;
+  letter-spacing: 8px;
+  margin-bottom: 14px;
+  text-shadow: 0 0 14px rgba(255, 255, 85, 0.6);
+}
+
+.reco-quote blockquote {
+  color: var(--ega-white);
+  font-size: 30px;
+  font-style: italic;
+  line-height: 1.3;
+  margin-bottom: 12px;
+}
+
+.reco-quote figcaption {
+  color: var(--ega-pink);
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+
+.reco-list {
+  list-style: none;
+  max-width: 720px;
+  margin: 0 auto 48px;
+  display: grid;
+  gap: 14px;
+  text-align: left;
+}
+
+.reco-list li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--ega-black);
+  border-left: 4px solid var(--ega-teal);
+  padding: 14px 18px;
+  color: var(--ega-lightgreen);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.reco-mark {
+  font-size: 22px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.logo-wall {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  max-width: 820px;
+  margin: 0 auto 48px;
+}
+
+/* Bogus institutional badges: greyed out and muted until hovered,
+   like a row of sponsor logos that nobody can quite place. */
+.fake-logo {
+  border: 3px solid var(--ega-darkgray);
+  color: var(--ega-lightgray);
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  opacity: 0.7;
+  filter: grayscale(1);
+  transition: opacity 0.25s, filter 0.25s, color 0.25s, border-color 0.25s, box-shadow 0.25s;
+}
+
+.fake-logo:hover {
+  opacity: 1;
+  filter: grayscale(0);
+  color: var(--ega-teal);
+  border-color: var(--ega-teal);
+  box-shadow: 0 0 16px rgba(0, 255, 170, 0.35);
+}
+
+.reco-cta {
+  font-size: 22px;
+}
+
 @media (max-width: 768px) {
   h1 {
     font-size: 32px;
@@ -465,6 +599,10 @@ useHead({
 
   .hype-title {
     font-size: 30px;
+  }
+
+  .reco-quote blockquote {
+    font-size: 24px;
   }
 
   .hype-grid {

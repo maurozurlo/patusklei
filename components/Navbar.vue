@@ -17,6 +17,15 @@
         <li><NuxtLink to="/buklet" @click="closeMobileMenu">{{ t('buklet') }}</NuxtLink></li>
         <li><NuxtLink to="/mision" @click="closeMobileMenu">{{ t('mision') }}</NuxtLink></li>
         <li><NuxtLink to="/credito" @click="closeMobileMenu">{{ t('credito') }}</NuxtLink></li>
+        <li class="navbar-cta-item">
+          <a
+            class="nav-cta"
+            href="https://urpite.bandcamp.com/album/patus-klei"
+            target="_blank"
+            rel="noopener"
+            @click="closeMobileMenu"
+          >EL DISKO →</a>
+        </li>
        <!-- <li><button class="lang-toggle-nav" @click="toggleLanguage">{{ langText }}</button></li>-->
       </ul>
     </div>
@@ -141,6 +150,28 @@ const toggleLanguage = () => {
   border: 2px solid var(--ega-orange);
   background: var(--ega-darkgray);
   box-shadow: 0 0 10px rgba(255, 136, 0, 0.3);
+}
+
+/* Bandcamp CTA in the navbar — styled as a button so it pops out of the
+   row of plain text links, echoing the site's magenta/pink hero CTA. */
+.navbar-cta-item {
+  margin-left: 6px;
+}
+
+.nav-cta {
+  background: var(--ega-purple);
+  color: var(--ega-white) !important;
+  border: 2px solid var(--ega-pink) !important;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 0 var(--ega-darkmagenta);
+}
+
+.nav-cta:hover {
+  background: var(--ega-lightmagenta) !important;
+  color: var(--ega-white) !important;
+  border-color: var(--ega-pink) !important;
+  box-shadow: 0 0 12px rgba(255, 85, 255, 0.6) !important;
 }
 
 .lang-toggle-nav {
