@@ -61,7 +61,9 @@
 </template>
 
 <script setup lang="ts">
-import { useSeoMeta } from '#imports'
+import { useSeoMeta, useRequestURL } from '#imports'
+
+const cover = new URL('/booklet/cover.jpg', useRequestURL({ xForwardedHost: true }).origin).href
 
 useSeoMeta({
   title: 'Creditos · Patus Klei | Notas del disco de Urpite',
@@ -70,7 +72,9 @@ useSeoMeta({
   ogTitle: 'Creditos y notas del disco de Patus Klei',
   ogDescription: 'Quién hizo qué en el disco de Patus Klei. Spoiler: Urpite, y un par de cuerpos prestados.',
   ogType: 'article',
+  ogImage: cover,
   twitterCard: 'summary_large_image',
+  twitterImage: cover,
 })
 </script>
 

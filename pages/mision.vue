@@ -35,12 +35,10 @@
         <figure class="boss-watch">
           <video
             src="/assets/video_portrait_puppet.mp4"
-            autoplay
-            muted
-            loop
-            playsinline
+            poster="/assets/poster_portrait_puppet.jpg"
             controls
-            preload="metadata"
+            playsinline
+            preload="none"
             aria-label="El boss titiritero te observa"
           ></video>
           <figcaption>EL TITIRITERO LO ESTÁ MIRANDO ●REC</figcaption>
@@ -62,7 +60,9 @@
 </template>
 
 <script setup lang="ts">
-import { useSeoMeta } from '#imports'
+import { useSeoMeta, useRequestURL } from '#imports'
+
+const cover = new URL('/booklet/cover.jpg', useRequestURL({ xForwardedHost: true }).origin).href
 
 useSeoMeta({
   title: 'Misión · Jugá la Batalla de la Triple Panera | Patus Klei',
@@ -71,7 +71,9 @@ useSeoMeta({
   ogTitle: 'La misión: ganar la Batalla de la Triple Panera',
   ogDescription: 'Otras webs tienen un mission statement. La nuestra tiene una misión literal: jugala.',
   ogType: 'website',
+  ogImage: cover,
   twitterCard: 'summary_large_image',
+  twitterImage: cover,
 })
 </script>
 

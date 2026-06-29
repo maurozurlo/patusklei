@@ -4021,7 +4021,7 @@ function _expandFromEnv(value) {
 const _inlineRuntimeConfig = {
   "app": {
     "baseURL": "/",
-    "buildId": "6f1a893a-196e-438f-9e97-6e4a9a81224a",
+    "buildId": "4284aa2c-adc3-4203-a4ac-34ada8dab7a7",
     "buildAssetsDir": "/_nuxt/",
     "cdnURL": ""
   },
@@ -4487,19 +4487,19 @@ const plugins = [
 ];
 
 const assets = {
+  "/assets/poster_landscape_puppet.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"75c2-mQzOe4h9rPzrPNvVgFfb51Ix9wA\"",
+    "mtime": "2026-06-29T13:41:21.165Z",
+    "size": 30146,
+    "path": "../public/assets/poster_landscape_puppet.jpg"
+  },
   "/assets/painting_patus_rodolfa_1927.jpg": {
     "type": "image/jpeg",
     "etag": "\"4bbd7-v4w4yT6ARJbBC8YYI15SSshcE3Q\"",
     "mtime": "2025-09-18T00:41:55.818Z",
     "size": 310231,
     "path": "../public/assets/painting_patus_rodolfa_1927.jpg"
-  },
-  "/assets/painting_patus_klei_1947.jpg": {
-    "type": "image/jpeg",
-    "etag": "\"507d1-maGtGZzWOO9GatpcHHI+W2Va2Y4\"",
-    "mtime": "2025-06-21T03:45:43.306Z",
-    "size": 329681,
-    "path": "../public/assets/painting_patus_klei_1947.jpg"
   },
   "/assets/painting_familia_klei_circa_1910.jpg": {
     "type": "image/jpeg",
@@ -4508,6 +4508,20 @@ const assets = {
     "size": 465227,
     "path": "../public/assets/painting_familia_klei_circa_1910.jpg"
   },
+  "/assets/poster_portrait_puppet.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"1ce45-RLdJZ0/AQzCw3C1olZ2Msh/rWhY\"",
+    "mtime": "2026-06-29T13:41:21.342Z",
+    "size": 118341,
+    "path": "../public/assets/poster_portrait_puppet.jpg"
+  },
+  "/assets/painting_patus_klei_1947.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"507d1-maGtGZzWOO9GatpcHHI+W2Va2Y4\"",
+    "mtime": "2025-06-21T03:45:43.306Z",
+    "size": 329681,
+    "path": "../public/assets/painting_patus_klei_1947.jpg"
+  },
   "/game/index.html": {
     "type": "text/html; charset=utf-8",
     "etag": "\"889-EhPL+zzr/DIJB1tZF1fhjnHDJXc\"",
@@ -4515,12 +4529,54 @@ const assets = {
     "size": 2185,
     "path": "../public/game/index.html"
   },
-  "/_nuxt/buklet.BIuH7z1S.css": {
+  "/_nuxt/bCH3zDr_.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"be6-CXvD6yTlU1TQKkib8Jc7ytmcidE\"",
+    "mtime": "2026-06-29T13:50:17.164Z",
+    "size": 3046,
+    "path": "../public/_nuxt/bCH3zDr_.js"
+  },
+  "/_nuxt/buklet.BIPHij3X.css": {
     "type": "text/css; charset=utf-8",
-    "etag": "\"1963-lDEw0tjr933yRybpVniOSXctLlg\"",
-    "mtime": "2026-06-29T13:26:03.576Z",
+    "etag": "\"1963-dm6EKQhkaiY4nz2Slh4aqL2o8Eg\"",
+    "mtime": "2026-06-29T13:50:17.160Z",
     "size": 6499,
-    "path": "../public/_nuxt/buklet.BIuH7z1S.css"
+    "path": "../public/_nuxt/buklet.BIPHij3X.css"
+  },
+  "/_nuxt/BQtsoOpM.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"5d-bmWTZNS8CK2vC8hT966UYS4KRlQ\"",
+    "mtime": "2026-06-29T13:50:17.164Z",
+    "size": 93,
+    "path": "../public/_nuxt/BQtsoOpM.js"
+  },
+  "/_nuxt/bMjV5TlR.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"807-SaFi9C/NURLqU4mPK+c1DlfWIog\"",
+    "mtime": "2026-06-29T13:50:17.164Z",
+    "size": 2055,
+    "path": "../public/_nuxt/bMjV5TlR.js"
+  },
+  "/_nuxt/BPgex5Wp.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"d96-JjLJrRJSGYqm1+qDP0CPnjmGDMc\"",
+    "mtime": "2026-06-29T13:50:17.162Z",
+    "size": 3478,
+    "path": "../public/_nuxt/BPgex5Wp.js"
+  },
+  "/_nuxt/CDlmlUlE.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"19b-JEuusonbKL8cVDdAjoWVHzZIqbo\"",
+    "mtime": "2026-06-29T13:50:17.164Z",
+    "size": 411,
+    "path": "../public/_nuxt/CDlmlUlE.js"
+  },
+  "/_nuxt/Bs1JfftB.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"ecf-e29t8lHlAvc8IcialQewaVqibmM\"",
+    "mtime": "2026-06-29T13:50:17.162Z",
+    "size": 3791,
+    "path": "../public/_nuxt/Bs1JfftB.js"
   },
   "/booklet/hoja8-9.jpg": {
     "type": "image/jpeg",
@@ -4529,61 +4585,12 @@ const assets = {
     "size": 483203,
     "path": "../public/booklet/hoja8-9.jpg"
   },
-  "/_nuxt/BLzVesFs.js": {
+  "/_nuxt/Ceq78ue5.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"d96-UDq88XlbkbxcQtnQdN6r39t/TBw\"",
-    "mtime": "2026-06-29T13:26:03.576Z",
-    "size": 3478,
-    "path": "../public/_nuxt/BLzVesFs.js"
-  },
-  "/_nuxt/C50T0ev7.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"64-9ET91VRwwJEUhfUjeug1ETXqWS4\"",
-    "mtime": "2026-06-29T13:26:03.576Z",
-    "size": 100,
-    "path": "../public/_nuxt/C50T0ev7.js"
-  },
-  "/_nuxt/B-Xk4xBH.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"14df-uobiK/Q0pInYsvSUrWBlmSIyt4w\"",
-    "mtime": "2026-06-29T13:26:03.577Z",
-    "size": 5343,
-    "path": "../public/_nuxt/B-Xk4xBH.js"
-  },
-  "/_nuxt/BqoNzkO8.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"153b-IyFxxu9Z7qVf+jiYncXgy70KN+Y\"",
-    "mtime": "2026-06-29T13:26:03.576Z",
-    "size": 5435,
-    "path": "../public/_nuxt/BqoNzkO8.js"
-  },
-  "/_nuxt/credito.C8aeUnP_.css": {
-    "type": "text/css; charset=utf-8",
-    "etag": "\"169d-LOUFfx2MxDHAK1jqWMaBfqBQb/I\"",
-    "mtime": "2026-06-29T13:26:03.576Z",
-    "size": 5789,
-    "path": "../public/_nuxt/credito.C8aeUnP_.css"
-  },
-  "/_nuxt/CYt9voYQ.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"b1a-z34t0AGcHef3QOVHclPtDzUO9xk\"",
-    "mtime": "2026-06-29T13:26:03.576Z",
-    "size": 2842,
-    "path": "../public/_nuxt/CYt9voYQ.js"
-  },
-  "/_nuxt/default.C9kRn7dX.css": {
-    "type": "text/css; charset=utf-8",
-    "etag": "\"c4c-WgnlL7D/SZj/eYTGQWrgOX7Z4/0\"",
-    "mtime": "2026-06-29T13:26:03.576Z",
-    "size": 3148,
-    "path": "../public/_nuxt/default.C9kRn7dX.css"
-  },
-  "/_nuxt/D-X4-Dca.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"807-a2UNlO/gufZqQm6OR0tOVq8OUOo\"",
-    "mtime": "2026-06-29T13:26:03.577Z",
-    "size": 2055,
-    "path": "../public/_nuxt/D-X4-Dca.js"
+    "etag": "\"1bff-kXSlbuXWoUu2DWXrwoR4R35+1hs\"",
+    "mtime": "2026-06-29T13:50:17.164Z",
+    "size": 7167,
+    "path": "../public/_nuxt/Ceq78ue5.js"
   },
   "/booklet/hoja0-1.jpg": {
     "type": "image/jpeg",
@@ -4599,19 +4606,19 @@ const assets = {
     "size": 595136,
     "path": "../public/booklet/hoja10-11.jpg"
   },
-  "/booklet/cover.jpg": {
-    "type": "image/jpeg",
-    "etag": "\"dfb0e-hWKnFhwL+kGqHqMvYRokss4+LJA\"",
-    "mtime": "2026-06-29T04:07:07.660Z",
-    "size": 916238,
-    "path": "../public/booklet/cover.jpg"
-  },
   "/booklet/hoja2-3.jpg": {
     "type": "image/jpeg",
     "etag": "\"8b82c-V4c6CT8gibiIqUIuILyNtTqL8l8\"",
     "mtime": "2026-06-29T04:06:50.808Z",
     "size": 571436,
     "path": "../public/booklet/hoja2-3.jpg"
+  },
+  "/booklet/cover.jpg": {
+    "type": "image/jpeg",
+    "etag": "\"dfb0e-hWKnFhwL+kGqHqMvYRokss4+LJA\"",
+    "mtime": "2026-06-29T04:07:07.660Z",
+    "size": 916238,
+    "path": "../public/booklet/cover.jpg"
   },
   "/booklet/hoja6-7.jpg": {
     "type": "image/jpeg",
@@ -4627,20 +4634,6 @@ const assets = {
     "size": 566194,
     "path": "../public/booklet/hoja4-5.jpg"
   },
-  "/_nuxt/DM_rMHMC.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"19b-CAQw997LebyVl2HZY+dXzdYzU+M\"",
-    "mtime": "2026-06-29T13:26:03.576Z",
-    "size": 411,
-    "path": "../public/_nuxt/DM_rMHMC.js"
-  },
-  "/_nuxt/CLPMmycy.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"ad57-XEA28EB5CRYtATvzblkv8NQyZss\"",
-    "mtime": "2026-06-29T13:26:03.577Z",
-    "size": 44375,
-    "path": "../public/_nuxt/CLPMmycy.js"
-  },
   "/assets/video_portrait_puppet.mp4": {
     "type": "video/mp4",
     "etag": "\"1d15c7-ZhsQ619a9pLE2rOfHsEWUH8TBxI\"",
@@ -4648,54 +4641,89 @@ const assets = {
     "size": 1906119,
     "path": "../public/assets/video_portrait_puppet.mp4"
   },
-  "/_nuxt/C8Zk_8Di.js": {
+  "/_nuxt/credito.BeleL7MP.css": {
+    "type": "text/css; charset=utf-8",
+    "etag": "\"169d-r/I9ghwEw5jRrVQHm2vpXRkzQIM\"",
+    "mtime": "2026-06-29T13:50:17.162Z",
+    "size": 5789,
+    "path": "../public/_nuxt/credito.BeleL7MP.css"
+  },
+  "/_nuxt/default.C9kRn7dX.css": {
+    "type": "text/css; charset=utf-8",
+    "etag": "\"c4c-WgnlL7D/SZj/eYTGQWrgOX7Z4/0\"",
+    "mtime": "2026-06-29T13:50:17.162Z",
+    "size": 3148,
+    "path": "../public/_nuxt/default.C9kRn7dX.css"
+  },
+  "/_nuxt/Cl7y-m6v.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"2b5e9-AYDoqVHYUwRdqju3smGAMOHjHss\"",
-    "mtime": "2026-06-29T13:26:03.576Z",
-    "size": 177641,
-    "path": "../public/_nuxt/C8Zk_8Di.js"
+    "etag": "\"14df-4qmqRPoBbqR/E7cbSjBEzNMRcg0\"",
+    "mtime": "2026-06-29T13:50:17.164Z",
+    "size": 5343,
+    "path": "../public/_nuxt/Cl7y-m6v.js"
+  },
+  "/_nuxt/CLPMmycy.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"ad57-XEA28EB5CRYtATvzblkv8NQyZss\"",
+    "mtime": "2026-06-29T13:50:17.164Z",
+    "size": 44375,
+    "path": "../public/_nuxt/CLPMmycy.js"
+  },
+  "/_nuxt/DMRSAQJl.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"64-wQGhs+y+gF5q7ahQzhZ0X6kM0fg\"",
+    "mtime": "2026-06-29T13:50:17.164Z",
+    "size": 100,
+    "path": "../public/_nuxt/DMRSAQJl.js"
   },
   "/_nuxt/entry.By9BKCtc.css": {
     "type": "text/css; charset=utf-8",
     "etag": "\"5e4-8ei4//Qtb2FUZhjqqYpldUn8EN8\"",
-    "mtime": "2026-06-29T13:26:03.576Z",
+    "mtime": "2026-06-29T13:50:17.162Z",
     "size": 1508,
     "path": "../public/_nuxt/entry.By9BKCtc.css"
+  },
+  "/_nuxt/DfgVROn6.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"1593-OKaTLwqZpcvvrYQALGpKEg1Kt8o\"",
+    "mtime": "2026-06-29T13:50:17.162Z",
+    "size": 5523,
+    "path": "../public/_nuxt/DfgVROn6.js"
+  },
+  "/_nuxt/historia.0FdUJy-6.css": {
+    "type": "text/css; charset=utf-8",
+    "etag": "\"1e4b-bTqaWujeYgAosDI3K7H/KQjprJo\"",
+    "mtime": "2026-06-29T13:50:17.162Z",
+    "size": 7755,
+    "path": "../public/_nuxt/historia.0FdUJy-6.css"
+  },
+  "/_nuxt/index.BorDfatJ.css": {
+    "type": "text/css; charset=utf-8",
+    "etag": "\"23a7-YqIzuhymKQVFOKOFhkj0W1O7IvI\"",
+    "mtime": "2026-06-29T13:50:17.162Z",
+    "size": 9127,
+    "path": "../public/_nuxt/index.BorDfatJ.css"
+  },
+  "/_nuxt/mision.Dgbsx5y4.css": {
+    "type": "text/css; charset=utf-8",
+    "etag": "\"1af9-E+2V5zkaQX//2J5cidnPoJNG6do\"",
+    "mtime": "2026-06-29T13:50:17.162Z",
+    "size": 6905,
+    "path": "../public/_nuxt/mision.Dgbsx5y4.css"
   },
   "/_nuxt/error-404._yXoGkXB.css": {
     "type": "text/css; charset=utf-8",
     "etag": "\"97e-UvhxUpGzrIO+HDYB4qU9Txgu35A\"",
-    "mtime": "2026-06-29T13:26:03.573Z",
+    "mtime": "2026-06-29T13:50:17.162Z",
     "size": 2430,
     "path": "../public/_nuxt/error-404._yXoGkXB.css"
-  },
-  "/_nuxt/historia.C6gqh_oe.css": {
-    "type": "text/css; charset=utf-8",
-    "etag": "\"1e4b-jPiC1vO2wQKZQgsA7KqBhkSObjw\"",
-    "mtime": "2026-06-29T13:26:03.576Z",
-    "size": 7755,
-    "path": "../public/_nuxt/historia.C6gqh_oe.css"
   },
   "/_nuxt/error-500.BENb_mjk.css": {
     "type": "text/css; charset=utf-8",
     "etag": "\"773-BFLUend+w1t3SP3QDB+Z0A0V5pI\"",
-    "mtime": "2026-06-29T13:26:03.576Z",
+    "mtime": "2026-06-29T13:50:17.162Z",
     "size": 1907,
     "path": "../public/_nuxt/error-500.BENb_mjk.css"
-  },
-  "/_nuxt/index.BoyODZrb.css": {
-    "type": "text/css; charset=utf-8",
-    "etag": "\"23a7-vybnD3q41zWlZ6BZcMgD4RJPaIc\"",
-    "mtime": "2026-06-29T13:26:03.576Z",
-    "size": 9127,
-    "path": "../public/_nuxt/index.BoyODZrb.css"
-  },
-  "/_nuxt/mision.Bdhs3bZX.css": {
-    "type": "text/css; charset=utf-8",
-    "etag": "\"1af9-2zceqZEADX1Q16Z14VetqIjVwWg\"",
-    "mtime": "2026-06-29T13:26:03.576Z",
-    "size": 6905,
-    "path": "../public/_nuxt/mision.Bdhs3bZX.css"
   },
   "/game/audio/bgm_lvl1.pkf": {
     "type": "text/plain; charset=utf-8",
@@ -4704,12 +4732,12 @@ const assets = {
     "size": 17512,
     "path": "../public/game/audio/bgm_lvl1.pkf"
   },
-  "/_nuxt/DVWBGCw2.js": {
+  "/_nuxt/Qy464_Z5.js": {
     "type": "text/javascript; charset=utf-8",
-    "etag": "\"38dd-58OypmbQ62T0j1zv0WA1Q+RDFPI\"",
-    "mtime": "2026-06-29T13:26:03.576Z",
-    "size": 14557,
-    "path": "../public/_nuxt/DVWBGCw2.js"
+    "etag": "\"1038-w5oYd0+Z/WeFN650Xoc3pGhqTiw\"",
+    "mtime": "2026-06-29T13:50:17.164Z",
+    "size": 4152,
+    "path": "../public/_nuxt/Qy464_Z5.js"
   },
   "/game/audio/bgm_menu.pkf": {
     "type": "text/plain; charset=utf-8",
@@ -4718,19 +4746,12 @@ const assets = {
     "size": 52008,
     "path": "../public/game/audio/bgm_menu.pkf"
   },
-  "/game/audio/sfx_bomb_beep.wav": {
-    "type": "audio/wav",
-    "etag": "\"3eb8-uW9J4/G/67jp/kw18gFWXy3sAug\"",
-    "mtime": "2026-06-27T20:32:20.000Z",
-    "size": 16056,
-    "path": "../public/game/audio/sfx_bomb_beep.wav"
-  },
-  "/game/audio/sfx_boss_hit.wav": {
-    "type": "audio/wav",
-    "etag": "\"22fdc-ElU007gb0+vQbvGqwNn17898K0c\"",
-    "mtime": "2026-06-27T20:33:09.000Z",
-    "size": 143324,
-    "path": "../public/game/audio/sfx_boss_hit.wav"
+  "/_nuxt/rXlQH_pm.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"3967-JMsMeiOLUfcAUndw08J9Sd6vwO4\"",
+    "mtime": "2026-06-29T13:50:17.164Z",
+    "size": 14695,
+    "path": "../public/_nuxt/rXlQH_pm.js"
   },
   "/game/audio/sfx_birdhit.wav": {
     "type": "audio/wav",
@@ -4739,6 +4760,13 @@ const assets = {
     "size": 295844,
     "path": "../public/game/audio/sfx_birdhit.wav"
   },
+  "/game/audio/sfx_bomb_beep.wav": {
+    "type": "audio/wav",
+    "etag": "\"3eb8-uW9J4/G/67jp/kw18gFWXy3sAug\"",
+    "mtime": "2026-06-27T20:32:20.000Z",
+    "size": 16056,
+    "path": "../public/game/audio/sfx_bomb_beep.wav"
+  },
   "/game/audio/sfx_bomb_planted.wav": {
     "type": "audio/wav",
     "etag": "\"26ee0-LTa1uCpkPgCCKOOchxphertrfAs\"",
@@ -4746,26 +4774,26 @@ const assets = {
     "size": 159456,
     "path": "../public/game/audio/sfx_bomb_planted.wav"
   },
-  "/game/audio/sfx_boss_miss.wav": {
-    "type": "audio/wav",
-    "etag": "\"8cac-zTGHXuiBnAjMDMMfO1syRIWBePU\"",
-    "mtime": "2026-06-27T20:28:30.000Z",
-    "size": 36012,
-    "path": "../public/game/audio/sfx_boss_miss.wav"
-  },
-  "/game/audio/sfx_click.wav": {
-    "type": "audio/wav",
-    "etag": "\"11004-cemEdpacVw/IR/Rp4J8gGvsW2a4\"",
-    "mtime": "2026-06-27T20:28:23.000Z",
-    "size": 69636,
-    "path": "../public/game/audio/sfx_click.wav"
-  },
   "/game/audio/bgm_lvl1.wav": {
     "type": "audio/wav",
     "etag": "\"8a384-eH2kK4RztxXZCgx2kDF8xvfwFDk\"",
     "mtime": "2026-06-27T20:33:39.000Z",
     "size": 566148,
     "path": "../public/game/audio/bgm_lvl1.wav"
+  },
+  "/game/audio/sfx_boss_hit.wav": {
+    "type": "audio/wav",
+    "etag": "\"22fdc-ElU007gb0+vQbvGqwNn17898K0c\"",
+    "mtime": "2026-06-27T20:33:09.000Z",
+    "size": 143324,
+    "path": "../public/game/audio/sfx_boss_hit.wav"
+  },
+  "/game/audio/sfx_boss_miss.wav": {
+    "type": "audio/wav",
+    "etag": "\"8cac-zTGHXuiBnAjMDMMfO1syRIWBePU\"",
+    "mtime": "2026-06-27T20:28:30.000Z",
+    "size": 36012,
+    "path": "../public/game/audio/sfx_boss_miss.wav"
   },
   "/game/audio/sfx_crash.wav": {
     "type": "audio/wav",
@@ -4781,12 +4809,12 @@ const assets = {
     "size": 414078,
     "path": "../public/game/audio/sfx_endlvl1.wav"
   },
-  "/_nuxt/JbQdDroj.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"fc2-57WQjaX4LpCQNakrkVPCz6UPcF8\"",
-    "mtime": "2026-06-29T13:26:03.576Z",
-    "size": 4034,
-    "path": "../public/_nuxt/JbQdDroj.js"
+  "/game/audio/sfx_click.wav": {
+    "type": "audio/wav",
+    "etag": "\"11004-cemEdpacVw/IR/Rp4J8gGvsW2a4\"",
+    "mtime": "2026-06-27T20:28:23.000Z",
+    "size": 69636,
+    "path": "../public/game/audio/sfx_click.wav"
   },
   "/game/audio/bgm_menu.wav": {
     "type": "audio/wav",
@@ -4795,12 +4823,40 @@ const assets = {
     "size": 1649218,
     "path": "../public/game/audio/bgm_menu.wav"
   },
+  "/_nuxt/CV_MFfAO.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"2b604-dYuEhcXL0UlI/wCM6Yqs3I9wsSg\"",
+    "mtime": "2026-06-29T13:50:17.162Z",
+    "size": 177668,
+    "path": "../public/_nuxt/CV_MFfAO.js"
+  },
   "/game/audio/sfx_jump.wav": {
     "type": "audio/wav",
     "etag": "\"b0f4-wr6WqahXlVwQOeeZsEXYMp4Tjrc\"",
     "mtime": "2026-06-27T20:25:16.000Z",
     "size": 45300,
     "path": "../public/game/audio/sfx_jump.wav"
+  },
+  "/game/data/BossFight.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"1993-f0CSWYXPm7uGtMvOSGwF115WtHM\"",
+    "mtime": "2026-06-28T02:47:58.308Z",
+    "size": 6547,
+    "path": "../public/game/data/BossFight.js"
+  },
+  "/game/data/BossLayout.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"7b5-E+LrkAhZ9hDafpjW1zQloF8/GQM\"",
+    "mtime": "2026-06-26T03:11:41.585Z",
+    "size": 1973,
+    "path": "../public/game/data/BossLayout.js"
+  },
+  "/game/data/Credits.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"3c5-BYCMq+4F8VL1sjl6+8allVBhki4\"",
+    "mtime": "2026-06-29T03:39:24.592Z",
+    "size": 965,
+    "path": "../public/game/data/Credits.js"
   },
   "/game/audio/sfx_patus_hit.wav": {
     "type": "audio/wav",
@@ -4823,54 +4879,12 @@ const assets = {
     "size": 64986,
     "path": "../public/game/audio/sfx_tuna.wav"
   },
-  "/_nuxt/DxsgLuob.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"ecf-k/AQ7ebj13z8jqC4XKYppub/NbY\"",
-    "mtime": "2026-06-29T13:26:03.576Z",
-    "size": 3791,
-    "path": "../public/_nuxt/DxsgLuob.js"
-  },
-  "/_nuxt/DUGV9CJK.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"1b2c-r2pb6JAbudocwG7k4CCAUTL3c3c\"",
-    "mtime": "2026-06-29T13:26:03.576Z",
-    "size": 6956,
-    "path": "../public/_nuxt/DUGV9CJK.js"
-  },
   "/game/data/Lore.js": {
     "type": "text/javascript; charset=utf-8",
     "etag": "\"113e-UmWhS9+qMmLQ/gl/eG2FbSuur7k\"",
     "mtime": "2026-06-29T03:29:00.027Z",
     "size": 4414,
     "path": "../public/game/data/Lore.js"
-  },
-  "/game/data/Credits.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"3c5-BYCMq+4F8VL1sjl6+8allVBhki4\"",
-    "mtime": "2026-06-29T03:39:24.592Z",
-    "size": 965,
-    "path": "../public/game/data/Credits.js"
-  },
-  "/game/audio/sfx_explo.wav": {
-    "type": "audio/wav",
-    "etag": "\"97fdc-PFCo7kkEIN6pTiObIeoe7S3mnQ8\"",
-    "mtime": "2026-06-27T20:26:16.000Z",
-    "size": 622556,
-    "path": "../public/game/audio/sfx_explo.wav"
-  },
-  "/game/data/BossLayout.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"7b5-E+LrkAhZ9hDafpjW1zQloF8/GQM\"",
-    "mtime": "2026-06-26T03:11:41.585Z",
-    "size": 1973,
-    "path": "../public/game/data/BossLayout.js"
-  },
-  "/game/audio/sfx_gameover.wav": {
-    "type": "audio/wav",
-    "etag": "\"8a63e-L8IBlPSlgLz6upoYgUVfN4mA3tA\"",
-    "mtime": "2026-06-27T20:25:28.000Z",
-    "size": 566846,
-    "path": "../public/game/audio/sfx_gameover.wav"
   },
   "/game/docs/architecture.md": {
     "type": "text/markdown; charset=utf-8",
@@ -4886,12 +4900,33 @@ const assets = {
     "size": 2327,
     "path": "../public/game/docs/development.md"
   },
+  "/game/audio/sfx_explo.wav": {
+    "type": "audio/wav",
+    "etag": "\"97fdc-PFCo7kkEIN6pTiObIeoe7S3mnQ8\"",
+    "mtime": "2026-06-27T20:26:16.000Z",
+    "size": 622556,
+    "path": "../public/game/audio/sfx_explo.wav"
+  },
+  "/game/audio/sfx_gameover.wav": {
+    "type": "audio/wav",
+    "etag": "\"8a63e-L8IBlPSlgLz6upoYgUVfN4mA3tA\"",
+    "mtime": "2026-06-27T20:25:28.000Z",
+    "size": 566846,
+    "path": "../public/game/audio/sfx_gameover.wav"
+  },
   "/game/docs/game-play.md": {
     "type": "text/markdown; charset=utf-8",
     "etag": "\"834-IUnWO/9DifPQrs6MQJunhfKHxDo\"",
     "mtime": "2026-03-24T15:16:13.168Z",
     "size": 2100,
     "path": "../public/game/docs/game-play.md"
+  },
+  "/assets/video_landscape_puppet_story.mp4": {
+    "type": "video/mp4",
+    "etag": "\"4ba1b1-YP0GWivWn/v4l81vejzBfUbBUMQ\"",
+    "mtime": "2026-05-16T00:38:39.451Z",
+    "size": 4956593,
+    "path": "../public/assets/video_landscape_puppet_story.mp4"
   },
   "/game/docs/README.md": {
     "type": "text/markdown; charset=utf-8",
@@ -4914,83 +4949,6 @@ const assets = {
     "size": 116008,
     "path": "../public/game/fonts/PressStart2P-Regular.ttf"
   },
-  "/game/data/BossFight.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"1993-f0CSWYXPm7uGtMvOSGwF115WtHM\"",
-    "mtime": "2026-06-28T02:47:58.308Z",
-    "size": 6547,
-    "path": "../public/game/data/BossFight.js"
-  },
-  "/game/data/SaveManager.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"a95-SD7SdwaAegCRa7X8GlHc1rRfZdk\"",
-    "mtime": "2026-06-27T18:06:12.140Z",
-    "size": 2709,
-    "path": "../public/game/data/SaveManager.js"
-  },
-  "/assets/video_landscape_puppet_story.mp4": {
-    "type": "video/mp4",
-    "etag": "\"4ba1b1-YP0GWivWn/v4l81vejzBfUbBUMQ\"",
-    "mtime": "2026-05-16T00:38:39.451Z",
-    "size": 4956593,
-    "path": "../public/assets/video_landscape_puppet_story.mp4"
-  },
-  "/game/managers/BossManager.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"521e-x9vxP04IH79wumvY7fi0o8S4xXs\"",
-    "mtime": "2026-06-27T18:40:39.919Z",
-    "size": 21022,
-    "path": "../public/game/managers/BossManager.js"
-  },
-  "/game/managers/CoinManager.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"1af5-6AgFlRNsJpVIGO8pCpxpkxof0YQ\"",
-    "mtime": "2026-06-29T03:30:36.393Z",
-    "size": 6901,
-    "path": "../public/game/managers/CoinManager.js"
-  },
-  "/game/managers/BackgroundManager.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"1895-Pq3p1RMm5azQYEQB4iVR72v/j24\"",
-    "mtime": "2026-06-27T18:46:01.254Z",
-    "size": 6293,
-    "path": "../public/game/managers/BackgroundManager.js"
-  },
-  "/game/managers/LevelManager.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"10cc-wy3BL808TDFwrdeC59WL8YwOuM0\"",
-    "mtime": "2026-06-25T03:06:57.787Z",
-    "size": 4300,
-    "path": "../public/game/managers/LevelManager.js"
-  },
-  "/game/managers/ObstacleManager.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"1df0-mtgbEipw+GGPRjmI2I51lvKz/r4\"",
-    "mtime": "2026-06-27T18:53:16.168Z",
-    "size": 7664,
-    "path": "../public/game/managers/ObstacleManager.js"
-  },
-  "/game/images/bad_ending_1.png": {
-    "type": "image/png",
-    "etag": "\"524d-XdKQVrjR5kf+2v+4wv4zpjB8zPA\"",
-    "mtime": "2026-06-29T03:09:46.073Z",
-    "size": 21069,
-    "path": "../public/game/images/bad_ending_1.png"
-  },
-  "/game/images/bad_ending_2.png": {
-    "type": "image/png",
-    "etag": "\"54d0-n4ewvSf6YRWy/52nXYle6ETUINw\"",
-    "mtime": "2026-06-29T03:10:05.500Z",
-    "size": 21712,
-    "path": "../public/game/images/bad_ending_2.png"
-  },
-  "/game/managers/UIManager.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"efc-Q/ek2XdoUEhfhZTGE1wRNMOFQNU\"",
-    "mtime": "2026-06-27T19:35:51.177Z",
-    "size": 3836,
-    "path": "../public/game/managers/UIManager.js"
-  },
   "/game/images/bellpepper_coin.png": {
     "type": "image/png",
     "etag": "\"269-CJ05gxQdsJvSCovILohFQEy6umY\"",
@@ -5005,12 +4963,12 @@ const assets = {
     "size": 3996,
     "path": "../public/game/images/bg_beach.png"
   },
-  "/game/images/bg_boss.png": {
-    "type": "image/png",
-    "etag": "\"1bae-1Vhu7nAcP9xnEKN0mQuo3ED4x/w\"",
-    "mtime": "2026-06-25T01:52:27.923Z",
-    "size": 7086,
-    "path": "../public/game/images/bg_boss.png"
+  "/game/data/SaveManager.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"a95-SD7SdwaAegCRa7X8GlHc1rRfZdk\"",
+    "mtime": "2026-06-27T18:06:12.140Z",
+    "size": 2709,
+    "path": "../public/game/data/SaveManager.js"
   },
   "/game/images/bg_builds.png": {
     "type": "image/png",
@@ -5019,12 +4977,12 @@ const assets = {
     "size": 2960,
     "path": "../public/game/images/bg_builds.png"
   },
-  "/game/images/bg_city.png": {
+  "/game/images/bad_ending_1.png": {
     "type": "image/png",
-    "etag": "\"9d44-6n0uDFzEfW+PgCAw5F6s8pA5sN0\"",
-    "mtime": "2026-03-24T15:16:22.000Z",
-    "size": 40260,
-    "path": "../public/game/images/bg_city.png"
+    "etag": "\"524d-XdKQVrjR5kf+2v+4wv4zpjB8zPA\"",
+    "mtime": "2026-06-29T03:09:46.073Z",
+    "size": 21069,
+    "path": "../public/game/images/bad_ending_1.png"
   },
   "/game/images/bidet_foam.png": {
     "type": "image/png",
@@ -5032,6 +4990,13 @@ const assets = {
     "mtime": "2026-03-24T15:16:22.000Z",
     "size": 552,
     "path": "../public/game/images/bidet_foam.png"
+  },
+  "/game/images/bad_ending_2.png": {
+    "type": "image/png",
+    "etag": "\"54d0-n4ewvSf6YRWy/52nXYle6ETUINw\"",
+    "mtime": "2026-06-29T03:10:05.500Z",
+    "size": 21712,
+    "path": "../public/game/images/bad_ending_2.png"
   },
   "/game/images/bidet_splash.png": {
     "type": "image/png",
@@ -5054,6 +5019,13 @@ const assets = {
     "size": 1926,
     "path": "../public/game/images/bomb.png"
   },
+  "/game/images/bg_boss.png": {
+    "type": "image/png",
+    "etag": "\"1bae-1Vhu7nAcP9xnEKN0mQuo3ED4x/w\"",
+    "mtime": "2026-06-25T01:52:27.923Z",
+    "size": 7086,
+    "path": "../public/game/images/bg_boss.png"
+  },
   "/game/images/boss_body.png": {
     "type": "image/png",
     "etag": "\"ccf-iD+RNgdwPw1Wj4uRb38/xMT5Y8o\"",
@@ -5067,6 +5039,13 @@ const assets = {
     "mtime": "2026-06-27T18:29:14.709Z",
     "size": 3804,
     "path": "../public/game/images/boss_body_dmg1.png"
+  },
+  "/game/images/bg_city.png": {
+    "type": "image/png",
+    "etag": "\"9d44-6n0uDFzEfW+PgCAw5F6s8pA5sN0\"",
+    "mtime": "2026-03-24T15:16:22.000Z",
+    "size": 40260,
+    "path": "../public/game/images/bg_city.png"
   },
   "/game/images/boss_body_dmg2.png": {
     "type": "image/png",
@@ -5089,12 +5068,19 @@ const assets = {
     "size": 4830,
     "path": "../public/game/images/boss_hand_l.png"
   },
-  "/game/managers/FinishLineManager.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"14cf-STfF36LFzqme3W1TY4HTSDbDq70\"",
-    "mtime": "2026-06-29T03:34:45.872Z",
-    "size": 5327,
-    "path": "../public/game/managers/FinishLineManager.js"
+  "/game/images/boss_hand_l_idle.png": {
+    "type": "image/png",
+    "etag": "\"ed6-ex9KpAq04/FXf/Rfafi68SUnl+U\"",
+    "mtime": "2026-06-26T04:27:33.398Z",
+    "size": 3798,
+    "path": "../public/game/images/boss_hand_l_idle.png"
+  },
+  "/game/images/boss_hand_r.png": {
+    "type": "image/png",
+    "etag": "\"12f0-Kbv+NSMxnC/hQhv1bwc69aZbNIU\"",
+    "mtime": "2026-06-25T02:47:30.629Z",
+    "size": 4848,
+    "path": "../public/game/images/boss_hand_r.png"
   },
   "/game/images/boss_hand_l_attack_back.png": {
     "type": "image/png",
@@ -5110,47 +5096,12 @@ const assets = {
     "size": 34162,
     "path": "../public/game/images/boss_hand_l_attack_front.png"
   },
-  "/game/images/boss_hand_l_idle.png": {
-    "type": "image/png",
-    "etag": "\"ed6-ex9KpAq04/FXf/Rfafi68SUnl+U\"",
-    "mtime": "2026-06-26T04:27:33.398Z",
-    "size": 3798,
-    "path": "../public/game/images/boss_hand_l_idle.png"
-  },
-  "/game/managers/PlayerManager.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"2aba-ZVyllRXIotCnKrPw6PoCYbXzcts\"",
-    "mtime": "2026-06-29T03:27:16.193Z",
-    "size": 10938,
-    "path": "../public/game/managers/PlayerManager.js"
-  },
   "/game/images/boss_hand_l_twitch.png": {
     "type": "image/png",
     "etag": "\"2337-lsgtLqqZP8jeJQ90RfFzQnUTX+U\"",
     "mtime": "2026-06-26T02:50:22.582Z",
     "size": 9015,
     "path": "../public/game/images/boss_hand_l_twitch.png"
-  },
-  "/game/images/boss_hand_r_attack_front.png": {
-    "type": "image/png",
-    "etag": "\"45ba-2Y9F5KpPPNV128soGIgLb5JSWlg\"",
-    "mtime": "2026-06-26T04:16:14.891Z",
-    "size": 17850,
-    "path": "../public/game/images/boss_hand_r_attack_front.png"
-  },
-  "/game/images/boss_hand_r_attack.png": {
-    "type": "image/png",
-    "etag": "\"48f7-8QFp8cr+Fc4c/UWa1fSiawVye0c\"",
-    "mtime": "2026-06-26T04:12:54.961Z",
-    "size": 18679,
-    "path": "../public/game/images/boss_hand_r_attack.png"
-  },
-  "/game/images/boss_hand_r.png": {
-    "type": "image/png",
-    "etag": "\"12f0-Kbv+NSMxnC/hQhv1bwc69aZbNIU\"",
-    "mtime": "2026-06-25T02:47:30.629Z",
-    "size": 4848,
-    "path": "../public/game/images/boss_hand_r.png"
   },
   "/game/images/boss_hand_r_attack_back.png": {
     "type": "image/png",
@@ -5166,12 +5117,19 @@ const assets = {
     "size": 3573,
     "path": "../public/game/images/boss_hand_r_idle.png"
   },
-  "/game/images/boss_hand_r_twitch.png": {
+  "/game/images/boss_head.png": {
     "type": "image/png",
-    "etag": "\"21e1-kkQ8kD6zOp0PJHY511aNs6owiZA\"",
-    "mtime": "2026-06-26T03:33:40.894Z",
-    "size": 8673,
-    "path": "../public/game/images/boss_hand_r_twitch.png"
+    "etag": "\"1191-nYzD5yfJ9EBep4wgBwbWA3i4zNU\"",
+    "mtime": "2026-06-25T02:42:07.089Z",
+    "size": 4497,
+    "path": "../public/game/images/boss_head.png"
+  },
+  "/game/images/boss_hand_r_attack.png": {
+    "type": "image/png",
+    "etag": "\"48f7-8QFp8cr+Fc4c/UWa1fSiawVye0c\"",
+    "mtime": "2026-06-26T04:12:54.961Z",
+    "size": 18679,
+    "path": "../public/game/images/boss_hand_r_attack.png"
   },
   "/game/images/boss_head_dmg1.png": {
     "type": "image/png",
@@ -5179,13 +5137,6 @@ const assets = {
     "mtime": "2026-06-27T18:23:06.797Z",
     "size": 4987,
     "path": "../public/game/images/boss_head_dmg1.png"
-  },
-  "/game/images/boss_head.png": {
-    "type": "image/png",
-    "etag": "\"1191-nYzD5yfJ9EBep4wgBwbWA3i4zNU\"",
-    "mtime": "2026-06-25T02:42:07.089Z",
-    "size": 4497,
-    "path": "../public/game/images/boss_head.png"
   },
   "/game/images/boss_head_dmg2.png": {
     "type": "image/png",
@@ -5201,6 +5152,20 @@ const assets = {
     "size": 3038,
     "path": "../public/game/images/boss_platform.png"
   },
+  "/game/images/boss_sitting.png": {
+    "type": "image/png",
+    "etag": "\"a86-4OJaOeil5058KVGgGMmA3dyWc4A\"",
+    "mtime": "2026-06-25T01:54:40.246Z",
+    "size": 2694,
+    "path": "../public/game/images/boss_sitting.png"
+  },
+  "/game/images/boss_hand_r_attack_front.png": {
+    "type": "image/png",
+    "etag": "\"45ba-2Y9F5KpPPNV128soGIgLb5JSWlg\"",
+    "mtime": "2026-06-26T04:16:14.891Z",
+    "size": 17850,
+    "path": "../public/game/images/boss_hand_r_attack_front.png"
+  },
   "/game/images/boss_welcome.png": {
     "type": "image/png",
     "etag": "\"1e6b-RLji0HPE/o3O2NnD4LDKHM63Exk\"",
@@ -5215,12 +5180,12 @@ const assets = {
     "size": 819,
     "path": "../public/game/images/buoy_idle.png"
   },
-  "/game/images/boss_sitting.png": {
+  "/game/images/car_00.png": {
     "type": "image/png",
-    "etag": "\"a86-4OJaOeil5058KVGgGMmA3dyWc4A\"",
-    "mtime": "2026-06-25T01:54:40.246Z",
-    "size": 2694,
-    "path": "../public/game/images/boss_sitting.png"
+    "etag": "\"b5d-937bmf91o7SlyrP7b+zNwrwh6mI\"",
+    "mtime": "2026-03-24T15:16:22.002Z",
+    "size": 2909,
+    "path": "../public/game/images/car_00.png"
   },
   "/game/images/car_01.png": {
     "type": "image/png",
@@ -5229,19 +5194,19 @@ const assets = {
     "size": 2277,
     "path": "../public/game/images/car_01.png"
   },
-  "/game/images/car_00.png": {
-    "type": "image/png",
-    "etag": "\"b5d-937bmf91o7SlyrP7b+zNwrwh6mI\"",
-    "mtime": "2026-03-24T15:16:22.002Z",
-    "size": 2909,
-    "path": "../public/game/images/car_00.png"
-  },
   "/game/images/car_02.png": {
     "type": "image/png",
     "etag": "\"8e3-qYp2PoyGl4kS54SgEULmOfLLihI\"",
     "mtime": "2026-03-24T15:16:22.003Z",
     "size": 2275,
     "path": "../public/game/images/car_02.png"
+  },
+  "/game/images/boss_hand_r_twitch.png": {
+    "type": "image/png",
+    "etag": "\"21e1-kkQ8kD6zOp0PJHY511aNs6owiZA\"",
+    "mtime": "2026-06-26T03:33:40.894Z",
+    "size": 8673,
+    "path": "../public/game/images/boss_hand_r_twitch.png"
   },
   "/game/images/car_03.png": {
     "type": "image/png",
@@ -5271,12 +5236,12 @@ const assets = {
     "size": 5387,
     "path": "../public/game/images/explosion.png"
   },
-  "/game/images/good_ending_1.png": {
+  "/game/images/heart_damage.png": {
     "type": "image/png",
-    "etag": "\"522e-WhoIEu2m5M01OuVZT+wKz3DZ3rY\"",
-    "mtime": "2026-06-28T22:09:44.092Z",
-    "size": 21038,
-    "path": "../public/game/images/good_ending_1.png"
+    "etag": "\"6f9-DNssxQp3+UuXJXUb2ntT2kCXPUk\"",
+    "mtime": "2026-06-26T21:04:10.773Z",
+    "size": 1785,
+    "path": "../public/game/images/heart_damage.png"
   },
   "/game/images/heart_full.png": {
     "type": "image/png",
@@ -5285,20 +5250,6 @@ const assets = {
     "size": 1710,
     "path": "../public/game/images/heart_full.png"
   },
-  "/game/images/good_ending_2.png": {
-    "type": "image/png",
-    "etag": "\"4f05-FLc0CUfxbP0ljRD8G/iwu4xY+Nk\"",
-    "mtime": "2026-06-29T03:09:32.617Z",
-    "size": 20229,
-    "path": "../public/game/images/good_ending_2.png"
-  },
-  "/game/images/heart_damage.png": {
-    "type": "image/png",
-    "etag": "\"6f9-DNssxQp3+UuXJXUb2ntT2kCXPUk\"",
-    "mtime": "2026-06-26T21:04:10.773Z",
-    "size": 1785,
-    "path": "../public/game/images/heart_damage.png"
-  },
   "/game/images/icon_soundoff.png": {
     "type": "image/png",
     "etag": "\"7a4-bf0/e0anzFjj/e2pb6w0NfIRbCk\"",
@@ -5306,19 +5257,19 @@ const assets = {
     "size": 1956,
     "path": "../public/game/images/icon_soundoff.png"
   },
-  "/game/images/icon_soundon.png": {
+  "/game/images/good_ending_1.png": {
     "type": "image/png",
-    "etag": "\"780-2hwLoTTs2g0A0l2SOdkqiJJe7pQ\"",
-    "mtime": "2026-06-27T19:33:11.350Z",
-    "size": 1920,
-    "path": "../public/game/images/icon_soundon.png"
+    "etag": "\"522e-WhoIEu2m5M01OuVZT+wKz3DZ3rY\"",
+    "mtime": "2026-06-28T22:09:44.092Z",
+    "size": 21038,
+    "path": "../public/game/images/good_ending_1.png"
   },
-  "/game/images/main_menu.png": {
+  "/game/images/good_ending_2.png": {
     "type": "image/png",
-    "etag": "\"4e41-NIwxjQk+06QOjMRrqy8LPqNA3f0\"",
-    "mtime": "2026-06-29T03:49:41.553Z",
-    "size": 20033,
-    "path": "../public/game/images/main_menu.png"
+    "etag": "\"4f05-FLc0CUfxbP0ljRD8G/iwu4xY+Nk\"",
+    "mtime": "2026-06-29T03:09:32.617Z",
+    "size": 20229,
+    "path": "../public/game/images/good_ending_2.png"
   },
   "/game/images/patus_bidet.png": {
     "type": "image/png",
@@ -5333,6 +5284,13 @@ const assets = {
     "mtime": "2026-06-29T03:18:10.384Z",
     "size": 5494,
     "path": "../public/game/images/patus_crouch.png"
+  },
+  "/game/images/icon_soundon.png": {
+    "type": "image/png",
+    "etag": "\"780-2hwLoTTs2g0A0l2SOdkqiJJe7pQ\"",
+    "mtime": "2026-06-27T19:33:11.350Z",
+    "size": 1920,
+    "path": "../public/game/images/icon_soundon.png"
   },
   "/game/images/patus_crouch_idle.png": {
     "type": "image/png",
@@ -5355,6 +5313,13 @@ const assets = {
     "size": 3212,
     "path": "../public/game/images/patus_jump.png"
   },
+  "/game/images/main_menu.png": {
+    "type": "image/png",
+    "etag": "\"4e41-NIwxjQk+06QOjMRrqy8LPqNA3f0\"",
+    "mtime": "2026-06-29T03:49:41.553Z",
+    "size": 20033,
+    "path": "../public/game/images/main_menu.png"
+  },
   "/game/images/patus_walk.png": {
     "type": "image/png",
     "etag": "\"1b0a-YvsiB6jMj5+mGsN17wvAGaQVy28\"",
@@ -5369,19 +5334,19 @@ const assets = {
     "size": 2059,
     "path": "../public/game/images/portrait_lars.png"
   },
-  "/game/images/portrait_patus.png": {
-    "type": "image/png",
-    "etag": "\"7c3-2La/VdXlQJ15e+e8HgskogHtH4g\"",
-    "mtime": "2026-06-28T02:31:56.467Z",
-    "size": 1987,
-    "path": "../public/game/images/portrait_patus.png"
-  },
   "/game/images/portrait_lars_patus.png": {
     "type": "image/png",
     "etag": "\"8b9-ZQqfm3GaGcE5sTmeXEBPJ0J0LQU\"",
     "mtime": "2026-06-28T02:32:28.627Z",
     "size": 2233,
     "path": "../public/game/images/portrait_lars_patus.png"
+  },
+  "/game/images/portrait_patus.png": {
+    "type": "image/png",
+    "etag": "\"7c3-2La/VdXlQJ15e+e8HgskogHtH4g\"",
+    "mtime": "2026-06-28T02:31:56.467Z",
+    "size": 1987,
+    "path": "../public/game/images/portrait_patus.png"
   },
   "/game/images/rodolfa-walk.png": {
     "type": "image/png",
@@ -5397,12 +5362,12 @@ const assets = {
     "size": 733,
     "path": "../public/game/images/tunacan_coin.png"
   },
-  "/game/src/main.js": {
-    "type": "text/javascript; charset=utf-8",
-    "etag": "\"651-sp+Vxy4vMpOZ1cRUo652jOLAAuI\"",
-    "mtime": "2026-06-27T19:13:13.299Z",
-    "size": 1617,
-    "path": "../public/game/src/main.js"
+  "/game/images/water_anim.png": {
+    "type": "image/png",
+    "etag": "\"34b-p/W0vmvTyUlo6igr5HgeaU0sSaQ\"",
+    "mtime": "2026-03-24T15:16:22.006Z",
+    "size": 843,
+    "path": "../public/game/images/water_anim.png"
   },
   "/game/images/water_low.png": {
     "type": "image/png",
@@ -5411,19 +5376,54 @@ const assets = {
     "size": 2087,
     "path": "../public/game/images/water_low.png"
   },
-  "/game/images/water_anim.png": {
-    "type": "image/png",
-    "etag": "\"34b-p/W0vmvTyUlo6igr5HgeaU0sSaQ\"",
-    "mtime": "2026-03-24T15:16:22.006Z",
-    "size": 843,
-    "path": "../public/game/images/water_anim.png"
+  "/game/managers/BackgroundManager.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"1895-Pq3p1RMm5azQYEQB4iVR72v/j24\"",
+    "mtime": "2026-06-27T18:46:01.254Z",
+    "size": 6293,
+    "path": "../public/game/managers/BackgroundManager.js"
   },
-  "/_nuxt/builds/latest.json": {
-    "type": "application/json",
-    "etag": "\"47-42fDa3GwuHWPb0roz0QCOAcahkU\"",
-    "mtime": "2026-06-29T13:26:05.031Z",
-    "size": 71,
-    "path": "../public/_nuxt/builds/latest.json"
+  "/game/managers/CoinManager.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"1af5-6AgFlRNsJpVIGO8pCpxpkxof0YQ\"",
+    "mtime": "2026-06-29T03:30:36.393Z",
+    "size": 6901,
+    "path": "../public/game/managers/CoinManager.js"
+  },
+  "/game/managers/FinishLineManager.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"14cf-STfF36LFzqme3W1TY4HTSDbDq70\"",
+    "mtime": "2026-06-29T03:34:45.872Z",
+    "size": 5327,
+    "path": "../public/game/managers/FinishLineManager.js"
+  },
+  "/game/managers/LevelManager.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"10cc-wy3BL808TDFwrdeC59WL8YwOuM0\"",
+    "mtime": "2026-06-25T03:06:57.787Z",
+    "size": 4300,
+    "path": "../public/game/managers/LevelManager.js"
+  },
+  "/game/managers/ObstacleManager.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"1df0-mtgbEipw+GGPRjmI2I51lvKz/r4\"",
+    "mtime": "2026-06-27T18:53:16.168Z",
+    "size": 7664,
+    "path": "../public/game/managers/ObstacleManager.js"
+  },
+  "/game/managers/UIManager.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"efc-Q/ek2XdoUEhfhZTGE1wRNMOFQNU\"",
+    "mtime": "2026-06-27T19:35:51.177Z",
+    "size": 3836,
+    "path": "../public/game/managers/UIManager.js"
+  },
+  "/game/managers/PlayerManager.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"2aba-ZVyllRXIotCnKrPw6PoCYbXzcts\"",
+    "mtime": "2026-06-29T03:27:16.193Z",
+    "size": 10938,
+    "path": "../public/game/managers/PlayerManager.js"
   },
   "/game/scenes/GameScene.js": {
     "type": "text/javascript; charset=utf-8",
@@ -5432,12 +5432,19 @@ const assets = {
     "size": 16270,
     "path": "../public/game/scenes/GameScene.js"
   },
-  "/_nuxt/builds/meta/6f1a893a-196e-438f-9e97-6e4a9a81224a.json": {
-    "type": "application/json",
-    "etag": "\"58-JCmzJU6bkvbcMiN+QQPZuox2N5Q\"",
-    "mtime": "2026-06-29T13:26:05.032Z",
-    "size": 88,
-    "path": "../public/_nuxt/builds/meta/6f1a893a-196e-438f-9e97-6e4a9a81224a.json"
+  "/game/src/main.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"651-sp+Vxy4vMpOZ1cRUo652jOLAAuI\"",
+    "mtime": "2026-06-27T19:13:13.299Z",
+    "size": 1617,
+    "path": "../public/game/src/main.js"
+  },
+  "/game/managers/BossManager.js": {
+    "type": "text/javascript; charset=utf-8",
+    "etag": "\"521e-x9vxP04IH79wumvY7fi0o8S4xXs\"",
+    "mtime": "2026-06-27T18:40:39.919Z",
+    "size": 21022,
+    "path": "../public/game/managers/BossManager.js"
   },
   "/game/scenes/DebugScene.js": {
     "type": "text/javascript; charset=utf-8",
@@ -5445,6 +5452,20 @@ const assets = {
     "mtime": "2026-06-26T22:08:02.563Z",
     "size": 9830,
     "path": "../public/game/scenes/DebugScene.js"
+  },
+  "/_nuxt/builds/latest.json": {
+    "type": "application/json",
+    "etag": "\"47-K/LwLM1TaO2irUcfs8AYREwsS48\"",
+    "mtime": "2026-06-29T13:50:18.351Z",
+    "size": 71,
+    "path": "../public/_nuxt/builds/latest.json"
+  },
+  "/_nuxt/builds/meta/4284aa2c-adc3-4203-a4ac-34ada8dab7a7.json": {
+    "type": "application/json",
+    "etag": "\"58-oh+RmDnCZm+KP9p0Q3+m34Kv1vg\"",
+    "mtime": "2026-06-29T13:50:18.351Z",
+    "size": 88,
+    "path": "../public/_nuxt/builds/meta/4284aa2c-adc3-4203-a4ac-34ada8dab7a7.json"
   },
   "/game/scenes/MenuScene.js": {
     "type": "text/javascript; charset=utf-8",
@@ -6082,5 +6103,5 @@ function setupGracefulShutdown(listener, nitroApp) {
   });
 }
 
-export { $fetch as $, withoutTrailingSlash as A, trapUnhandledNodeErrors as a, useNitroApp as b, getResponseStatus as c, destr as d, defineRenderHandler as e, getQuery as f, getResponseStatusText as g, createError$1 as h, getRouteRules as i, joinRelativeURL as j, joinURL as k, encodePath as l, decodePath as m, hasProtocol as n, isScriptProtocol as o, parseURL as p, sanitizeStatusCode as q, getContext as r, setupGracefulShutdown as s, toNodeListener as t, useRuntimeConfig as u, defu as v, withQuery as w, executeAsync as x, parseQuery as y, withTrailingSlash as z };
+export { $fetch as $, withTrailingSlash as A, withoutTrailingSlash as B, trapUnhandledNodeErrors as a, useNitroApp as b, getResponseStatus as c, destr as d, defineRenderHandler as e, getQuery as f, getResponseStatusText as g, createError$1 as h, getRouteRules as i, joinRelativeURL as j, joinURL as k, encodePath as l, decodePath as m, hasProtocol as n, isScriptProtocol as o, parseURL as p, sanitizeStatusCode as q, getContext as r, setupGracefulShutdown as s, toNodeListener as t, useRuntimeConfig as u, defu as v, withQuery as w, executeAsync as x, getRequestURL as y, parseQuery as z };
 //# sourceMappingURL=nitro.mjs.map

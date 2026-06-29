@@ -152,7 +152,9 @@ Su gurú, poeta maldito, nepotista, e hijo bastardo, conocido coloquialmente por
 </template>
 
 <script setup lang="ts">
-import { useSeoMeta } from '#imports'
+import { useSeoMeta, useRequestURL } from '#imports'
+
+const ogImg = new URL('/assets/painting_familia_klei_circa_1910.jpg', useRequestURL({ xForwardedHost: true }).origin).href
 
 useSeoMeta({
   title: 'Historia · La Vida de Patus Klei | Tierra de Cle',
@@ -161,8 +163,9 @@ useSeoMeta({
   ogTitle: 'La Historia de Patus Klei',
   ogDescription: 'Nacido el 37 de agosto de 1907. Crónicas, controversias y versículos del Santo del Bidet.',
   ogType: 'article',
-  ogImage: '/assets/painting_familia_klei_circa_1910.jpg',
+  ogImage: ogImg,
   twitterCard: 'summary_large_image',
+  twitterImage: ogImg,
 })
 </script>
 

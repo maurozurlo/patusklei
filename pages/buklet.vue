@@ -78,7 +78,9 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
-import { useSeoMeta } from '#imports'
+import { useSeoMeta, useRequestURL } from '#imports'
+
+const cover = new URL('/booklet/cover.jpg', useRequestURL({ xForwardedHost: true }).origin).href
 
 useSeoMeta({
   title: 'Buklet · El librito sagrado de Patus Klei',
@@ -87,8 +89,9 @@ useSeoMeta({
   ogTitle: 'El Buklet de Patus Klei',
   ogDescription: 'Pasá las hojas del buklet sagrado. Arte y letras del disco, página por página.',
   ogType: 'website',
-  ogImage: '/booklet/cover.jpg',
+  ogImage: cover,
   twitterCard: 'summary_large_image',
+  twitterImage: cover,
 })
 
 const route = useRoute()

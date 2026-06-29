@@ -89,12 +89,10 @@
       <div class="screen">
         <video
           src="/assets/video_landscape_puppet_story.mp4"
-          autoplay
-          muted
-          loop
-          playsinline
+          poster="/assets/poster_landscape_puppet.jpg"
           controls
-          preload="metadata"
+          playsinline
+          preload="none"
           aria-label="Video del títere de Patus Klei"
         ></video>
       </div>
@@ -104,11 +102,17 @@
 </template>
 
 <script setup lang="ts">
-import { useSeoMeta, useHead } from '#imports'
+import { useSeoMeta, useHead, useRequestURL } from '#imports'
+
+// Absolute URLs derived from the incoming request, so OG/Twitter previews
+// resolve correctly on patusklei.vercel.app now and patusklei.com later —
+// no hardcoded domain. xForwardedHost honours Vercel's proxy host header.
+const reqUrl = useRequestURL({ xForwardedHost: true })
+const cover = new URL('/booklet/cover.jpg', reqUrl.origin).href
 
 // --- SEO --------------------------------------------------------------------
 // Home is the share-target page: rich title/description plus Open Graph and
-// Twitter cards using the canonical bidet portrait as the preview image.
+// Twitter cards using the album cover as the preview image.
 useSeoMeta({
   title: 'PATUS KLEI · La Vida de Patus Klei | El Santo del Bidet',
   description:
@@ -119,12 +123,13 @@ useSeoMeta({
   ogDescription:
     'Diesisei termas, un juego y un buklet sagrado. Dale play o seguí siendo un NPC. Patus Klei, directo desde la Mítica Tierra de Cle.',
   ogType: 'website',
-  ogImage: '/assets/painting_patus_klei_1947.jpg',
-  ogImageAlt: 'Retrato al óleo de Patus Klei sentado en su bidet, 1947',
+  ogUrl: reqUrl.href,
+  ogImage: cover,
+  ogImageAlt: 'Tapa del disco Patus Klei — La Vida de Patus Klei',
   twitterCard: 'summary_large_image',
   twitterTitle: 'PATUS KLEI · El Santo del Bidet ha regresado',
   twitterDescription: 'Diesisei termas, un juego y un buklet sagrado. Dale play o seguí siendo un NPC.',
-  twitterImage: '/assets/painting_patus_klei_1947.jpg',
+  twitterImage: cover,
 })
 
 // Structured data so the album surfaces as a MusicAlbum in search.
@@ -141,7 +146,7 @@ useHead({
         datePublished: '2026-04-20',
         genre: ['Experimental', 'Absurdist'],
         url: 'https://urpite.bandcamp.com/album/patus-klei',
-        image: '/assets/painting_patus_klei_1947.jpg',
+        image: cover,
       }),
     },
   ],

@@ -593,27 +593,27 @@ const _routes = [
   {
     name: "buklet",
     path: "/buklet",
-    component: () => import('./buklet-69ZdCQsi.mjs')
+    component: () => import('./buklet-BQdwDsTk.mjs')
   },
   {
     name: "credito",
     path: "/credito",
-    component: () => import('./credito-BX3VaFbk.mjs')
+    component: () => import('./credito-B0cw000G.mjs')
   },
   {
     name: "historia",
     path: "/historia",
-    component: () => import('./historia-D9ldveKN.mjs')
+    component: () => import('./historia-tZ4rvyam.mjs')
   },
   {
     name: "mision",
     path: "/mision",
-    component: () => import('./mision-DbXoK2oS.mjs')
+    component: () => import('./mision-CAobjC8Y.mjs')
   },
   {
     name: "index",
     path: "/",
-    component: () => import('./index-DJU98V4z.mjs')
+    component: () => import('./index-JuW-s4CV.mjs')
   }
 ];
 const _wrapInTransition = (props, children) => {
