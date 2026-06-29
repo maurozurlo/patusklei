@@ -2040,7 +2040,7 @@ const _JYGsb0ktVAfhyOD6VDWpXkAh021YnSXDwDclNzhZRhg = (function(nitro) {
 
 const rootDir = "E:/webdev/patusklei";
 
-const appHead = {"meta":[{"name":"viewport","content":"width=device-width, initial-scale=1"},{"charset":"utf-8"},{"name":"description","content":"La Vida de Patus Klei - The Life of Patus Klei"}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"}],"style":[],"script":[],"noscript":[],"charset":"utf-8","viewport":"width=device-width, initial-scale=1","title":"Patus Klei"};
+const appHead = {"meta":[{"name":"viewport","content":"width=device-width, initial-scale=1"},{"charset":"utf-8"},{"name":"description","content":"La Vida de Patus Klei - The Life of Patus Klei"},{"name":"theme-color","content":"#FF8800"},{"property":"og:site_name","content":"Patus Klei"},{"property":"og:locale","content":"es_AR"}],"link":[{"rel":"icon","type":"image/x-icon","href":"/favicon.ico"}],"style":[],"script":[],"noscript":[],"charset":"utf-8","viewport":"width=device-width, initial-scale=1","htmlAttrs":{"lang":"es"},"title":"Patus Klei"};
 
 const appRootTag = "div";
 

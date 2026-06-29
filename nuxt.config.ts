@@ -12,12 +12,16 @@ export default defineNuxtConfig({
     head: {
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
+      htmlAttrs: { lang: 'es' },
       title: 'Patus Klei',
       meta: [
         {
           name: 'description',
           content: 'La Vida de Patus Klei - The Life of Patus Klei',
         },
+        { name: 'theme-color', content: '#FF8800' },
+        { property: 'og:site_name', content: 'Patus Klei' },
+        { property: 'og:locale', content: 'es_AR' },
       ],
       link: [
         {

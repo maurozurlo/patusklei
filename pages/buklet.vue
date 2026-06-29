@@ -78,6 +78,18 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
+import { useSeoMeta } from '#imports'
+
+useSeoMeta({
+  title: 'Buklet · El librito sagrado de Patus Klei',
+  description:
+    'Hojeá el buklet del disco de Patus Klei como un grimorio de cumbia esotérica. Arte, letras y misterios de la Mítica Tierra de Cle, página por página.',
+  ogTitle: 'El Buklet de Patus Klei',
+  ogDescription: 'Pasá las hojas del buklet sagrado. Arte y letras del disco, página por página.',
+  ogType: 'website',
+  ogImage: '/booklet/cover.jpg',
+  twitterCard: 'summary_large_image',
+})
 
 const route = useRoute()
 

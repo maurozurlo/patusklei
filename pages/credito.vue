@@ -61,6 +61,17 @@
 </template>
 
 <script setup lang="ts">
+import { useSeoMeta } from '#imports'
+
+useSeoMeta({
+  title: 'Creditos · Patus Klei | Notas del disco de Urpite',
+  description:
+    'Resumen crediticio y notas del disco de Patus Klei. Compuesto por Urpite, con invitados de lujo. Released April 20, 2026. Masterinzao x Iván Klomp.',
+  ogTitle: 'Creditos y notas del disco de Patus Klei',
+  ogDescription: 'Quién hizo qué en el disco de Patus Klei. Spoiler: Urpite, y un par de cuerpos prestados.',
+  ogType: 'article',
+  twitterCard: 'summary_large_image',
+})
 </script>
 
 <style scoped>

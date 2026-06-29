@@ -3,6 +3,18 @@
     <section class="story-section" id="historia">
       <div class="story-container">
         <h2 class="section-title">HISTORIA</h2>
+
+        <figure class="relic relic--orange relic-lead">
+          <div class="relic-frame">
+            <img
+              src="/assets/painting_patus_klei_1947.jpg"
+              alt="Retrato al óleo de Patus Klei sentado en su bidet sagrado, 1947"
+              loading="lazy"
+            >
+          </div>
+          <figcaption>PLACA I — Patus Klei en su trono sagrado. Óleo s/ bidet, 1947. Pieza central del Archivo Klecal.</figcaption>
+        </figure>
+
         <div class="story-box">
           <p class="story-text dropcap-intro">
             <span class="highlight ">Apreciado amigo Patus Klei</span>, nacido el <span class="highlight">37 de agosto de 1907</span> en Bélgica, hijo de Andre Von Karté Klei y Luisana Ann Muschi Platze Klei.
@@ -16,6 +28,17 @@
             Con el paso del tiempo fue enviado a China a firmar la paz con Lars Wampiola. El tratado fue celebrado con un panduro y una Crush de Pomelo. Patus vivió sus últimos años en La Mítica Tierra de Cle, donde era conocido por tener un <span class="highlight">topo de mascota llamado RODOLFA MUSCHI KLEI</span>. Fallece en 2007 tras trastabillar mientras se lavaba el pelo en la pileta de la cocina.
           </p>
         </div>
+
+        <figure class="relic relic--teal">
+          <div class="relic-frame">
+            <img
+              src="/assets/painting_familia_klei_circa_1910.jpg"
+              alt="Retrato de familia de los Klei, circa 1910"
+              loading="lazy"
+            >
+          </div>
+          <figcaption>PLACA II — Retrato de familia, c. 1910. De izq. a der.: don Andre Von Karté Klei, el infante Patus (nótese la dentadura) y doña Luisana Ann Muschi Plâtze Klei. Óleo s/ lienzo, autor anónimo.</figcaption>
+        </figure>
 
         <h2 class="codex-heading">Crónicas y Controversias del Códice XXIII</h2>
         <div class="story-box codex-box">
@@ -55,6 +78,17 @@ Su gurú, poeta maldito, nepotista, e hijo bastardo, conocido coloquialmente por
     <em>Fin do Reporte.</em>
   </p>
 </div>
+
+        <figure class="relic relic--purple">
+          <div class="relic-frame">
+            <img
+              src="/assets/painting_patus_rodolfa_1927.jpg"
+              alt="Pintura de Patus Klei extendiendo el dedo hacia Rodolfa Muschi Klei, su topo, al estilo de La Creación de Adán"
+              loading="lazy"
+            >
+          </div>
+          <figcaption>PLACA III — «La Creasión de Rodolfa», 1927. Patus extiende el dedo hacia La Panera, quien se encuentra acompañada por Rodolfa Muschi Klei aka RMK, su topo de mascota y, según el Ordis Fraternis, su verdadera cara.</figcaption>
+        </figure>
 
         <h2 class="scripture-heading">Versículos Sagrados del Códice</h2>
         <div class="story-box scripture-box">
@@ -117,8 +151,69 @@ Su gurú, poeta maldito, nepotista, e hijo bastardo, conocido coloquialmente por
   </div>
 </template>
 
+<script setup lang="ts">
+import { useSeoMeta } from '#imports'
+
+useSeoMeta({
+  title: 'Historia · La Vida de Patus Klei | Tierra de Cle',
+  description:
+    'La historia completa de Patus Klei: nacido el 37 de agosto de 1907, veterano de la Batalla de la Triple Panera, dueño de Rodolfa Muschi Klei. Crónicas, controversias del Códice XXIII y versículos sagrados.',
+  ogTitle: 'La Historia de Patus Klei',
+  ogDescription: 'Nacido el 37 de agosto de 1907. Crónicas, controversias y versículos del Santo del Bidet.',
+  ogType: 'article',
+  ogImage: '/assets/painting_familia_klei_circa_1910.jpg',
+  twitterCard: 'summary_large_image',
+})
+</script>
+
 <style scoped>
 @import '~/css/pages.css';
+
+/* Archival "relic" plates: framed paintings dropped into the lore. The
+   modifier classes tint the gilt frame to match the section they sit in. */
+.relic {
+  max-width: 460px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.relic-lead {
+  margin-top: 8px;
+  margin-bottom: 44px;
+}
+
+.relic-frame {
+  padding: 8px;
+  background: var(--ega-black);
+  border: 5px solid var(--ega-orange);
+  box-shadow: 8px 8px 0 var(--ega-brown), 0 0 30px rgba(255, 136, 0, 0.3);
+}
+
+.relic--teal .relic-frame {
+  border-color: var(--ega-teal);
+  box-shadow: 8px 8px 0 var(--ega-darkcyan), 0 0 30px rgba(0, 255, 170, 0.3);
+}
+
+.relic--purple .relic-frame {
+  border-color: var(--ega-purple);
+  box-shadow: 8px 8px 0 var(--ega-darkmagenta), 0 0 30px rgba(136, 0, 255, 0.35);
+}
+
+.relic-frame img {
+  width: 100%;
+  height: auto;
+  display: block;
+  image-rendering: auto;
+}
+
+.relic figcaption {
+  margin-top: 12px;
+  color: var(--ega-lightcyan);
+  font-size: 12px;
+  font-style: italic;
+  line-height: 1.5;
+  letter-spacing: 0.4px;
+}
 
 .story-section {
   background: var(--ega-darkblue);

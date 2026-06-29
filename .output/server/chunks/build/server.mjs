@@ -14,6 +14,7 @@ import 'node:url';
 import 'vue-bundle-renderer/runtime';
 import 'unhead/server';
 import 'devalue';
+import 'unhead/plugins';
 import 'unhead/utils';
 
 //#region src/utils.ts
@@ -590,29 +591,29 @@ function getRouteRules(arg) {
 }
 const _routes = [
   {
-    name: "credito",
-    path: "/credito",
-    component: () => import('./credito-tjDZyD6R.mjs')
+    name: "buklet",
+    path: "/buklet",
+    component: () => import('./buklet-69ZdCQsi.mjs')
   },
   {
-    name: "disco",
-    path: "/disco",
-    component: () => import('./disco-DHJqX-VU.mjs')
+    name: "credito",
+    path: "/credito",
+    component: () => import('./credito-BX3VaFbk.mjs')
   },
   {
     name: "historia",
     path: "/historia",
-    component: () => import('./historia-Bwjf0E-b.mjs')
+    component: () => import('./historia-D9ldveKN.mjs')
   },
   {
     name: "mision",
     path: "/mision",
-    component: () => import('./mision-46SrCupz.mjs')
+    component: () => import('./mision-DbXoK2oS.mjs')
   },
   {
     name: "index",
     path: "/",
-    component: () => import('./index-BdhK3wKO.mjs')
+    component: () => import('./index-DJU98V4z.mjs')
   }
 ];
 const _wrapInTransition = (props, children) => {
@@ -988,7 +989,7 @@ const plugins = [
   components_plugin_4kY4pyzJIYX99vmMAAIorFf3CnAaptHitJgf7JxiED8
 ];
 const layouts = {
-  default: defineAsyncComponent(() => import('./default-DNo7HBCG.mjs').then((m) => m.default || m))
+  default: defineAsyncComponent(() => import('./default-D0Yii9bV.mjs').then((m) => m.default || m))
 };
 const routeRulesMatcher = _routeRulesMatcher;
 const LayoutLoader = defineComponent({
@@ -1272,8 +1273,8 @@ const _sfc_main$1 = {
     const statusText = _error.statusMessage ?? (is404 ? "Page Not Found" : "Internal Server Error");
     const description = _error.message || _error.toString();
     const stack = void 0;
-    const _Error404 = defineAsyncComponent(() => import('./error-404-BrwaAGLa.mjs'));
-    const _Error = defineAsyncComponent(() => import('./error-500-BOQClgPR.mjs'));
+    const _Error404 = defineAsyncComponent(() => import('./error-404-Ce-J2BK1.mjs'));
+    const _Error = defineAsyncComponent(() => import('./error-500-CUyBNL8r.mjs'));
     const ErrorTemplate = is404 ? _Error404 : _Error;
     return (_ctx, _push, _parent, _attrs) => {
       _push(ssrRenderComponent(unref(ErrorTemplate), mergeProps({ status: unref(status), statusText: unref(statusText), statusCode: unref(status), statusMessage: unref(statusText), description: unref(description), stack: unref(stack) }, _attrs), null, _parent));
