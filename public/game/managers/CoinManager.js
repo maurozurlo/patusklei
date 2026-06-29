@@ -15,6 +15,11 @@ class CoinManager {
         this.TUNA_VALUE = 10;
         this.BELLPEPPER_VALUE = 50;
         this.COINS_FOR_BONUS = 5;
+
+        // Pickup hitbox size (px). Coin sprites are 32×32, so this is the
+        // physics body, not the art — bump it up to make collection more
+        // forgiving (e.g. 40, 48), drop it toward 32 to make it tighter.
+        this.COIN_HITBOX = 48;
     }
 
     preload() {
@@ -85,6 +90,7 @@ class CoinManager {
         coin.body.velocity.x = -obstacleSpeed * 0.7;
         coin.body.setAllowGravity(false);
         coin.setImmovable(true);
+        coin.body.setSize(this.COIN_HITBOX, this.COIN_HITBOX, true); // centered, forgiving pickup
 
         // Store metadata on the coin
         coin.coinValue = coinValue;
@@ -146,6 +152,7 @@ class CoinManager {
         coin.body.velocity.x = -obstacleSpeed * 0.7;
         coin.body.setAllowGravity(false);
         coin.setImmovable(true);
+        coin.body.setSize(this.COIN_HITBOX, this.COIN_HITBOX, true); // centered, forgiving pickup
         coin.coinValue = this.BELLPEPPER_VALUE;
         coin.coinType = 'bellpepper_coin';
         coin.wasCollected = false;
