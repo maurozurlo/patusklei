@@ -23,13 +23,9 @@
 @import '~/css/pages.css';
 
 .games-section {
-  min-height: 100vh;
-  padding-top: 100px;
-}
-
-.games-section {
+    min-height: 100vh;
     background: var(--ega-darkgray);
-    padding: 80px 20px;
+    padding: 100px 20px 80px;
 }
 
 
@@ -43,11 +39,11 @@
 .game-card {
     background: var(--ega-black);
     border: 4px solid var(--ega-purple);
-    padding: 20px;
+    padding: 24px;
     text-align: center;
-    transition: transform 0.3s;
     max-width: 840px;
     margin: 0 auto;
+    box-shadow: 6px 6px 0 var(--ega-darkmagenta), 0 0 30px rgba(136, 0, 255, 0.35);
 }
 
 /* Keeps the game at its native 320x200 (8:5) aspect ratio, responsive down to mobile.

@@ -34,7 +34,7 @@
 
 @font-face {
     font-family: 'DropCaps';
-    src: url('/AnnStone.ttf') format('truetype');
+    src: url('/game/fonts/AnnStone.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
 }
