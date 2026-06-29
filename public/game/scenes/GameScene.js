@@ -43,6 +43,7 @@ class GameScene extends Phaser.Scene {
         this.load.audio('sfx_patus_hit', 'audio/sfx_patus_hit.wav');
         this.load.audio('sfx_birdhit', 'audio/sfx_birdhit.wav');
         this.load.audio('sfx_boss_hit', 'audio/sfx_boss_hit.wav');
+        this.load.audio('sfx_boss_miss', 'audio/sfx_boss_miss.wav');
         this.load.audio('sfx_bomb_planted', 'audio/sfx_bomb_planted.wav');
         this.load.audio('sfx_bomb_beep', 'audio/sfx_bomb_beep.wav');
         this.load.audio('sfx_explo', 'audio/sfx_explo.wav');
@@ -192,6 +193,7 @@ class GameScene extends Phaser.Scene {
             patus_hit: this.sound.add('sfx_patus_hit'),
             birdhit: this.sound.add('sfx_birdhit'),
             boss_hit: this.sound.add('sfx_boss_hit'),
+            boss_miss: this.sound.add('sfx_boss_miss'),
             bomb_planted: this.sound.add('sfx_bomb_planted'),
             bomb_beep: this.sound.add('sfx_bomb_beep'),
             explo: this.sound.add('sfx_explo'),

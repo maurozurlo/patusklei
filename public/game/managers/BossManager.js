@@ -256,16 +256,23 @@ class BossManager {
     normalAttack(id) {
         const hand = this.hands[id];
         const [d0, d1] = hand.cfg.damageFrames;
+        const missFrame = hand.cfg.missFrame;
         this.attackHitLatched = false;
+        this.missSfxPlayed = false;
 
         hand.back.setVisible(true).play(hand.back.fightAnimKey);
         hand.front.setVisible(true).play(hand.front.fightAnimKey);
 
         const onFrame = (anim, frame) => {
-            if (this.attackHitLatched) return;
-            if (frame.index >= d0 && frame.index <= d1 && !this.isPlayerSafe(hand.cfg.dodge)) {
+            if (!this.attackHitLatched &&
+                frame.index >= d0 && frame.index <= d1 && !this.isPlayerSafe(hand.cfg.dodge)) {
                 this.attackHitLatched = true;
                 this.registerHit();
+            }
+            // Whiff SFX on the impact frame, only if Patus dodged it clean.
+            if (!this.missSfxPlayed && !this.attackHitLatched && frame.index === missFrame) {
+                this.missSfxPlayed = true;
+                this.scene.sfx.boss_miss.play();
             }
         };
         hand.front.on('animationupdate', onFrame);

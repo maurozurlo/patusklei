@@ -43,6 +43,7 @@ const BOSS_FIGHT = {
         low: {
             dodge: 'jump',
             damageFrames: [6, 10],
+            missFrame: 7,           // frame the whiff SFX fires on (a clean dodge)
             idle:   { key: 'boss_hand_low_idle',  file: 'images/boss_hand_l_idle.png',         x: 226, y: 202, depth: 0, bob: 3 },
             twitch: { key: 'boss_hand_l_twitch',                                                x: 233, y: 196, depth: 0, frames: 6 },
             back:   { key: 'boss_hand_low_back',  file: 'images/boss_hand_l_attack_back.png',  x: 160, y: 200, depth: 0, frameWidth: 320, frameHeight: 200, frames: 15 },
@@ -53,6 +54,7 @@ const BOSS_FIGHT = {
         high: {
             dodge: 'crouch',
             damageFrames: [5, 9],
+            missFrame: 7,           // frame the whiff SFX fires on (a clean dodge)
             idle:   { key: 'boss_hand_high_idle',  file: 'images/boss_hand_r_idle.png',         x: 79, y: 203, depth: 0, bob: 3 },
             twitch: { key: 'boss_hand_r_twitch',                                                x: 70, y: 196, depth: 0, frames: 6 },
             back:   { key: 'boss_hand_high_back',  file: 'images/boss_hand_r_attack_back.png',  x: 89, y: 200, depth: 0, frameWidth: 175, frameHeight: 200, frames: 11 },
