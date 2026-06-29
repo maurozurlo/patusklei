@@ -277,13 +277,70 @@ class MenuScene extends Phaser.Scene {
         const entry = this.getLoreText(keys[index]);
         const last = index === keys.length - 1;
         const next = () => {
-            // Explicit menuKey: scene.start with no data reuses the previous data.
-            if (last) this.scene.start('MenuScene', { menuKey: 'MAIN_MENU' });
+            // After the final ending screen, roll the credits before the menu.
+            if (last) this.showCredits();
             else this.showLoreSequence(keys, index + 1);
         };
 
         if (entry.dialogue) this.showDialogue(entry, next);
         else this.renderNarration(entry, last, next);
+    }
+
+    // Scrolling credits roll, shown once the ending sequence finishes (and so also
+    // reachable via the debug D-key ending preview). The whole CREDITS list is laid
+    // into a container and tweened up from below the screen; when the last line
+    // clears the top — or the player taps / presses SPACE·ENTER to skip — it
+    // returns to the main menu. Content lives in data/Credits.js.
+    showCredits() {
+        this.clearUI();
+        const styles = this.getStyles();
+        const nameStyle = { ...styles.subtitle, fontSize: '14px', align: 'center' };
+        const roleStyle = { ...styles.body, fontSize: '8px', align: 'center', wordWrap: { width: 280 } };
+
+        // Build the roll: each entry is an optional name line + a role line.
+        const roll = this.add.container(0, 210);
+        let y = 0;
+        CREDITS.forEach(entry => {
+            if (entry.name) {
+                const nameText = this.add.text(160, y, entry.name, nameStyle).setOrigin(0.5, 0);
+                roll.add(nameText);
+                y += nameText.height + 4;
+            }
+            const roleText = this.add.text(160, y, entry.role, roleStyle).setOrigin(0.5, 0);
+            roll.add(roleText);
+            y += roleText.height + 24;
+        });
+
+        let ended = false;
+        const finish = () => {
+            if (ended) return; // tween end + a skip tap could both fire
+            ended = true;
+            this.scene.start('MenuScene', { menuKey: 'MAIN_MENU' });
+        };
+
+        // Scroll the whole roll up until the last line clears the top (~40 px/sec,
+        // slow enough to read), then exit to the menu.
+        const distance = 210 + y;
+        this.tweens.add({
+            targets: roll,
+            y: -y,
+            duration: (distance / 40) * 1000,
+            ease: 'Linear',
+            onComplete: finish
+        });
+
+        // Persistent skip hint, kept legible with a backing bar as text scrolls past.
+        this.add.rectangle(160, 192, 320, 14, 0x000000, 0.7).setDepth(10);
+        this.add.text(160, 192, 'SALTAR', { ...styles.body, fontSize: '8px', fill: '#888888' })
+            .setOrigin(0.5)
+            .setDepth(11);
+
+        // Defer skip binding one tick so the tap/key that opened this screen isn't
+        // counted as a skip (same guard as showDialogue).
+        this.time.delayedCall(0, () => {
+            this.input.once('pointerdown', finish);
+            this.setPrimaryAction(finish);
+        });
     }
 
     // Plain narration screen (title + body + optional image), advanced by a button.

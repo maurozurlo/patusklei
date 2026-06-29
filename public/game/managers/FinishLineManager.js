@@ -44,7 +44,11 @@ class FinishLineManager {
     }
 
     createFinishLine(obstacleSpeed) {
-        this.scene.sound.play('sfx_endlvl1');
+        // Keep a handle to the arrival jingle so reachFinishLine() can wait for it
+        // to finish before leaving for the menu (the scene change stops all sounds,
+        // so transitioning early would clip it).
+        this.endSound = this.scene.sfx.endlvl1;
+        this.endSound.play();
 
         // The finish line (piece of land) the player rides in on.
         this.finishLine = this.scene.physics.add.sprite(370, this.groundY, this.getFinishTexture());
@@ -95,7 +99,7 @@ class FinishLineManager {
         // Visual feedback
         player.setTint(0x00ff00); // Green tint for success
 
-        this.scene.time.delayedCall(1000, () => {
+        const goToMenu = () => {
             if (this.scene.level < 3) {
                 const nextLevel = this.scene.level + 1;
                 Save.unlockLevel(nextLevel); // reached the next level (for a level-select)
@@ -104,8 +108,18 @@ class FinishLineManager {
             } else {
                 this.scene.scene.start('MenuScene', { menuKey: 'GAME_COMPLETED' });
             }
-        });
+        };
 
+        // Let the arrival jingle play out fully before leaving — MenuScene calls
+        // sound.stopAll() on entry, so transitioning early clips it. We don't need
+        // to know the clip's length: wait for its own 'complete' event. If it
+        // already finished (short clip, or the player dawdled before arriving),
+        // just hold a beat so the green-tint success moment still reads.
+        if (this.endSound && this.endSound.isPlaying) {
+            this.endSound.once('complete', goToMenu);
+        } else {
+            this.scene.time.delayedCall(1000, goToMenu);
+        }
     }
 
     cleanupOffScreen() {
