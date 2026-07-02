@@ -25,6 +25,11 @@ class LevelManager {
 
 
         levelConfig.music.play();
+
+        // Some levels layer a looping ambiance under the music (e.g. beach waves).
+        if (levelConfig.ambiance) {
+            levelConfig.ambiance.play();
+        }
     }
 
     getLevelConfig(level) {
@@ -35,7 +40,8 @@ class LevelManager {
                 maxObstacles: 10,
                 obstacleDelay: 3000,
                 coinDelay: 2500,
-                music: this.scene.sfx.lvl1 // Background music for level 1
+                music: this.scene.sfx.lvl1, // Background music for level 1
+                ambiance: this.scene.sfx.lvl1_ambiance // Looping beach waves under the music
             },
             2: {
                 name: 'City Sprint',
@@ -43,7 +49,7 @@ class LevelManager {
                 maxObstacles: 15,
                 obstacleDelay: 2000,
                 coinDelay: 2000,
-                music: this.scene.sfx.lvl1
+                music: this.scene.sfx.lvl2
             },
             3: {
                 name: 'Boss Battle',

@@ -48,7 +48,9 @@ class GameScene extends Phaser.Scene {
         this.load.audio('sfx_bomb_beep', 'audio/sfx_bomb_beep.wav');
         this.load.audio('sfx_explo', 'audio/sfx_explo.wav');
 
-        this.load.audio('bgm_lvl1', 'audio/bgm_lvl1.wav');
+        this.load.audio('bgm_lvl1', 'audio/bgm_lvl1.ogg');
+        this.load.audio('bgm_lvl2', 'audio/bgm_lvl2.ogg');
+        this.load.audio('sfx_lvl1_ambiance', 'audio/sfx_lvl1_ambiance.wav');
 
         // IMAGES
         this.load.image('bg_builds', 'images/bg_builds.png');
@@ -190,6 +192,8 @@ class GameScene extends Phaser.Scene {
             pepper: this.sound.add('sfx_pepper'),
             tuna: this.sound.add('sfx_tuna'),
             lvl1: this.sound.add('bgm_lvl1', { loop: true }),
+            lvl2: this.sound.add('bgm_lvl2', { loop: true }),
+            lvl1_ambiance: this.sound.add('sfx_lvl1_ambiance', { loop: true, volume: 0.5 }),
             patus_hit: this.sound.add('sfx_patus_hit'),
             birdhit: this.sound.add('sfx_birdhit'),
             boss_hit: this.sound.add('sfx_boss_hit'),
