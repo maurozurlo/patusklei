@@ -355,6 +355,7 @@ class BossManager {
 
     runRodolfa(deliveryId, onDone) {
         const r = BOSS_FIGHT.props.rodolfa;
+        this.scene.sfx.rmk.play(); // Rodolfa's entrance cue
         this.rodolfa.setPosition(r.spawn.x, r.spawn.y).setFlipX(true).setVisible(true).play('rodolfa_walk');
         this.bombs.carried.setVisible(true);
         this.syncCarriedBomb();

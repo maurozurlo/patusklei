@@ -46,8 +46,9 @@ class FinishLineManager {
     createFinishLine(obstacleSpeed) {
         // Keep a handle to the arrival jingle so reachFinishLine() can wait for it
         // to finish before leaving for the menu (the scene change stops all sounds,
-        // so transitioning early would clip it).
-        this.endSound = this.scene.sfx.endlvl1;
+        // so transitioning early would clip it). Level 1 arrives at the city,
+        // level 2 at the boss — each has its own jingle.
+        this.endSound = this.scene.level === 2 ? this.scene.sfx.endlvl2 : this.scene.sfx.endlvl1;
         this.endSound.play();
 
         // The finish line (piece of land) the player rides in on.

@@ -34,10 +34,17 @@ class GameScene extends Phaser.Scene {
         // SOUND
         this.load.audio('sfx_crash', 'audio/sfx_crash.wav');
         this.load.audio('sfx_endlvl1', 'audio/sfx_endlvl1.wav');
+        this.load.audio('sfx_endlvl2', 'audio/sfx_endlvl2.wav');
         this.load.audio('sfx_gameover', 'audio/sfx_gameover.wav');
         this.load.audio('sfx_jump', 'audio/sfx_jump.wav');
         this.load.audio('sfx_pepper', 'audio/sfx_pepper.wav');
         this.load.audio('sfx_tuna', 'audio/sfx_tuna.wav');
+
+        // Level 2 car horns — one per car variant, played when a car spawns.
+        this.load.audio('sfx_horn_taxi', 'audio/sfx_horn_taxi.wav');
+        this.load.audio('sfx_horn_plain', 'audio/sfx_horn_plain.wav');
+        this.load.audio('sfx_horn_clown', 'audio/sfx_horn_clown.wav');
+        this.load.audio('sfx_horn_fun', 'audio/sfx_horn_fun.wav');
 
         // Hit feedback + boss bomb sequence.
         this.load.audio('sfx_patus_hit', 'audio/sfx_patus_hit.wav');
@@ -47,6 +54,7 @@ class GameScene extends Phaser.Scene {
         this.load.audio('sfx_bomb_planted', 'audio/sfx_bomb_planted.wav');
         this.load.audio('sfx_bomb_beep', 'audio/sfx_bomb_beep.wav');
         this.load.audio('sfx_explo', 'audio/sfx_explo.wav');
+        this.load.audio('sfx_rmk', 'audio/sfx_rmk.wav'); // Rodolfa entrance cue
 
         this.load.audio('bgm_lvl1', 'audio/bgm_lvl1.ogg');
         this.load.audio('bgm_lvl2', 'audio/bgm_lvl2.ogg');
@@ -187,6 +195,7 @@ class GameScene extends Phaser.Scene {
         this.sfx = {
             crash: this.sound.add('sfx_crash'),
             endlvl1: this.sound.add('sfx_endlvl1'),
+            endlvl2: this.sound.add('sfx_endlvl2'),
             gameover: this.sound.add('sfx_gameover'),
             jump: this.sound.add('sfx_jump'),
             pepper: this.sound.add('sfx_pepper'),
@@ -201,6 +210,13 @@ class GameScene extends Phaser.Scene {
             bomb_planted: this.sound.add('sfx_bomb_planted'),
             bomb_beep: this.sound.add('sfx_bomb_beep'),
             explo: this.sound.add('sfx_explo'),
+            rmk: this.sound.add('sfx_rmk'),
+
+            // Level 2 car horns, keyed by car variant (see ObstacleManager).
+            horn_taxi: this.sound.add('sfx_horn_taxi'),
+            horn_plain: this.sound.add('sfx_horn_plain'),
+            horn_clown: this.sound.add('sfx_horn_clown'),
+            horn_fun: this.sound.add('sfx_horn_fun'),
         };
 
 

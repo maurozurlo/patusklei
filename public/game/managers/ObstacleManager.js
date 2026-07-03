@@ -124,6 +124,10 @@ class ObstacleManager {
             : this.obstacleConfig.sprite;
         const animKey = this.obstacleConfig.animation || spriteKey;
 
+        // Each car variant honks its own horn as it drives in.
+        const horn = ObstacleManager.CAR_HORNS[spriteKey];
+        if (horn && this.scene.sfx?.[horn]) this.scene.sfx[horn].play();
+
         const obstacle = this.obstacles.create(
             320 + 50,
             this.groundY + this.obstacleConfig.offsetY,
@@ -209,3 +213,12 @@ class ObstacleManager {
         if (this.dynamites) this.dynamites.clear(true, true);
     }
 }
+
+// Car variant → horn sfx key (registered in GameScene.create).
+// car_taxi=car_00, car_blue=car_01, car_party=car_02, car_pink=car_03.
+ObstacleManager.CAR_HORNS = {
+    car_taxi: 'horn_taxi',
+    car_blue: 'horn_plain',
+    car_party: 'horn_clown',
+    car_pink: 'horn_fun',
+};
