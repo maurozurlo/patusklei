@@ -3,6 +3,18 @@ const DEV_MODE = false;
 // user has explicitly turned sound off (stored as the string "false").
 let isMusicPlaying = localStorage.getItem('musicPlaying') !== 'false';
 
+// Host-page touch controls bridge. When embedded in the site, the page renders
+// real HTML buttons below the canvas (a tap there can't slip off the canvas and
+// be dropped, unlike Phaser's on-canvas buttons). They postMessage their pressed
+// state; GameScene.getInput merges these flags with the keyboard each frame.
+window.__touchControls = { jump: false, crouch: false };
+window.addEventListener('message', (event) => {
+    const msg = event.data;
+    if (!msg || msg.type !== 'patus-control') return;
+    if (msg.action === 'jump') window.__touchControls.jump = !!msg.pressed;
+    if (msg.action === 'crouch') window.__touchControls.crouch = !!msg.pressed;
+});
+
 // Game Configuration
 const config = {
     type: Phaser.AUTO,

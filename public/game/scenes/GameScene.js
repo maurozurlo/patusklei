@@ -251,8 +251,13 @@ class GameScene extends Phaser.Scene {
             this.bossManager.setupFight();
         }
 
-        // Input
+        // Input. createCursorKeys gives up/down/space; add W/S/Ctrl so jump is
+        // Up/W/Space and crouch is Down/S/Left Ctrl. Ctrl is added without key
+        // capture so browser shortcuts (Ctrl+R, etc.) still work while playing.
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        this.keyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S);
+        this.keyCtrl = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.CTRL, false);
         this.createMobileControls();
 
         // Start level
@@ -266,6 +271,12 @@ class GameScene extends Phaser.Scene {
     createMobileControls() {
         const hasTouch = this.sys.game.device.input.touch || (navigator.maxTouchPoints > 0);
         if (!hasTouch) return;
+
+        // When embedded in the site (an iframe), the host page renders dedicated
+        // HTML buttons below the canvas and posts their state to us — those can't
+        // be fat-fingered off the canvas the way on-canvas buttons can. Only fall
+        // back to on-canvas buttons when the game is opened standalone.
+        if (window.self !== window.top) return;
 
         // One extra touch pointer (so both buttons can be held at once). Guarded
         // because create() runs every level and addPointer accumulates.
@@ -299,10 +310,14 @@ class GameScene extends Phaser.Scene {
     }
 
     // Keyboard OR on-screen buttons — handleInput only reads space/down.
+    // Jump: Up / W / Space. Crouch: Down / S / Left Ctrl. `pad` is the host
+    // page's HTML buttons (see main.js message bridge); touchJump/touchCrouch
+    // are the standalone on-canvas fallback buttons.
     getInput() {
+        const pad = window.__touchControls || {};
         return {
-            space: { isDown: this.cursors.space.isDown || this.touchJump },
-            down: { isDown: this.cursors.down.isDown || this.touchCrouch }
+            space: { isDown: this.cursors.up.isDown || this.cursors.space.isDown || this.keyW.isDown || this.touchJump || !!pad.jump },
+            down: { isDown: this.cursors.down.isDown || this.keyS.isDown || this.keyCtrl.isDown || this.touchCrouch || !!pad.crouch }
         };
     }
 

@@ -55,8 +55,38 @@
           <h3 class="game-title">PATUS KLEI</h3>
           <p class="game-desc">AYUDE A PATUS A GANAR LA BATALLA DE LA TRIPLE PANERA</p>
           <div class="game-frame">
-            <iframe src="/game/index.html" frameborder="0" title="Patus Klei"></iframe>
+            <iframe ref="gameFrame" src="/game/index.html" frameborder="0" title="Patus Klei"></iframe>
           </div>
+
+          <!-- Touch controls live here, below the canvas, as real HTML buttons.
+               Phaser only registers touches that land on the game canvas, so
+               on-canvas buttons drop a tap that slips off the edge. These sit
+               outside the canvas and post their state into the game. Touch only. -->
+          <div class="game-pad" role="group" aria-label="Controles del juego">
+            <button
+              class="pad-btn pad-btn--crouch"
+              type="button"
+              aria-label="Agacharse"
+              @pointerdown="press($event, 'crouch')"
+              @pointerup="release($event, 'crouch')"
+              @pointercancel="release($event, 'crouch')"
+              @contextmenu.prevent
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 18 L4 6 L20 6 Z" /></svg>
+            </button>
+            <button
+              class="pad-btn pad-btn--jump"
+              type="button"
+              aria-label="Saltar"
+              @pointerdown="press($event, 'jump')"
+              @pointerup="release($event, 'jump')"
+              @pointercancel="release($event, 'jump')"
+              @contextmenu.prevent
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6 L20 18 L4 18 Z" /></svg>
+            </button>
+          </div>
+
           <p class="game-foot">¿Lo logró? Felicitaciones muchachito, ya puede escuchar el pisco. ¿Perdió? consulte la regla 1.</p>
         </div>
       </div>
@@ -65,9 +95,38 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useSeoMeta, useRequestURL } from '#imports'
 
 const cover = new URL('/booklet/cover.jpg', useRequestURL({ xForwardedHost: true }).origin).href
+
+// Touch controls → game bridge. The buttons live in this page (below the iframe)
+// but the game runs inside it, so we relay presses via postMessage; the game
+// mirrors them into its input each frame (see public/game/src/main.js).
+const gameFrame = ref<HTMLIFrameElement | null>(null)
+
+function sendControl(action: 'jump' | 'crouch', pressed: boolean) {
+  gameFrame.value?.contentWindow?.postMessage(
+    { type: 'patus-control', action, pressed },
+    window.location.origin,
+  )
+}
+
+function press(e: PointerEvent, action: 'jump' | 'crouch') {
+  e.preventDefault()
+  const btn = e.currentTarget as HTMLElement
+  // Capture the pointer so the matching pointerup still fires on this button
+  // even if the thumb slides off it — otherwise the control would stick down.
+  btn.setPointerCapture?.(e.pointerId)
+  btn.classList.add('is-pressed')
+  sendControl(action, true)
+}
+
+function release(e: PointerEvent, action: 'jump' | 'crouch') {
+  e.preventDefault()
+  ;(e.currentTarget as HTMLElement).classList.remove('is-pressed')
+  sendControl(action, false)
+}
 
 useSeoMeta({
   title: 'Misión · Jugá la Batalla de la Triple Panera | Patus Klei',
@@ -262,6 +321,88 @@ useSeoMeta({
     height: 100%;
     display: block;
     border: 0;
+}
+
+/* Touch controls: real HTML buttons below the canvas, styled like the face
+   buttons on a handheld console. Hidden on pointer devices (keyboard plays),
+   shown only where the primary input is touch. */
+.game-pad {
+    display: none;
+    gap: 34px;
+    justify-content: center;
+    align-items: center;
+    width: max-content;
+    margin: 18px auto 0;
+    padding: 14px 30px;
+    border: 2px solid #000;
+    border-radius: 20px;
+    background: linear-gradient(180deg, #2c2c2c, #161616);
+    box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.08),
+        inset 0 -3px 6px rgba(0, 0, 0, 0.6),
+        0 6px 16px rgba(0, 0, 0, 0.55);
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .game-pad {
+        display: flex;
+    }
+}
+
+.pad-btn {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: none;
+    user-select: none;
+    width: 76px;
+    height: 76px;
+    padding: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 3px solid rgba(0, 0, 0, 0.55);
+    cursor: pointer;
+    color: #1a1a1a;
+    /* Domed plastic: a soft top highlight over the button's base colour. */
+    background:
+        radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0) 55%),
+        var(--btn-color);
+    box-shadow:
+        0 6px 0 var(--btn-shadow),
+        /* the button's "throw" */
+        0 9px 12px rgba(0, 0, 0, 0.45),
+        /* drop shadow on the housing */
+        inset 0 2px 3px rgba(255, 255, 255, 0.65),
+        inset 0 -4px 5px rgba(0, 0, 0, 0.35);
+    transition: transform .05s ease, box-shadow .05s ease;
+}
+
+.pad-btn svg {
+    width: 34px;
+    height: 34px;
+    display: block;
+    fill: currentColor;
+    stroke: rgba(0, 0, 0, 0.35);
+    stroke-width: 1;
+    stroke-linejoin: round;
+}
+
+/* Pressed: sink the button into the housing and collapse its throw. */
+.pad-btn.is-pressed {
+    transform: translateY(5px);
+    box-shadow:
+        0 1px 0 var(--btn-shadow),
+        0 2px 4px rgba(0, 0, 0, 0.4),
+        inset 0 2px 3px rgba(255, 255, 255, 0.4),
+        inset 0 -2px 3px rgba(0, 0, 0, 0.35);
+}
+
+.pad-btn--jump {
+    --btn-color: var(--ega-orange);
+    --btn-shadow: #a85a00;
+}
+
+.pad-btn--crouch {
+    --btn-color: var(--ega-teal);
+    --btn-shadow: #009a66;
 }
 
 .game-title {
