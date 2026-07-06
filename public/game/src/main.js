@@ -91,8 +91,13 @@ function installAudioBridge(sm) {
     sm.stopAll = () => { postAudio({ cmd: 'stopAll' }); return origStopAll(); };
 
     // Force Phaser to stay muted (it's just the silent timing driver) while
-    // forwarding the player's real mute preference to the host's Howler.
-    const desc = Object.getOwnPropertyDescriptor(Object.getPrototypeOf(sm), 'mute');
+    // forwarding the player's real mute preference to the host's Howler. The
+    // `mute` accessor lives up the chain on BaseSoundManager, not the immediate
+    // prototype, so walk up to find it.
+    let desc = null;
+    for (let o = sm; o && !desc; o = Object.getPrototypeOf(o)) {
+        desc = Object.getOwnPropertyDescriptor(o, 'mute');
+    }
     if (desc && desc.set) {
         Object.defineProperty(sm, 'mute', {
             configurable: true,

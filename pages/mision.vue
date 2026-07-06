@@ -135,12 +135,18 @@ function release(e: PointerEvent, action: 'jump' | 'crouch') {
 // its taps land on the pad buttons out here — so the iframe's Web Audio never
 // gets the gesture it needs and its sound cuts out. The game therefore mutes
 // itself and posts every sound event to this page (see public/game/src/main.js);
-// we play it with Howler, whose context DOES get unlocked by the pad taps.
+// we play it with Howler. iOS is strict: the audio context only unlocks from a
+// gesture on THIS document (a tap on the canvas lives inside the iframe and
+// doesn't count), so we unlock on the first touch/click anywhere on the host
+// page and then (re)start any loop that was queued while locked. A touch also
+// re-kicks the track, so it can play loud-ish on entry — but it plays.
 // Howler is loaded client-side only (it touches window on import).
 let Howl: any = null
 let Howler: any = null
 const howls = new Map<string, any>()
+const loops = new Set<string>() // keys that should be looping right now
 let audioReady = false
+let audioUnlocked = false
 const audioBacklog: any[] = []
 
 function audioSrc(key: string) {
@@ -163,11 +169,16 @@ function playAudio(msg: any) {
     const h = getHowl(msg.key, !!msg.loop)
     h.loop(!!msg.loop)
     if (msg.volume != null) h.volume(msg.volume)
-    if (msg.loop && h.playing()) return // don't stack a second copy of a loop
+    if (msg.loop) {
+      loops.add(msg.key)
+      if (h.playing()) return // already looping; don't stack a second copy
+    }
     h.play()
   } else if (msg.cmd === 'stop') {
+    loops.delete(msg.key)
     howls.get(msg.key)?.stop()
   } else if (msg.cmd === 'stopAll') {
+    loops.clear()
     howls.forEach((h) => h.stop())
   } else if (msg.cmd === 'mute') {
     Howler?.mute(!!msg.value)
@@ -183,17 +194,40 @@ function onMessage(event: MessageEvent) {
   else audioBacklog.push(msg)
 }
 
+// First user gesture on the host page: resume the context and kick any looping
+// track that was started (silently) while it was still locked.
+function unlockAudio() {
+  if (audioUnlocked || !Howler) return
+  const ctx = Howler.ctx
+  if (ctx && ctx.state !== 'running' && ctx.resume) ctx.resume()
+  audioUnlocked = true
+  loops.forEach((key) => {
+    const h = howls.get(key)
+    if (h && !h.playing()) h.play()
+  })
+}
+
+const UNLOCK_EVENTS = ['touchstart', 'touchend', 'pointerdown', 'click']
+
 onMounted(async () => {
   window.addEventListener('message', onMessage)
   const howler = await import('howler')
   Howl = howler.Howl
   Howler = howler.Howler
+  getHowl('sfx_click', false) // force the AudioContext to exist so unlock can resume it
   audioReady = true
   audioBacklog.splice(0).forEach(playAudio)
+  // Capture phase so this runs before the pad buttons' own preventDefault.
+  UNLOCK_EVENTS.forEach((evt) =>
+    document.addEventListener(evt, unlockAudio, { capture: true, passive: true }),
+  )
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('message', onMessage)
+  UNLOCK_EVENTS.forEach((evt) =>
+    document.removeEventListener(evt, unlockAudio, { capture: true } as any),
+  )
   howls.forEach((h) => h.unload())
   howls.clear()
 })
