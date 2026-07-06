@@ -95,7 +95,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref } from 'vue'
 import { useSeoMeta, useRequestURL } from '#imports'
 
 const cover = new URL('/booklet/cover.jpg', useRequestURL({ xForwardedHost: true }).origin).href
@@ -114,9 +114,6 @@ function sendControl(action: 'jump' | 'crouch', pressed: boolean) {
 
 function press(e: PointerEvent, action: 'jump' | 'crouch') {
   e.preventDefault()
-  // A pad tap is a genuine gesture on THIS page — use it to unlock the host
-  // audio context that plays the game's sound (see the audio bridge below).
-  unlockAudio()
   const btn = e.currentTarget as HTMLElement
   // Capture the pointer so the matching pointerup still fires on this button
   // even if the thumb slides off it — otherwise the control would stick down.
@@ -130,130 +127,6 @@ function release(e: PointerEvent, action: 'jump' | 'crouch') {
   ;(e.currentTarget as HTMLElement).classList.remove('is-pressed')
   sendControl(action, false)
 }
-
-// Audio bridge (mobile). The game runs inside the iframe, but on touch devices
-// its gameplay taps land on the pad buttons out here — so the iframe's Web Audio
-// never gets the gestures it needs and its sound cuts out. The game therefore
-// mutes itself and posts every sound event to this page (see
-// public/game/src/main.js); we play it with Howler, where the real host-page
-// gestures are. iOS is strict: the audio context only unlocks from a gesture on
-// THIS document, and a tap on the game canvas lives inside the iframe. So we hold
-// any looping track (menu / level music) until the first gesture that reaches
-// this page — a pad tap, a scroll on the way down to the game, a click, or a
-// gesture the iframe forwards up (cmd:'unlock') — then start it fresh into the
-// now-running context, which is what actually makes it audible on iOS.
-// Howler is loaded client-side only (it touches window on import).
-let Howl: any = null
-let Howler: any = null
-const howls = new Map<string, any>()
-const loops = new Map<string, number>() // key -> volume; tracks that should loop now
-let audioReady = false
-let audioUnlocked = false
-const audioBacklog: any[] = []
-
-function audioSrc(key: string) {
-  // bgm_lvl1/2/3 ship as .ogg; every other clip is .wav.
-  const ext = key.startsWith('bgm_lvl') ? 'ogg' : 'wav'
-  return `/game/audio/${key}.${ext}`
-}
-
-function getHowl(key: string, loop: boolean) {
-  let h = howls.get(key)
-  if (!h) {
-    h = new Howl({ src: [audioSrc(key)], loop })
-    howls.set(key, h)
-  }
-  return h
-}
-
-// Start a track (or, for a loop already running, leave it be). Only ever called
-// once the context is unlocked, so play() lands in a running context and makes
-// sound — playing into a still-suspended one stays silent forever on iOS.
-function startHowl(key: string, loop: boolean, volume?: number) {
-  const h = getHowl(key, loop)
-  h.loop(loop)
-  if (volume != null) h.volume(volume)
-  if (loop && h.playing()) return // already looping; don't stack a second copy
-  h.play()
-}
-
-function playAudio(msg: any) {
-  if (msg.cmd === 'play') {
-    if (msg.loop) {
-      // Remember it should be looping; start it now if we're already unlocked,
-      // otherwise unlockAudio() starts it on the first gesture that reaches us.
-      loops.set(msg.key, msg.volume != null ? msg.volume : 1)
-      if (audioUnlocked) startHowl(msg.key, true, msg.volume)
-    } else if (audioUnlocked) {
-      // One-shots that land before the first gesture are inaudible anyway
-      // (nothing is unlocked yet), so there's nothing to queue — just drop them.
-      startHowl(msg.key, false, msg.volume)
-    }
-  } else if (msg.cmd === 'stop') {
-    loops.delete(msg.key)
-    howls.get(msg.key)?.stop()
-  } else if (msg.cmd === 'stopAll') {
-    loops.clear()
-    howls.forEach((h) => h.stop())
-  } else if (msg.cmd === 'mute') {
-    Howler?.mute(!!msg.value)
-  } else if (msg.cmd === 'unlock') {
-    // Forwarded from inside the game iframe: the player just touched the canvas
-    // (a menu button), which never reaches this page on its own.
-    unlockAudio()
-  }
-}
-
-function onMessage(event: MessageEvent) {
-  if (event.origin !== window.location.origin) return
-  const msg = event.data
-  if (msg?.type !== 'patus-audio') return
-  // Buffer anything that arrives before Howler finishes loading, then flush.
-  if (audioReady) playAudio(msg)
-  else audioBacklog.push(msg)
-}
-
-// First user gesture that reaches THIS page (a pad tap, a scroll, a click, or a
-// gesture forwarded up from inside the game iframe): resume the context, then
-// start every track that should be looping right now — the menu / level music
-// held back while we were locked. Starting them fresh into the now-running
-// context is what makes them audible on iOS.
-function unlockAudio() {
-  if (audioUnlocked || !Howler) return
-  const finish = () => {
-    if (audioUnlocked) return
-    audioUnlocked = true
-    loops.forEach((volume, key) => startHowl(key, true, volume))
-  }
-  const ctx = Howler.ctx
-  if (ctx && ctx.state !== 'running' && ctx.resume) ctx.resume().then(finish, finish)
-  else finish()
-}
-
-const UNLOCK_EVENTS = ['touchstart', 'touchend', 'pointerdown', 'click']
-
-onMounted(async () => {
-  window.addEventListener('message', onMessage)
-  const howler = await import('howler')
-  Howl = howler.Howl
-  Howler = howler.Howler
-  getHowl('sfx_click', false) // force the AudioContext to exist so unlock can resume it
-  audioReady = true
-  audioBacklog.splice(0).forEach(playAudio)
-  // Capture phase so this runs before the pad buttons' own preventDefault.
-  UNLOCK_EVENTS.forEach((evt) =>
-    document.addEventListener(evt, unlockAudio, { capture: true, passive: true }),
-  )
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('message', onMessage)
-  UNLOCK_EVENTS.forEach((evt) =>
-    document.removeEventListener(evt, unlockAudio, { capture: true } as any),
-  )
-  howls.forEach((h) => h.unload())
-  howls.clear()
-})
 
 useSeoMeta({
   title: 'Misión · Jugá la Batalla de la Triple Panera | Patus Klei',
@@ -431,7 +304,6 @@ useSeoMeta({
     max-width: 840px;
     margin: 0 auto;
     box-shadow: 6px 6px 0 var(--ega-darkmagenta), 0 0 30px rgba(136, 0, 255, 0.35);
-    
 }
 
 /* Keeps the game at its native 320x200 (8:5) aspect ratio, responsive down to mobile.

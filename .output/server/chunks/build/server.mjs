@@ -608,12 +608,12 @@ const _routes = [
   {
     name: "mision",
     path: "/mision",
-    component: () => import('./mision-Dpknvum7.mjs')
+    component: () => import('./mision-CAobjC8Y.mjs')
   },
   {
     name: "index",
     path: "/",
-    component: () => import('./index-DntCF911.mjs')
+    component: () => import('./index-JuW-s4CV.mjs')
   }
 ];
 const _wrapInTransition = (props, children) => {
@@ -989,7 +989,7 @@ const plugins = [
   components_plugin_4kY4pyzJIYX99vmMAAIorFf3CnAaptHitJgf7JxiED8
 ];
 const layouts = {
-  default: defineAsyncComponent(() => import('./default-b2e880k6.mjs').then((m) => m.default || m))
+  default: defineAsyncComponent(() => import('./default-D0Yii9bV.mjs').then((m) => m.default || m))
 };
 const routeRulesMatcher = _routeRulesMatcher;
 const LayoutLoader = defineComponent({

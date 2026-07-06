@@ -15,22 +15,6 @@ window.addEventListener('message', (event) => {
     if (msg.action === 'crouch') window.__touchControls.crouch = !!msg.pressed;
 });
 
-// Mobile audio unlock bridge. The game's menus are driven by tapping the canvas
-// INSIDE this iframe, so those genuine user gestures never reach the host page —
-// which is where our sound actually plays on touch devices (via Howler; see the
-// audio bridge below and pages/mision.vue). Forward each gesture up so the host
-// can resume/unlock its audio context the moment the player first touches the
-// game, instead of staying silent until they hit a host-page pad button.
-if (window.parent !== window) {
-    const forwardUnlock = () => {
-        try {
-            window.parent.postMessage({ type: 'patus-audio', cmd: 'unlock' }, window.location.origin);
-        } catch (e) { /* cross-origin host: nothing we can do */ }
-    };
-    ['pointerdown', 'touchstart', 'mousedown'].forEach((evt) =>
-        window.addEventListener(evt, forwardUnlock, { capture: true, passive: true }));
-}
-
 // Game Configuration
 const config = {
     type: Phaser.AUTO,
@@ -62,88 +46,12 @@ const config = {
     }
 };
 
-// ---------------------------------------------------------------------------
-// Mobile audio bridge. On touch devices the game is driven by the host page's
-// pad buttons, which sit OUTSIDE this iframe — so the iframe stops receiving the
-// user gestures mobile browsers need to keep its Web Audio context audible, and
-// sound drops out. Fix: on touch devices only, keep Phaser permanently muted
-// (it still ticks the context, so 'complete'/timing logic — e.g. the level-end
-// wait — is unchanged) and mirror every sound out to the host page, which plays
-// it with Howler where the real taps are. Desktop is untouched: Phaser plays.
-// PATH A TEST: bridge OFF. We're trying the simpler theory that the sound only
-// dropped out because Phaser suspends its own Web Audio when this iframe loses
-// focus (pauseOnBlur, disabled in bootGame below) — not because the iframe needs
-// ongoing gestures. With the bridge off, Phaser plays its own audio on mobile
-// again. Flip this back to the media-query check to re-enable the Howler bridge.
-const AUDIO_BRIDGE = false && window.parent !== window &&
-    window.matchMedia('(hover: none) and (pointer: coarse)').matches;
-
-function postAudio(payload) {
-    window.parent.postMessage({ type: 'patus-audio', ...payload }, window.location.origin);
-}
-
-// Wrap the (already-booted) sound manager so every play/stop/stopAll/mute is
-// mirrored to the host. Nothing in the game code changes — it keeps calling the
-// same Phaser API; we just also emit an event and force Phaser itself to stay
-// muted so the host's Howler is the only thing you actually hear.
-function installAudioBridge(sm) {
-    const emitPlay = (key, cfg) => postAudio({
-        cmd: 'play', key,
-        loop: !!(cfg && cfg.loop),
-        volume: cfg && cfg.volume != null ? cfg.volume : 1
-    });
-
-    // One-shots: scene.sound.play('key').
-    const origPlay = sm.play.bind(sm);
-    sm.play = (key, extra) => { emitPlay(key, extra); return origPlay(key, extra); };
-
-    // Handles: scene.sound.add('key', cfg) → .play()/.stop() (bgm loops, sfx).
-    const origAdd = sm.add.bind(sm);
-    sm.add = (key, cfg) => {
-        const snd = origAdd(key, cfg);
-        const oPlay = snd.play.bind(snd);
-        const oStop = snd.stop.bind(snd);
-        snd.play = (m, e) => { emitPlay(key, cfg); return oPlay(m, e); };
-        snd.stop = () => { postAudio({ cmd: 'stop', key }); return oStop(); };
-        return snd;
-    };
-
-    const origStopAll = sm.stopAll.bind(sm);
-    sm.stopAll = () => { postAudio({ cmd: 'stopAll' }); return origStopAll(); };
-
-    // Force Phaser to stay muted (it's just the silent timing driver) while
-    // forwarding the player's real mute preference to the host's Howler. The
-    // `mute` accessor lives up the chain on BaseSoundManager, not the immediate
-    // prototype, so walk up to find it.
-    let desc = null;
-    for (let o = sm; o && !desc; o = Object.getPrototypeOf(o)) {
-        desc = Object.getOwnPropertyDescriptor(o, 'mute');
-    }
-    if (desc && desc.set) {
-        Object.defineProperty(sm, 'mute', {
-            configurable: true,
-            get: () => desc.get.call(sm),
-            set: (v) => { postAudio({ cmd: 'mute', value: !!v }); desc.set.call(sm, true); }
-        });
-    }
-    sm.mute = !isMusicPlaying; // sync initial preference to the host + mute Phaser
-}
-
 // Initialize Phaser only after the pixel font is ready. Phaser renders each
 // text object to a texture once, using whatever font is available at that
 // moment — boot too early and the fallback (Arial) gets baked in permanently.
 let game;
 function bootGame() {
     game = new Phaser.Game(config);
-    game.events.once('ready', () => {
-        // Don't let Phaser suspend its own audio when this iframe loses focus.
-        // The pad buttons live in the parent page, so tapping one blurs this
-        // frame — and with the default (pauseOnBlur = true) that suspended the
-        // Web Audio context and killed the sound. This is the core Path A fix.
-        game.sound.pauseOnBlur = false;
-    });
-    // The sound manager only exists once the game is booted; wrap it then.
-    if (AUDIO_BRIDGE) game.events.once('ready', () => installAudioBridge(game.sound));
 }
 
 if (document.fonts && document.fonts.load) {
