@@ -608,7 +608,7 @@ const _routes = [
   {
     name: "mision",
     path: "/mision",
-    component: () => import('./mision-lwflNKYR.mjs')
+    component: () => import('./mision-Dpknvum7.mjs')
   },
   {
     name: "index",
