@@ -3,6 +3,17 @@ const DEV_MODE = false;
 // user has explicitly turned sound off (stored as the string "false").
 let isMusicPlaying = localStorage.getItem('musicPlaying') !== 'false';
 
+// iOS/WebKit treats Web Audio (what Phaser's sound manager uses) as "ambient"
+// audio, which the hardware ring/silent switch mutes — confirmed as the actual
+// cause of "no sound on iOS" (a <video> with native controls still played,
+// because it uses a different audio session category that the switch doesn't
+// touch). Opting into "playback" tells WebKit to treat this page's audio like
+// media playback, so the switch no longer silences it. Safari 16.4+; harmless
+// no-op on browsers without the API.
+try {
+    if (navigator.audioSession) navigator.audioSession.type = 'playback';
+} catch (e) { /* no-op on browsers without the API */ }
+
 // Host-page touch controls bridge. When embedded in the site, the page renders
 // real HTML buttons below the canvas (a tap there can't slip off the canvas and
 // be dropped, unlike Phaser's on-canvas buttons). They postMessage their pressed
@@ -52,6 +63,12 @@ const config = {
 let game;
 function bootGame() {
     game = new Phaser.Game(config);
+    // The touch pads that drive jump/crouch live in the PARENT page, outside
+    // this iframe (see pages/mision.vue) — so every tap on them blurs this
+    // iframe. Phaser's default (pauseOnBlur = true) suspends the Web Audio
+    // context on blur, which would silence gameplay sound the moment the
+    // player uses the touch controls. Disable it once the sound manager exists.
+    game.events.once('ready', () => { game.sound.pauseOnBlur = false; });
 }
 
 if (document.fonts && document.fonts.load) {
