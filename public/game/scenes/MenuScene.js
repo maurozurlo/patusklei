@@ -54,19 +54,33 @@ class MenuScene extends Phaser.Scene {
 
         // SPACE / ENTER trigger the current screen's primary button (start /
         // continue / restart) so the menus aren't click-only. Each screen arms
-        // its action via setPrimaryAction(). `event.repeat` is ignored so a key
-        // still held from gameplay (space is jump) can't auto-repeat through
-        // screens — only a fresh press counts. Dialogue screens manage their own
-        // keys, so they leave _primaryAction null.
+        // its action via armPrimary(). `event.repeat` is ignored so a key still
+        // held from gameplay (space is jump) can't auto-repeat through screens.
         this.input.keyboard.addCapture('SPACE,ENTER');
+
+        // --- Advance gate ----------------------------------------------------
+        // A screen's primary action stays LOCKED until whatever input was held
+        // when the screen armed has been released. This kills the "carried
+        // press" class of bug — the tap/key that triggers a transition (even one
+        // that crosses a scene restart, e.g. skipping the credits back into the
+        // main menu, which used to re-fire INICIAR JUEGO and bounce to the first
+        // lore screen) can no longer bleed through and fire the next screen's
+        // button. Unlike the old delayedCall(0) guards it keys off real device
+        // state (Key.isDown / pointer.isDown), not frame ordering, so timing
+        // can't defeat it.
         this._primaryAction = null;
-        const primary = (event) => {
-            if (event.repeat || !this._primaryAction) return;
-            this.sound.play('sfx_click');
-            this._primaryAction();
-        };
-        this.input.keyboard.on('keydown-SPACE', primary);
-        this.input.keyboard.on('keydown-ENTER', primary);
+        this._advanceLocked = false;
+        this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        this.keyEnter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+
+        const unlock = () => { this._advanceLocked = false; };
+        this.input.on('pointerup', unlock);
+        this.input.keyboard.on('keyup-SPACE', unlock);
+        this.input.keyboard.on('keyup-ENTER', unlock);
+
+        const keyPrimary = (event) => { if (!event.repeat) this.firePrimary(); };
+        this.input.keyboard.on('keydown-SPACE', keyPrimary);
+        this.input.keyboard.on('keydown-ENTER', keyPrimary);
 
         const loreScreens = [
             'LEVEL_1_LORE',
@@ -107,10 +121,27 @@ class MenuScene extends Phaser.Scene {
         this._primaryAction = null; // each screen re-arms its own keyboard action
     }
 
-    // Arm SPACE/ENTER for the current screen's primary button (see create()).
-    // Pass null (via clearUI) to disable keyboard advance on a screen.
-    setPrimaryAction(fn) {
+    // Arm the current screen's primary action (SPACE/ENTER, plus the screen's
+    // primary button via firePrimary). If any input is held at arm time — the
+    // very press that navigated here — advancing is locked until it's released,
+    // so that press can't immediately re-fire on the new screen. Pass null (via
+    // clearUI) to disable advancing.
+    armPrimary(fn) {
         this._primaryAction = fn;
+        this._advanceLocked = fn ? this.isAnyInputDown() : false;
+    }
+
+    isAnyInputDown() {
+        return this.input.activePointer.isDown || this.keySpace.isDown || this.keyEnter.isDown;
+    }
+
+    // Run the armed primary action, unless the gate is still locked (see
+    // armPrimary). `fromButton` is true for on-screen buttons, whose click sound
+    // is already covered by the gameobjectdown listener in create().
+    firePrimary(fromButton = false) {
+        if (!this._primaryAction || this._advanceLocked) return;
+        if (!fromButton) this.sound.play('sfx_click');
+        this._primaryAction();
     }
 
     // Gentle looping vertical bob (titles + continue buttons).
@@ -193,8 +224,8 @@ class MenuScene extends Phaser.Scene {
             Save.startNewGame(); // fresh run: reset peppers, bump timesPlayed
             this.showLoreScreen('LEVEL_1_LORE');
         };
-        startButton.on('pointerdown', start);
-        this.setPrimaryAction(start); // SPACE / ENTER also start the game
+        startButton.on('pointerdown', () => this.firePrimary(true));
+        this.armPrimary(start); // SPACE / ENTER (and the button) start the game
 
         // Sound toggle icon, anchored top-right with a little padding.
         const pad = 8;
@@ -269,8 +300,8 @@ class MenuScene extends Phaser.Scene {
                     break;
             }
         };
-        continueButton.on('pointerdown', advance);
-        this.setPrimaryAction(advance);
+        continueButton.on('pointerdown', () => this.firePrimary(true));
+        this.armPrimary(advance);
     }
 
     // Play a chain of ending screens. Each entry renders either as a typewriter
@@ -338,12 +369,11 @@ class MenuScene extends Phaser.Scene {
             .setOrigin(0.5)
             .setDepth(11);
 
-        // Defer skip binding one tick so the tap/key that opened this screen isn't
-        // counted as a skip (same guard as showDialogue).
-        this.time.delayedCall(0, () => {
-            this.input.once('pointerdown', finish);
-            this.setPrimaryAction(finish);
-        });
+        // Skip on tap / SPACE / ENTER. The advance gate holds the skip until the
+        // press that opened the credits is released, so the credits can't be
+        // skipped instantly by the same press.
+        this.input.on('pointerdown', () => this.firePrimary(false));
+        this.armPrimary(finish);
     }
 
     // Plain narration screen (title + body + optional image), advanced by a button.
@@ -356,8 +386,8 @@ class MenuScene extends Phaser.Scene {
         const button = this.add.text(160, 180, last ? 'FIN' : 'CONTINUAR', styles.buttonPrimary)
             .setOrigin(0.5)
             .setInteractive({ useHandCursor: true });
-        button.on('pointerdown', onNext);
-        this.setPrimaryAction(onNext);
+        button.on('pointerdown', () => this.firePrimary(true));
+        this.armPrimary(onNext);
         this.bob(button, { delay: 450 });
     }
 
@@ -394,13 +424,15 @@ class MenuScene extends Phaser.Scene {
         this.dlgIndex = 0;
         this.dlgOnDone = onDone;
 
-        // Defer input binding one tick: the tap/key that opened this screen
-        // (e.g. CONTINUAR) is still being processed and would count as an advance.
-        this.dlgBindTimer = this.time.delayedCall(0, () => {
-            this.input.on('pointerdown', this.advanceDialogue, this);
-            this.input.keyboard.on('keydown-SPACE', this.advanceDialogue, this);
-            this.input.keyboard.on('keydown-ENTER', this.advanceDialogue, this);
-        });
+        // Tap / SPACE / ENTER advances. The advance gate (armed below) holds the
+        // first input until the press that opened this screen (e.g. CONTINUAR) is
+        // released, so it can't count as an advance — the same protection the
+        // menu buttons get, without depending on frame timing.
+        this._primaryAction = null; // dialogue drives its own input, not firePrimary
+        this._advanceLocked = this.isAnyInputDown();
+        this.input.on('pointerdown', this.advanceDialogue, this);
+        this.input.keyboard.on('keydown-SPACE', this.advanceDialogue, this);
+        this.input.keyboard.on('keydown-ENTER', this.advanceDialogue, this);
 
         this.startDialogueLine();
     }
@@ -437,7 +469,9 @@ class MenuScene extends Phaser.Scene {
         this.dlgArrow.setVisible(true);
     }
 
-    advanceDialogue() {
+    advanceDialogue(input) {
+        // Advance gate: ignore the carried opening press and key auto-repeat.
+        if (this._advanceLocked || (input && input.repeat)) return;
         this.sound.play('sfx_click');
         if (this.dlgTyping) { this.finishTyping(); return; } // first tap completes the line
         this.dlgIndex++;
@@ -451,7 +485,6 @@ class MenuScene extends Phaser.Scene {
 
     cleanupDialogue() {
         if (this.dlgTimer) { this.dlgTimer.remove(); this.dlgTimer = null; }
-        if (this.dlgBindTimer) { this.dlgBindTimer.remove(); this.dlgBindTimer = null; }
         if (this.dlgArrowTween) { this.dlgArrowTween.stop(); this.dlgArrowTween = null; }
         this.input.off('pointerdown', this.advanceDialogue, this);
         this.input.keyboard.off('keydown-SPACE', this.advanceDialogue, this);
@@ -495,7 +528,7 @@ class MenuScene extends Phaser.Scene {
 
         // Retry drops straight back into the level that was lost (skips its lore).
         const retry = () => this.scene.start('GameScene', { level: this.retryLevel });
-        retryButton.on('pointerdown', retry);
-        this.setPrimaryAction(retry);
+        retryButton.on('pointerdown', () => this.firePrimary(true));
+        this.armPrimary(retry);
     }
 }
