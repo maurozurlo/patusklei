@@ -95,7 +95,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useSeoMeta, useRequestURL } from '#imports'
 
 const cover = new URL('/booklet/cover.jpg', useRequestURL({ xForwardedHost: true }).origin).href
@@ -114,6 +114,9 @@ function sendControl(action: 'jump' | 'crouch', pressed: boolean) {
 
 function press(e: PointerEvent, action: 'jump' | 'crouch') {
   e.preventDefault()
+  // A pad tap is a genuine gesture on THIS page — use it to (re)unlock the host
+  // audio context that plays the game's sound (see the audio bridge below).
+  Howler?.ctx?.resume?.()
   const btn = e.currentTarget as HTMLElement
   // Capture the pointer so the matching pointerup still fires on this button
   // even if the thumb slides off it — otherwise the control would stick down.
@@ -127,6 +130,73 @@ function release(e: PointerEvent, action: 'jump' | 'crouch') {
   ;(e.currentTarget as HTMLElement).classList.remove('is-pressed')
   sendControl(action, false)
 }
+
+// Audio bridge (mobile). The game runs inside the iframe, but on touch devices
+// its taps land on the pad buttons out here — so the iframe's Web Audio never
+// gets the gesture it needs and its sound cuts out. The game therefore mutes
+// itself and posts every sound event to this page (see public/game/src/main.js);
+// we play it with Howler, whose context DOES get unlocked by the pad taps.
+// Howler is loaded client-side only (it touches window on import).
+let Howl: any = null
+let Howler: any = null
+const howls = new Map<string, any>()
+let audioReady = false
+const audioBacklog: any[] = []
+
+function audioSrc(key: string) {
+  // bgm_lvl1/2/3 ship as .ogg; every other clip is .wav.
+  const ext = key.startsWith('bgm_lvl') ? 'ogg' : 'wav'
+  return `/game/audio/${key}.${ext}`
+}
+
+function getHowl(key: string, loop: boolean) {
+  let h = howls.get(key)
+  if (!h) {
+    h = new Howl({ src: [audioSrc(key)], loop })
+    howls.set(key, h)
+  }
+  return h
+}
+
+function playAudio(msg: any) {
+  if (msg.cmd === 'play') {
+    const h = getHowl(msg.key, !!msg.loop)
+    h.loop(!!msg.loop)
+    if (msg.volume != null) h.volume(msg.volume)
+    if (msg.loop && h.playing()) return // don't stack a second copy of a loop
+    h.play()
+  } else if (msg.cmd === 'stop') {
+    howls.get(msg.key)?.stop()
+  } else if (msg.cmd === 'stopAll') {
+    howls.forEach((h) => h.stop())
+  } else if (msg.cmd === 'mute') {
+    Howler?.mute(!!msg.value)
+  }
+}
+
+function onMessage(event: MessageEvent) {
+  if (event.origin !== window.location.origin) return
+  const msg = event.data
+  if (msg?.type !== 'patus-audio') return
+  // Buffer anything that arrives before Howler finishes loading, then flush.
+  if (audioReady) playAudio(msg)
+  else audioBacklog.push(msg)
+}
+
+onMounted(async () => {
+  window.addEventListener('message', onMessage)
+  const howler = await import('howler')
+  Howl = howler.Howl
+  Howler = howler.Howler
+  audioReady = true
+  audioBacklog.splice(0).forEach(playAudio)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('message', onMessage)
+  howls.forEach((h) => h.unload())
+  howls.clear()
+})
 
 useSeoMeta({
   title: 'Misión · Jugá la Batalla de la Triple Panera | Patus Klei',

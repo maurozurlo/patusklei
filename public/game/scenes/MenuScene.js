@@ -254,7 +254,9 @@ class MenuScene extends Phaser.Scene {
             })
                 .setDepth(51)
                 .setInteractive({ useHandCursor: true })
-                .on('pointerdown', () => this.scene.start('GameScene', { level: lvl }));
+                // Gated like the primary action: a tap carried in from the
+                // previous screen (e.g. skipping the credits) can't start a level.
+                .on('pointerdown', () => { if (!this._advanceLocked) this.scene.start('GameScene', { level: lvl }); });
         });
     }
 
