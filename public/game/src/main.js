@@ -70,7 +70,12 @@ const config = {
 // (it still ticks the context, so 'complete'/timing logic — e.g. the level-end
 // wait — is unchanged) and mirror every sound out to the host page, which plays
 // it with Howler where the real taps are. Desktop is untouched: Phaser plays.
-const AUDIO_BRIDGE = window.parent !== window &&
+// PATH A TEST: bridge OFF. We're trying the simpler theory that the sound only
+// dropped out because Phaser suspends its own Web Audio when this iframe loses
+// focus (pauseOnBlur, disabled in bootGame below) — not because the iframe needs
+// ongoing gestures. With the bridge off, Phaser plays its own audio on mobile
+// again. Flip this back to the media-query check to re-enable the Howler bridge.
+const AUDIO_BRIDGE = false && window.parent !== window &&
     window.matchMedia('(hover: none) and (pointer: coarse)').matches;
 
 function postAudio(payload) {
@@ -130,6 +135,13 @@ function installAudioBridge(sm) {
 let game;
 function bootGame() {
     game = new Phaser.Game(config);
+    game.events.once('ready', () => {
+        // Don't let Phaser suspend its own audio when this iframe loses focus.
+        // The pad buttons live in the parent page, so tapping one blurs this
+        // frame — and with the default (pauseOnBlur = true) that suspended the
+        // Web Audio context and killed the sound. This is the core Path A fix.
+        game.sound.pauseOnBlur = false;
+    });
     // The sound manager only exists once the game is booted; wrap it then.
     if (AUDIO_BRIDGE) game.events.once('ready', () => installAudioBridge(game.sound));
 }
