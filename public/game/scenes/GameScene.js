@@ -45,6 +45,7 @@ class GameScene extends Phaser.Scene {
         this.load.audio('sfx_horn_plain', 'audio/sfx_horn_plain.wav');
         this.load.audio('sfx_horn_clown', 'audio/sfx_horn_clown.wav');
         this.load.audio('sfx_horn_fun', 'audio/sfx_horn_fun.wav');
+        this.load.audio('sfx_bird', 'audio/sfx_bird.wav');
 
         // Hit feedback + boss bomb sequence.
         this.load.audio('sfx_patus_hit', 'audio/sfx_patus_hit.wav');
@@ -58,6 +59,7 @@ class GameScene extends Phaser.Scene {
 
         this.load.audio('bgm_lvl1', 'audio/bgm_lvl1.ogg');
         this.load.audio('bgm_lvl2', 'audio/bgm_lvl2.ogg');
+        this.load.audio('bgm_lvl3', 'audio/bgm_lvl3.ogg');
         this.load.audio('sfx_lvl1_ambiance', 'audio/sfx_lvl1_ambiance.wav');
 
         // IMAGES
@@ -202,6 +204,7 @@ class GameScene extends Phaser.Scene {
             tuna: this.sound.add('sfx_tuna'),
             lvl1: this.sound.add('bgm_lvl1', { loop: true }),
             lvl2: this.sound.add('bgm_lvl2', { loop: true }),
+            lvl3: this.sound.add('bgm_lvl3', { loop: true }),
             lvl1_ambiance: this.sound.add('sfx_lvl1_ambiance', { loop: true, volume: 0.5 }),
             patus_hit: this.sound.add('sfx_patus_hit'),
             birdhit: this.sound.add('sfx_birdhit'),
@@ -217,6 +220,8 @@ class GameScene extends Phaser.Scene {
             horn_plain: this.sound.add('sfx_horn_plain'),
             horn_clown: this.sound.add('sfx_horn_clown'),
             horn_fun: this.sound.add('sfx_horn_fun'),
+
+            bird: this.sound.add('sfx_bird')
         };
 
 

@@ -107,6 +107,7 @@ class ObstacleManager {
         // takes a car's slot, so it's naturally spaced between cars. The first
         // few are cars to let the player warm up.
         if (this.level === 2 && this.scene.obstaclesSpawned % 4 === 0) {
+            this.scene.sfx?.bird?.play();
             this.spawnBird(obstacleSpeed);
             return;
         }

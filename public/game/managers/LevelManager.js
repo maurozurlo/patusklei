@@ -58,7 +58,7 @@ class LevelManager {
                 projectileDelay: 1000,
                 dynamiteDelay: 5000,
                 coinDelay: 3000,
-                music: this.scene.sfx.lvl1
+                music: this.scene.sfx.lvl3
             }
         };
 
