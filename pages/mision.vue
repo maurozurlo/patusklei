@@ -305,6 +305,10 @@ useSeoMeta({
     max-width: 840px;
     margin: 0 auto;
     box-shadow: 6px 6px 0 var(--ega-darkmagenta), 0 0 30px rgba(136, 0, 255, 0.35);
+
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
 }
 
 /* Keeps the game at its native 320x200 (8:5) aspect ratio, responsive down to mobile.
