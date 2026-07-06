@@ -114,9 +114,9 @@ function sendControl(action: 'jump' | 'crouch', pressed: boolean) {
 
 function press(e: PointerEvent, action: 'jump' | 'crouch') {
   e.preventDefault()
-  // A pad tap is a genuine gesture on THIS page — use it to (re)unlock the host
+  // A pad tap is a genuine gesture on THIS page — use it to unlock the host
   // audio context that plays the game's sound (see the audio bridge below).
-  Howler?.ctx?.resume?.()
+  unlockAudio()
   const btn = e.currentTarget as HTMLElement
   // Capture the pointer so the matching pointerup still fires on this button
   // even if the thumb slides off it — otherwise the control would stick down.
@@ -132,19 +132,21 @@ function release(e: PointerEvent, action: 'jump' | 'crouch') {
 }
 
 // Audio bridge (mobile). The game runs inside the iframe, but on touch devices
-// its taps land on the pad buttons out here — so the iframe's Web Audio never
-// gets the gesture it needs and its sound cuts out. The game therefore mutes
-// itself and posts every sound event to this page (see public/game/src/main.js);
-// we play it with Howler. iOS is strict: the audio context only unlocks from a
-// gesture on THIS document (a tap on the canvas lives inside the iframe and
-// doesn't count), so we unlock on the first touch/click anywhere on the host
-// page and then (re)start any loop that was queued while locked. A touch also
-// re-kicks the track, so it can play loud-ish on entry — but it plays.
+// its gameplay taps land on the pad buttons out here — so the iframe's Web Audio
+// never gets the gestures it needs and its sound cuts out. The game therefore
+// mutes itself and posts every sound event to this page (see
+// public/game/src/main.js); we play it with Howler, where the real host-page
+// gestures are. iOS is strict: the audio context only unlocks from a gesture on
+// THIS document, and a tap on the game canvas lives inside the iframe. So we hold
+// any looping track (menu / level music) until the first gesture that reaches
+// this page — a pad tap, a scroll on the way down to the game, a click, or a
+// gesture the iframe forwards up (cmd:'unlock') — then start it fresh into the
+// now-running context, which is what actually makes it audible on iOS.
 // Howler is loaded client-side only (it touches window on import).
 let Howl: any = null
 let Howler: any = null
 const howls = new Map<string, any>()
-const loops = new Set<string>() // keys that should be looping right now
+const loops = new Map<string, number>() // key -> volume; tracks that should loop now
 let audioReady = false
 let audioUnlocked = false
 const audioBacklog: any[] = []
@@ -164,16 +166,29 @@ function getHowl(key: string, loop: boolean) {
   return h
 }
 
+// Start a track (or, for a loop already running, leave it be). Only ever called
+// once the context is unlocked, so play() lands in a running context and makes
+// sound — playing into a still-suspended one stays silent forever on iOS.
+function startHowl(key: string, loop: boolean, volume?: number) {
+  const h = getHowl(key, loop)
+  h.loop(loop)
+  if (volume != null) h.volume(volume)
+  if (loop && h.playing()) return // already looping; don't stack a second copy
+  h.play()
+}
+
 function playAudio(msg: any) {
   if (msg.cmd === 'play') {
-    const h = getHowl(msg.key, !!msg.loop)
-    h.loop(!!msg.loop)
-    if (msg.volume != null) h.volume(msg.volume)
     if (msg.loop) {
-      loops.add(msg.key)
-      if (h.playing()) return // already looping; don't stack a second copy
+      // Remember it should be looping; start it now if we're already unlocked,
+      // otherwise unlockAudio() starts it on the first gesture that reaches us.
+      loops.set(msg.key, msg.volume != null ? msg.volume : 1)
+      if (audioUnlocked) startHowl(msg.key, true, msg.volume)
+    } else if (audioUnlocked) {
+      // One-shots that land before the first gesture are inaudible anyway
+      // (nothing is unlocked yet), so there's nothing to queue — just drop them.
+      startHowl(msg.key, false, msg.volume)
     }
-    h.play()
   } else if (msg.cmd === 'stop') {
     loops.delete(msg.key)
     howls.get(msg.key)?.stop()
@@ -182,6 +197,10 @@ function playAudio(msg: any) {
     howls.forEach((h) => h.stop())
   } else if (msg.cmd === 'mute') {
     Howler?.mute(!!msg.value)
+  } else if (msg.cmd === 'unlock') {
+    // Forwarded from inside the game iframe: the player just touched the canvas
+    // (a menu button), which never reaches this page on its own.
+    unlockAudio()
   }
 }
 
@@ -194,17 +213,21 @@ function onMessage(event: MessageEvent) {
   else audioBacklog.push(msg)
 }
 
-// First user gesture on the host page: resume the context and kick any looping
-// track that was started (silently) while it was still locked.
+// First user gesture that reaches THIS page (a pad tap, a scroll, a click, or a
+// gesture forwarded up from inside the game iframe): resume the context, then
+// start every track that should be looping right now — the menu / level music
+// held back while we were locked. Starting them fresh into the now-running
+// context is what makes them audible on iOS.
 function unlockAudio() {
   if (audioUnlocked || !Howler) return
+  const finish = () => {
+    if (audioUnlocked) return
+    audioUnlocked = true
+    loops.forEach((volume, key) => startHowl(key, true, volume))
+  }
   const ctx = Howler.ctx
-  if (ctx && ctx.state !== 'running' && ctx.resume) ctx.resume()
-  audioUnlocked = true
-  loops.forEach((key) => {
-    const h = howls.get(key)
-    if (h && !h.playing()) h.play()
-  })
+  if (ctx && ctx.state !== 'running' && ctx.resume) ctx.resume().then(finish, finish)
+  else finish()
 }
 
 const UNLOCK_EVENTS = ['touchstart', 'touchend', 'pointerdown', 'click']

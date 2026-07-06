@@ -15,6 +15,22 @@ window.addEventListener('message', (event) => {
     if (msg.action === 'crouch') window.__touchControls.crouch = !!msg.pressed;
 });
 
+// Mobile audio unlock bridge. The game's menus are driven by tapping the canvas
+// INSIDE this iframe, so those genuine user gestures never reach the host page —
+// which is where our sound actually plays on touch devices (via Howler; see the
+// audio bridge below and pages/mision.vue). Forward each gesture up so the host
+// can resume/unlock its audio context the moment the player first touches the
+// game, instead of staying silent until they hit a host-page pad button.
+if (window.parent !== window) {
+    const forwardUnlock = () => {
+        try {
+            window.parent.postMessage({ type: 'patus-audio', cmd: 'unlock' }, window.location.origin);
+        } catch (e) { /* cross-origin host: nothing we can do */ }
+    };
+    ['pointerdown', 'touchstart', 'mousedown'].forEach((evt) =>
+        window.addEventListener(evt, forwardUnlock, { capture: true, passive: true }));
+}
+
 // Game Configuration
 const config = {
     type: Phaser.AUTO,
