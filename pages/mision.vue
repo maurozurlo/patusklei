@@ -88,6 +88,7 @@
           </div>
 
           <p class="game-foot">¿Lo logró? Felicitaciones muchachito, ya puede escuchar el pisco. ¿Perdió? consulte la regla 1.</p>
+          <p>x)</p>
         </div>
       </div>
     </section>
