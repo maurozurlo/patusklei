@@ -1,12 +1,16 @@
 // ---------------------------------------------------------------------------
 // Lore — all narrative screens in one place, easy to edit.
 //
-// Each entry: { title, text, image? }. `image` is OPTIONAL — set it to a path
-// (e.g. 'images/ending_good.png') and MenuScene auto-loads it and shows it as a
-// full-screen backdrop behind the text. Leave it out for text-only screens.
+// Each entry: { title, text, image?, next? }. `image` is OPTIONAL — set it to
+// a path (e.g. 'images/ending_good.png') and MenuScene auto-loads it and shows
+// it as a full-screen backdrop behind the text. Leave it out for text-only
+// screens. `next` is where CONTINUAR goes: { scene, data } passed straight to
+// scene.start() — only single-screen lore (played via showLoreScreen) needs it.
 //
 // LORE_SEQUENCES groups multi-screen runs (the endings). Edit the order/screens
-// here; MenuScene just plays whatever list it's given.
+// here; MenuScene just plays whatever list it's given. Their own screens don't
+// need `next` — showLoreSequence walks the array itself and hands the credits
+// roll off at the end.
 //
 // Loaded via <script> like the other data files (effectively the JSON you can
 // hand-edit, no build step).
@@ -14,15 +18,28 @@
 const LORE = {
     LEVEL_1_LORE: {
         title: 'Los Inicios',
-        text: "Apreciado amigo Patus Klei, nacido en agosto de 1907. \nA los 16 años escuchó el llamado de la tierra de Cle. Construyó su bidet y zarpó.\nTraga el atún y los morrones.\nEvita las boyas."
+        text: "Apreciado amigo Patus Klei, nacido en agosto de 1907. \nA los 16 años escuchó el llamado de la tierra de Cle. Construyó su bidet y zarpó.\nTraga el atún y los morrones.\nEvita las boyas.",
+        next: { scene: 'GameScene', data: { level: 1 } }
     },
     LEVEL_2_LORE: {
         title: 'Tierra de Cle',
-        text: "Patus Klei ha llegado a la Mítica Tierra de Cle. Debe enfrentarse al terrible planeamiento urbano y recorrer sus turbulentas calles. Evite las palomas y los autos."
+        text: "Patus Klei ha llegado a la Mítica Tierra de Cle. Debe enfrentarse al terrible planeamiento urbano y recorrer sus turbulentas calles. Evite las palomas y los autos.",
+        next: { scene: 'GameScene', data: { level: 2 } }
     },
     BOSS_LORE: {
         title: 'La Batalla',
-        text: "Patus finalmente ha llegado a la guarida del perito ventrilocuista Lars Wampiola. Esquive los zarpasos, espere a RMK."
+        text: "Patus finalmente ha llegado a la guarida del perito ventrilocuista Lars Wampiola. Esquive los zarpasos, espere a RMK.",
+        next: { scene: 'GameScene', data: { level: 3 } }
+    },
+
+    // NOTE: not reachable in the current game — level 3 sets maxObstacles: 999
+    // (see LevelManager) specifically so the boss fight never trips the
+    // obstacle-count finish line that leads here. Leftover from before the
+    // boss fight existed; candidate for removal in the dead-code pass.
+    GAME_COMPLETED: {
+        title: 'Error',
+        text: 'Lore not found.',
+        next: { scene: 'MenuScene', data: { menuKey: 'MAIN_MENU' } }
     },
 
     // --- Victory reveal (shared first screen of both endings) ---
