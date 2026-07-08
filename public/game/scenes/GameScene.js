@@ -32,35 +32,35 @@ class GameScene extends Phaser.Scene {
     preload() {
 
         // SOUND
-        this.load.audio('sfx_crash', 'audio/sfx_crash.wav');
-        this.load.audio('sfx_endlvl1', 'audio/sfx_endlvl1.wav');
-        this.load.audio('sfx_endlvl2', 'audio/sfx_endlvl2.wav');
-        this.load.audio('sfx_gameover', 'audio/sfx_gameover.wav');
-        this.load.audio('sfx_jump', 'audio/sfx_jump.wav');
-        this.load.audio('sfx_pepper', 'audio/sfx_pepper.wav');
-        this.load.audio('sfx_tuna', 'audio/sfx_tuna.wav');
+        this.load.audio('sfx_crash', 'audio/sfx_crash.ogg');
+        this.load.audio('sfx_endlvl1', 'audio/sfx_endlvl1.ogg');
+        this.load.audio('sfx_endlvl2', 'audio/sfx_endlvl2.ogg');
+        this.load.audio('sfx_gameover', 'audio/sfx_gameover.ogg');
+        this.load.audio('sfx_jump', 'audio/sfx_jump.ogg');
+        this.load.audio('sfx_pepper', 'audio/sfx_pepper.ogg');
+        this.load.audio('sfx_tuna', 'audio/sfx_tuna.ogg');
 
         // Level 2 car horns — one per car variant, played when a car spawns.
-        this.load.audio('sfx_horn_taxi', 'audio/sfx_horn_taxi.wav');
-        this.load.audio('sfx_horn_plain', 'audio/sfx_horn_plain.wav');
-        this.load.audio('sfx_horn_clown', 'audio/sfx_horn_clown.wav');
-        this.load.audio('sfx_horn_fun', 'audio/sfx_horn_fun.wav');
-        this.load.audio('sfx_bird', 'audio/sfx_bird.wav');
+        this.load.audio('sfx_horn_taxi', 'audio/sfx_horn_taxi.ogg');
+        this.load.audio('sfx_horn_plain', 'audio/sfx_horn_plain.ogg');
+        this.load.audio('sfx_horn_clown', 'audio/sfx_horn_clown.ogg');
+        this.load.audio('sfx_horn_fun', 'audio/sfx_horn_fun.ogg');
+        this.load.audio('sfx_bird', 'audio/sfx_bird.ogg');
 
         // Hit feedback + boss bomb sequence.
-        this.load.audio('sfx_patus_hit', 'audio/sfx_patus_hit.wav');
-        this.load.audio('sfx_birdhit', 'audio/sfx_birdhit.wav');
-        this.load.audio('sfx_boss_hit', 'audio/sfx_boss_hit.wav');
-        this.load.audio('sfx_boss_miss', 'audio/sfx_boss_miss.wav');
-        this.load.audio('sfx_bomb_planted', 'audio/sfx_bomb_planted.wav');
-        this.load.audio('sfx_bomb_beep', 'audio/sfx_bomb_beep.wav');
-        this.load.audio('sfx_explo', 'audio/sfx_explo.wav');
-        this.load.audio('sfx_rmk', 'audio/sfx_rmk.wav'); // Rodolfa entrance cue
+        this.load.audio('sfx_patus_hit', 'audio/sfx_patus_hit.ogg');
+        this.load.audio('sfx_birdhit', 'audio/sfx_birdhit.ogg');
+        this.load.audio('sfx_boss_hit', 'audio/sfx_boss_hit.ogg');
+        this.load.audio('sfx_boss_miss', 'audio/sfx_boss_miss.ogg');
+        this.load.audio('sfx_bomb_planted', 'audio/sfx_bomb_planted.ogg');
+        this.load.audio('sfx_bomb_beep', 'audio/sfx_bomb_beep.ogg');
+        this.load.audio('sfx_explo', 'audio/sfx_explo.ogg');
+        this.load.audio('sfx_rmk', 'audio/sfx_rmk.ogg'); // Rodolfa entrance cue
 
         this.load.audio('bgm_lvl1', 'audio/bgm_lvl1.ogg');
         this.load.audio('bgm_lvl2', 'audio/bgm_lvl2.ogg');
         this.load.audio('bgm_lvl3', 'audio/bgm_lvl3.ogg');
-        this.load.audio('sfx_lvl1_ambiance', 'audio/sfx_lvl1_ambiance.wav');
+        this.load.audio('sfx_lvl1_ambiance', 'audio/sfx_lvl1_ambiance.ogg');
 
         // IMAGES
         this.load.image('bg_builds', 'images/bg_builds.png');

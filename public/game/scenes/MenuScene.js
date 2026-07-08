@@ -14,9 +14,9 @@ class MenuScene extends Phaser.Scene {
         this.load.image('main_menu', 'images/main_menu.png');
         this.load.image('icon_soundon', 'images/icon_soundon.png');
         this.load.image('icon_soundoff', 'images/icon_soundoff.png');
-        this.load.audio('sfx_click', 'audio/sfx_click.wav');
-        this.load.audio('sfx_gameover', 'audio/sfx_gameover.wav');
-        this.load.audio('bgm_menu', 'audio/bgm_menu.wav');
+        this.load.audio('sfx_click', 'audio/sfx_click.ogg');
+        this.load.audio('sfx_gameover', 'audio/sfx_gameover.ogg');
+        this.load.audio('bgm_menu', 'audio/bgm_menu.ogg');
         this.load.audio('bgm_goodend', 'audio/bgm_goodend.ogg');
         this.load.audio('bgm_badend', 'audio/bgm_badend.ogg');
 
