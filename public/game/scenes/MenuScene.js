@@ -17,6 +17,8 @@ class MenuScene extends Phaser.Scene {
         this.load.audio('sfx_click', 'audio/sfx_click.wav');
         this.load.audio('sfx_gameover', 'audio/sfx_gameover.wav');
         this.load.audio('bgm_menu', 'audio/bgm_menu.wav');
+        this.load.audio('bgm_goodend', 'audio/bgm_goodend.ogg');
+        this.load.audio('bgm_badend', 'audio/bgm_badend.ogg');
 
         // Auto-load any backdrop images referenced by lore entries (keyed by
         // their path), so a screen just needs `image: 'images/foo.png'`.
@@ -36,10 +38,24 @@ class MenuScene extends Phaser.Scene {
         // Apply the persisted sound preference (global to the sound manager).
         this.sound.mute = !isMusicPlaying;
 
+        // Boss victory: peppers decide good/bad in a real run; the debug D key
+        // forces one (forceEnding) so they can be compared. Computed up front so
+        // both the ending's own track and showLoreSequence below can use it.
+        if (this.menuKey === 'BOSS_ENDING') {
+            this.ending = this.forceEnding || (Save.isGoodEnding() ? 'good' : 'bad');
+        }
+
         // Looping menu/lore background track. Global mute (above + toggleMusic)
         // covers it, so there's nothing per-sound to manage here. Skipped on the
-        // Game Over screen, which has its own jingle (sfx_gameover).
-        if (this.menuKey !== 'GAME_OVER') {
+        // Game Over screen, which has its own jingle (sfx_gameover). The boss
+        // ending plays its own good/bad track instead, which keeps looping through
+        // the credits roll since sound isn't stopped between showLoreSequence and
+        // showCredits (only the scene changes stop it).
+        if (this.menuKey === 'GAME_OVER') {
+            // no bgm; showGameOver() plays sfx_gameover instead
+        } else if (this.menuKey === 'BOSS_ENDING') {
+            this.sound.add(this.ending === 'good' ? 'bgm_goodend' : 'bgm_badend', { loop: true }).play();
+        } else {
             this.sound.add('bgm_menu', { loop: true }).play();
         }
 
@@ -80,12 +96,9 @@ class MenuScene extends Phaser.Scene {
             return;
         }
 
-        // Boss victory: peppers decide good/bad in a real run; the debug D key
-        // forces one (forceEnding) so they can be compared.
         if (this.menuKey === 'BOSS_ENDING') {
-            const ending = this.forceEnding || (Save.isGoodEnding() ? 'good' : 'bad');
-            if (!this.forceEnding) Save.unlockEnding(ending);
-            this.showLoreSequence(LORE_SEQUENCES[ending]);
+            if (!this.forceEnding) Save.unlockEnding(this.ending);
+            this.showLoreSequence(LORE_SEQUENCES[this.ending]);
             return;
         }
 
