@@ -63,10 +63,10 @@ class MenuScene extends Phaser.Scene {
         this.input.on('gameobjectdown', () => this.sound.play('sfx_click'));
 
         // DEBUG: press D to cycle good ↔ bad ending (to compare them quickly).
-        this.input.keyboard.on('keydown-D', () => {
+        /*this.input.keyboard.on('keydown-D', () => {
             const next = this.forceEnding === 'good' ? 'bad' : 'good';
             this.scene.start('MenuScene', { menuKey: 'BOSS_ENDING', forceEnding: next });
-        });
+        });*/
 
         // SPACE / ENTER trigger the current screen's primary button (start /
         // continue / restart) so the menus aren't click-only. Each screen arms
