@@ -1,3 +1,8 @@
+// Length (ms) of each level's arrival jingle, keyed by level. Used to bound
+// reachFinishLine()'s wait so a sound failure (dropped 'complete' event,
+// mobile audio context hiccup, etc.) can't soft-lock the level-end.
+const END_SOUND_DURATION_MS = { 1: 4500, 2: 8000, 3: 4500 };
+
 class FinishLineManager {
     constructor(scene, groundY) {
         this.scene = scene;
@@ -111,15 +116,27 @@ class FinishLineManager {
             }
         };
 
+        // Muted: nothing to hear, so nothing to wait for.
+        if (this.scene.sound.mute) {
+            goToMenu();
+            return;
+        }
+
         // Let the arrival jingle play out fully before leaving — MenuScene calls
-        // sound.stopAll() on entry, so transitioning early clips it. We don't need
-        // to know the clip's length: wait for its own 'complete' event. If it
-        // already finished (short clip, or the player dawdled before arriving),
-        // just hold a beat so the green-tint success moment still reads.
+        // sound.stopAll() on entry, so transitioning early would clip it. We still
+        // cap the wait at the clip's own known length (END_SOUND_DURATION_MS)
+        // rather than trusting 'complete' alone: if the sound fails partway
+        // through — which happens — 'complete' never fires and the level would
+        // otherwise soft-lock here forever.
+        let done = false;
+        const finish = () => {
+            if (done) return;
+            done = true;
+            goToMenu();
+        };
+        this.scene.time.delayedCall(END_SOUND_DURATION_MS[this.scene.level] || 1000, finish);
         if (this.endSound && this.endSound.isPlaying) {
-            this.endSound.once('complete', goToMenu);
-        } else {
-            this.scene.time.delayedCall(1000, goToMenu);
+            this.endSound.once('complete', finish);
         }
     }
 
