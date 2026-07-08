@@ -74,8 +74,7 @@ class MenuScene extends Phaser.Scene {
         const loreScreens = [
             'LEVEL_1_LORE',
             'LEVEL_2_LORE',
-            'BOSS_LORE',
-            'GAME_COMPLETED'
+            'BOSS_LORE'
         ];
 
         if (loreScreens.includes(this.menuKey)) {

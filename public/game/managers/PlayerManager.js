@@ -292,11 +292,4 @@ class PlayerManager {
             this.foam.setVisible(onGround);
         }
     }
-
-    // Clean up when switching levels
-    destroy() {
-        if (this.player) this.player.destroy();
-        if (this.foam) this.foam.destroy();
-        if (this.splash) this.splash.destroy();
-    }
 }

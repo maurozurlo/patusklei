@@ -32,16 +32,6 @@ const LORE = {
         next: { scene: 'GameScene', data: { level: 3 } }
     },
 
-    // NOTE: not reachable in the current game — level 3 sets maxObstacles: 999
-    // (see LevelManager) specifically so the boss fight never trips the
-    // obstacle-count finish line that leads here. Leftover from before the
-    // boss fight existed; candidate for removal in the dead-code pass.
-    GAME_COMPLETED: {
-        title: 'Error',
-        text: 'Lore not found.',
-        next: { scene: 'MenuScene', data: { menuKey: 'MAIN_MENU' } }
-    },
-
     // --- Victory reveal (shared first screen of both endings) ---
     BOSS_VICTORY: {
         title: 'Derrotado',

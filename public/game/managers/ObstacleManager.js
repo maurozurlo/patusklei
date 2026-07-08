@@ -4,8 +4,6 @@ class ObstacleManager {
         this.groundY = groundY;
         this.level = level;
         this.obstacles = null;
-        this.bossProjectiles = null;
-        this.dynamites = null;
 
         // Level-specific obstacle configuration
         this.obstacleConfig = this.getObstacleConfig(level);
@@ -86,8 +84,6 @@ class ObstacleManager {
 
     createGroups() {
         this.obstacles = this.scene.physics.add.group();
-        this.bossProjectiles = this.scene.physics.add.group();
-        this.dynamites = this.scene.physics.add.group();
     }
 
     spawnObstacle(obstacleSpeed) {
@@ -171,47 +167,12 @@ class ObstacleManager {
         return bird;
     }
 
-    spawnBossProjectile(obstacleSpeed) {
-        const projectile = this.bossProjectiles.create(
-            320,
-            Phaser.Math.Between(100, 150),
-            'boss_projectile'
-        );
-        projectile.body.velocity.x = -obstacleSpeed * 1.5;
-        projectile.body.setAllowGravity(false);
-        projectile.setImmovable(true);
-        projectile.setDepth(9);
-    }
-
-    spawnDynamiteControl(obstacleSpeed) {
-        const dynamite = this.dynamites.create(
-            320,
-            this.groundY - 20,
-            'dynamite_control'
-        );
-        dynamite.body.velocity.x = -obstacleSpeed;
-        dynamite.body.setAllowGravity(false);
-        dynamite.setImmovable(true);
-        dynamite.setDepth(9);
-    }
-
     cleanupOffScreen() {
-        const groups = [this.obstacles, this.bossProjectiles, this.dynamites];
-
-        groups.forEach(group => {
-            group.children.entries.forEach(entity => {
-                if (entity.x < -50) {
-                    entity.destroy();
-                }
-            });
+        this.obstacles.children.entries.forEach(entity => {
+            if (entity.x < -50) {
+                entity.destroy();
+            }
         });
-    }
-
-    // Clean up when switching levels
-    destroy() {
-        if (this.obstacles) this.obstacles.clear(true, true);
-        if (this.bossProjectiles) this.bossProjectiles.clear(true, true);
-        if (this.dynamites) this.dynamites.clear(true, true);
     }
 }
 

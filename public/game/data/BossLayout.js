@@ -3,15 +3,13 @@
 //
 // Shared by:
 //   • BossManager        builds the real in-game scene
-//   • DebugScene         placement tool (press D at the menu, drag, J to dump)
 //   • GameScene.preload  loads the textures / spritesheets listed below
 //
 // Coordinates use a bottom-center origin (0.5, 1) unless `ox`/`oy` are given.
-//   fixed: true   backdrop piece the debug tool shows but you don't drag
+//   fixed: true   backdrop piece that doesn't move
 //   sheet: {...}  animated spritesheet part (frames laid out horizontally)
 //
-// Workflow: tune positions in DebugScene, press J to dump, paste the numbers
-// back into the x/y/depth fields here — the tool and the game stay in sync.
+// Hand-tune x/y/depth directly below.
 // ---------------------------------------------------------------------------
 const BOSS_LAYOUT = {
     // Fixed backdrop. Floor sits above the ground-level parts (depth 1) so they

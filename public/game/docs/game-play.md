@@ -6,9 +6,9 @@ This page explains how the game behaves from a player and designer point of view
 
 - Reach the finish line for each level before running out of time or colliding
 - Collect coins to increase score
-- In level 3 (boss fight) throw dynamite at the boss; resist projectiles until boss HP reaches 0
+- In level 3 (boss fight), dodge the boss's attacks and survive until RMK's entrance — see `BossManager`
 
-The game ends in failure on collision with an obstacle or boss projectile. A game over screen appears and the player can restart.
+The game ends in failure on collision with an obstacle, or losing all hearts in the boss fight. A game over screen appears and the player can restart.
 
 ## 🕹 Controls
 
@@ -27,12 +27,15 @@ The main menu also lets you toggle music &#x1F50A;.
 
 ## 💡 Lore & Themes
 
-There are four scripted text screens:
+Three scripted text screens lead into each level:
 
 1. `LEVEL_1_LORE` – beginning
 2. `LEVEL_2_LORE` – arrival in Cle city
 3. `BOSS_LORE` – intro to Lars Wampiola
-4. `GAME_COMPLETED` – victory message
+
+Beating the boss plays a good/bad ending sequence (`LORE_SEQUENCES` in
+`data/Lore.js`, chosen by peppers collected — see `Save.isGoodEnding()`),
+then a credits roll, back to the main menu.
 
 A hidden `TRUE_ENDING` exists in the code but isn't currently reachable – an easy place to add an easter egg.
 

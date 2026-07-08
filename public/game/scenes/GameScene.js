@@ -6,7 +6,6 @@ class GameScene extends Phaser.Scene {
         this.score = 0;
         this.level = 1;
         this.isGameOver = false;
-        this.bossHealth = 5;
         this.maxObstacles = 10;
     }
 
@@ -14,7 +13,6 @@ class GameScene extends Phaser.Scene {
         this.level = data.level || 1;
         this.isGameOver = false;
         this.score = 0;
-        this.bossHealth = 5;
 
         // Player hearts (boss fight): 3 base +1 per bell pepper collected this
         // run (persisted in Save), capped so the heart row stays sane.
@@ -348,20 +346,6 @@ class GameScene extends Phaser.Scene {
             null,
             this
         );
-        this.physics.add.collider(
-            this.playerManager.player,
-            this.obstacleManager.bossProjectiles,
-            this.hitObstacle,
-            null,
-            this
-        );
-        this.physics.add.overlap(
-            this.playerManager.player,
-            this.obstacleManager.dynamites,
-            this.triggerDynamite,
-            null,
-            this
-        );
         this.physics.add.overlap(
             this.playerManager.player,
             this.coinManager.coins,
@@ -456,22 +440,5 @@ class GameScene extends Phaser.Scene {
         this.time.delayedCall(1000, () => {
             this.scene.start('MenuScene', { menuKey: 'GAME_OVER', level: this.level });
         });
-    }
-
-    triggerDynamite(player, dynamite) {
-        if (!player.body.touching.down) {
-            dynamite.destroy();
-            this.bossHealth--;
-
-            if (this.bossHealth <= 0) {
-                this.winGame();
-            }
-        }
-    }
-
-    winGame() {
-        this.physics.pause();
-        this.scene.stop();
-        this.scene.start('MenuScene', { menuKey: 'GAME_COMPLETED' });
     }
 }

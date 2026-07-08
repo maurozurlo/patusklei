@@ -3,13 +3,7 @@ class CoinManager {
         this.scene = scene;
         this.groundY = groundY;
         this.coins = null;
-
-        // Tracking stats
-        this.tunaCansCollected = 0;
-        this.tunaCansConsecutive = 0; // Consecutive without missing
-        this.bellPeppersCollected = 0;
-        this.coinsSpawned = 0;
-        this.coinsMissed = 0;
+        this.tunaCansConsecutive = 0; // Consecutive without missing — drives the bonus bellpepper
 
         // Coin values
         this.TUNA_VALUE = 10;
@@ -96,8 +90,6 @@ class CoinManager {
         coin.coinValue = coinValue;
         coin.coinType = coinType;
         coin.wasCollected = false;
-
-        this.coinsSpawned++;
     }
 
     collectCoin(player, coin) {
@@ -108,13 +100,10 @@ class CoinManager {
         // Add points based on coin type
         this.scene.score += coin.coinValue;
 
-        // Track collection stats
         if (coin.coinType === 'tunacan_coin') {
-            this.tunaCansCollected++;
             this.tunaCansConsecutive++;
             this.scene.sfx.tuna.play()
         } else if (coin.coinType === 'bellpepper_coin') {
-            this.bellPeppersCollected++;
             this.scene.sfx.pepper.play()
             // Persist across levels — each pepper is +1 boss heart and counts
             // toward the good/bad ending.
@@ -157,41 +146,17 @@ class CoinManager {
         coin.coinType = 'bellpepper_coin';
         coin.wasCollected = false;
         this.tunaCansConsecutive = 0; // bonus consumed
-        this.coinsSpawned++;
     }
 
     cleanupOffScreen() {
         this.coins.children.entries.forEach(coin => {
             if (coin.x < -50) {
-                // Coin went off screen without being collected
-                if (!coin.wasCollected) {
-                    this.coinsMissed++;
-
-                    // Reset consecutive counter if a tuna can was missed
-                    if (coin.coinType === 'tunacan_coin') {
-                        this.tunaCansConsecutive = 0;
-                    }
+                // Reset the streak if a tuna can went off screen uncollected.
+                if (!coin.wasCollected && coin.coinType === 'tunacan_coin') {
+                    this.tunaCansConsecutive = 0;
                 }
                 coin.destroy();
             }
         });
-    }
-
-    getStats() {
-        return {
-            tunaCansCollected: this.tunaCansCollected,
-            bellPeppersCollected: this.bellPeppersCollected,
-            coinsSpawned: this.coinsSpawned,
-            coinsMissed: this.coinsMissed,
-            consecutiveStreak: this.tunaCansConsecutive
-        };
-    }
-
-    reset() {
-        this.tunaCansCollected = 0;
-        this.tunaCansConsecutive = 0;
-        this.bellPeppersCollected = 0;
-        this.coinsSpawned = 0;
-        this.coinsMissed = 0;
     }
 }

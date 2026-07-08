@@ -29,7 +29,7 @@ This section helps developers understand the code structure and how different pa
 
 - **`BackgroundManager`** – parallax backgrounds per level
 - **`PlayerManager`** – player sprite, animations, input handling, effects
-- **`ObstacleManager`** – dynamic spawning of obstacles, boss projectiles, dynamite
+- **`ObstacleManager`** – dynamic spawning of obstacles (level 1/2 only; level 3 is the boss fight, see `BossManager`)
 - **`CoinManager`** – coin placement and collection logic
 - **`FinishLineManager`** – spawns finish line when level threshold reached
 - **`LevelManager`** – tracks level number, obstacle speed, and triggers level end

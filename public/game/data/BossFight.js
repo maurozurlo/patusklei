@@ -64,7 +64,7 @@ const BOSS_FIGHT = {
 
     // -----------------------------------------------------------------------
     // Bomb phase placement — Rodolfa delivers bombs (drop/attach/run logic is
-    // implemented later). Coordinates captured from the DebugScene.
+    // implemented later). Coordinates hand-tuned directly.
     // Bottom-center origin unless noted; explosions are CENTERED (0.5, 0.5).
     // -----------------------------------------------------------------------
     props: {

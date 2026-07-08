@@ -79,18 +79,6 @@ class FinishLineManager {
             this.scene.coinTimer.remove();
             this.scene.coinTimer = null;
         }
-
-        // Stop boss projectiles (level 3)
-        if (this.scene.bossProjectileTimer) {
-            this.scene.bossProjectileTimer.remove();
-            this.scene.bossProjectileTimer = null;
-        }
-
-        // Stop dynamite spawning (level 3)
-        if (this.scene.dynamiteTimer) {
-            this.scene.dynamiteTimer.remove();
-            this.scene.dynamiteTimer = null;
-        }
     }
 
     reachFinishLine(player) {
@@ -105,15 +93,14 @@ class FinishLineManager {
         // Visual feedback
         player.setTint(0x00ff00); // Green tint for success
 
+        // Only levels 1/2 reach this — level 3 (boss fight) ends via BossManager
+        // straight to BOSS_ENDING, and never trips the obstacle-count finish line
+        // (see maxObstacles: 999 in LevelManager).
         const goToMenu = () => {
-            if (this.scene.level < 3) {
-                const nextLevel = this.scene.level + 1;
-                Save.unlockLevel(nextLevel); // reached the next level (for a level-select)
-                const menuKey = nextLevel === 2 ? 'LEVEL_2_LORE' : 'BOSS_LORE';
-                this.scene.scene.start('MenuScene', { menuKey });
-            } else {
-                this.scene.scene.start('MenuScene', { menuKey: 'GAME_COMPLETED' });
-            }
+            const nextLevel = this.scene.level + 1;
+            Save.unlockLevel(nextLevel); // reached the next level (for a level-select)
+            const menuKey = nextLevel === 2 ? 'LEVEL_2_LORE' : 'BOSS_LORE';
+            this.scene.scene.start('MenuScene', { menuKey });
         };
 
         // Muted: nothing to hear, so nothing to wait for.

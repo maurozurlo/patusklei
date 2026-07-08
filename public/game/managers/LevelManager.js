@@ -55,8 +55,6 @@ class LevelManager {
                 name: 'Boss Battle',
                 speed: 350,
                 maxObstacles: 999, // Boss fight doesn't use finish line
-                projectileDelay: 1000,
-                dynamiteDelay: 5000,
                 coinDelay: 3000,
                 music: this.scene.sfx.lvl3
             }
@@ -72,9 +70,7 @@ class LevelManager {
     cleanupTimers() {
         const timers = [
             'obstacleTimer',
-            'coinTimer',
-            'dynamiteTimer',
-            'bossProjectileTimer'
+            'coinTimer'
         ];
 
         timers.forEach(timerName => {
@@ -88,12 +84,12 @@ class LevelManager {
     setupLevelTimers(level) {
         const config = this.getLevelConfig(level);
 
+        // Level 3 (boss fight) has no timer-driven spawns of its own — see
+        // BossManager for the static scene + fight logic.
         if (level === 1) {
             this.setupLevel1(config);
         } else if (level === 2) {
             this.setupLevel2(config);
-        } else if (level === 3) {
-            this.setupLevel3(config);
         }
     }
 
@@ -133,14 +129,4 @@ class LevelManager {
         });
     }
 
-    setupLevel3(config) {
-        // Fight logic (projectiles / dynamite / coins) is pending the design spec.
-        // The old placeholder spawners referenced textures that don't exist, so
-        // for now level 3 just shows the static boss scene (see BossManager).
-    }
-
-    // Clean up when switching levels or ending game
-    destroy() {
-        this.cleanupTimers();
-    }
 }

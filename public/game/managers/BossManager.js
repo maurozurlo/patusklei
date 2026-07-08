@@ -1,6 +1,6 @@
 // Builds the static level-3 boss scene: background, floor, and the puppet-master
 // monster assembled from separate parts. Coordinates/depths come from the shared
-// layout in data/BossLayout.js (tuned with the DebugScene placement tool).
+// layout in data/BossLayout.js.
 //
 // NOTE: the actual boss fight is not implemented yet. `boss_sitting` (the
 // puppet master revealed after the monster is defeated) is shown here only
